@@ -5,6 +5,7 @@
         <link rel="stylesheet" href="css/blocs.css">
         <link rel="stylesheet" href="css/style.css">
 
+        <script src="classes/Bloc.model.js"></script>
         <script src="classes/Board.class.js"></script>
         <script src="classes/Toolbox.class.js"></script>
         <script src="classes/draggable.js"></script>

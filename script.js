@@ -10,6 +10,6 @@ $(function(){
     let toolbox =  new Toolbox();
     toolbox.drawToolBox();
 
-    $(['dragable']).dragable();
+    $('[draggable]').draggable();
 
 });

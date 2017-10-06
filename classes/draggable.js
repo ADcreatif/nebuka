@@ -5,45 +5,56 @@
 "use strict";
 
 (function($) {
-    $.fn.dragable = function(options){
+    $.fn.draggable = function(options){
 
         let defaults = {
-            dragable_items : '[draggable]',
-            dropable_items : 'td,#toolbox'
+            draggable_items : '[draggable]',
+            droppable_items : 'td,#toolbox'
         };
 
         let settings = $.extend( {}, defaults, options );
 
-        init();
-
+        $(this).each(function(){
+            setDragableItem(this);
+        });
+        setDropZones();
 
         let movingItem = null;
-        let clone;
+        let clone= null;
 
-        function handleDragStart(event){
-            // Target (this) element is the source node.
+
+        // STARTDRAG
+        function onDragItem(event){
             movingItem = this;
 
-            event.originalEvent.dataTransfer.effectAllowed = 'move';
+            //event.originalEvent.dataTransfer.effectAllowed = 'move';
             clone = $(this).clone();
             $(this).addClass('dragElem');
+
         }
 
-        function handleDragOver(event){
+        // STOPDRAG
+        function onDropItem() {
+            $(this).removeClass('dragElem')
+                .parent(settings.droppable_items).empty();
+        }
+
+
+        function onOverDroppable(event){
             //if (event.preventDefault) {
             event.preventDefault(); // Necessary. Allows us to drop.
             //}
 
-            event.originalEvent.dataTransfer.dropEffect = 'move';  // See the section on the DataTransfer object.
+            //event.originalEvent.dataTransfer.dropEffect = 'move';  // See the section on the DataTransfer object.
 
             return false;
         }
 
-        // les éléments survolés
-        function handleDragEnter(e) {$(this).addClass('over');}
-        function handleDragLeave(e) {$(this).removeClass('over');}
+        // visuel sur les éléments survolés
+        function onEnterDroppable() {$(this).addClass('over');}
+        function onLeaveDroppable() {$(this).removeClass('over');}
 
-        function handleDrop(event) {
+        function onDropDroppable(event) {
             // la cible du drop
 
             if (event.stopPropagation) {
@@ -53,33 +64,28 @@
             if (movingItem != this) {
                 $(this).append(clone);
             }
+
             this.classList.remove('over');
+            setDragableItem(clone);
+
+            clone = null;
             return false;
         }
 
-        function handleDragEnd(e) {
-            // l'élément déplacé
-            $(this).removeClass('drag-elem');
-            $(this).parent('td').empty();
-        }
 
 
         function setDragableItem(target){
-            target.on('dragstart', handleDragStart);
-            target.on('dragend', handleDragEnd);
+            $(target).on('dragstart', onDragItem)
+                     .on('dragend', onDropItem);
         }
 
-        function setDropableZones(target){
-            $(document).on('dragenter','td', handleDragEnter);
-            $(document).on('dragover','td', handleDragOver);
-            $(document).on('dragleave','td', handleDragLeave);
-            $(document).on('drop','td', handleDrop);
+        function setDropZones(){
+            $(settings.droppable_items)
+                .on('dragenter', onEnterDroppable)
+                .on('dragover', onOverDroppable)
+                .on('dragleave', onLeaveDroppable)
+                .on('drop', onDropDroppable);
         }
-
-        function init(this){
-
-        }
-
         return this;
     };
 })(jQuery);

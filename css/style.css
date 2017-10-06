@@ -1,5 +1,6 @@
 body{
     background: wheat;
+    font-family: "Verdana";
 }
 
 [draggable] {
@@ -11,7 +12,7 @@ body{
     -khtml-user-drag: element;
     -webkit-user-drag: element;
 }
-.drag-elem{
+.dragElem{
     opacity:.5
 }
 
