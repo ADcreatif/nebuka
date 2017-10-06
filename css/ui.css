@@ -1,0 +1,23 @@
+
+#board table{
+    border-collapse: collapse;
+    background: #3c8454
+}
+#board td{
+    border:1px solid green;
+    width: 20px;
+    height: 20px;
+    padding: 0;
+    margin: 0;
+    font-size: 0;
+    position:relative
+}
+
+#toolbox>div{
+    display:flex;
+    width: 300px;
+    position: fixed;
+    top: 20px;
+    right: 0;
+    background: green;
+}

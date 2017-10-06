@@ -1,0 +1,29 @@
+body{
+    background: wheat;
+}
+
+[draggable] {
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    user-select: none;
+    /* Required to make elements draggable in old WebKit */
+    -khtml-user-drag: element;
+    -webkit-user-drag: element;
+}
+.drag-elem{
+    opacity:.5
+}
+
+#board .over{
+    background-color:rgba(0,0,0,.2);
+}
+
+.mask{
+    background:black;
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
