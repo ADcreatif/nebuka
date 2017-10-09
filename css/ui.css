@@ -1,4 +1,5 @@
-
+main{
+    display:flex;
 }
 #board table{
     border-collapse: collapse;

@@ -7,6 +7,7 @@ class Bloc{
         this.type = type;
         this.level = level;
         this.quantity = quantity || 1;
+        this.blocID = null;
 
     }
 
@@ -19,9 +20,20 @@ class Bloc{
         return 'bloc '+ this.type+' '+visual[this.type][this.level];
     }
 
+    addBoardInfos(blocID){
+        this.blocID = parseInt(blocID);
+    }
     drawBlock(){
         let quantity = $('<span>').text(this.quantity);
+        let bloc = $('<div>')
+            .addClass(this.getClass())
+            .attr('draggable','')
+            .append(quantity);
 
-        return $('<div>').addClass(this.getClass()).attr('draggable','').append(quantity)
+        if(this.blocID){
+            bloc.attr('id', 'blocID_' + this.blocID)
+                .data('blocID', this.blocID);
+        }
+        return bloc;
     }
 }

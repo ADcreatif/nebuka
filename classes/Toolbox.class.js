@@ -27,15 +27,18 @@ class Toolbox{
         return inStorage;
     }
 
-    addBloc(type, level, quantity){
+    addBlock(type, level, quantity){
         quantity = quantity || 1;
 
-        if(!$.each(this.storedBlocks, function(){
+        let found = false;
+
+        $.each(this.storedBlocks, function(){
             if(this.type === type && this.level === level){
                 this.quantity += quantity;
-                return true;
+                return found = true;
             }
-        })){
+        });
+        if(!found){
             // si le bloc n'existe pas dans la toolbox
             this.toolbox.push({type:type, level:level, quantity:quantity})
         }

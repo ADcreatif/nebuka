@@ -11,7 +11,7 @@ class Board {
         this.size = 30;
 
         this.drawBoard();
-        this.drawBlocs();
+        this.drawBlocks();
     }
 
     drawBoard() {
@@ -41,22 +41,23 @@ class Board {
         this.board.append(table);
     };
 
-    IDToCoord(id){
-        let y = parseInt(id / this.size);
-        let x = parseInt(id % this.size);
-        return {x:x, y:y}
-    }
+    // IDToCoord(id){
+    //     let y = parseInt(id / this.size);
+    //     let x = parseInt(id % this.size);
+    //     return {x:x, y:y}
+    // }
 
     coordToID(x,y){
         return y * this.size + x;
     }
 
-    drawBlocs(){
+    drawBlocks(){
         $.each(inBoard, function(e,item){
 
             let cellID = this.coordToID(item.x,item.y);
 
             let bloc = new Bloc(item.type, item.level);
+            bloc.addBoardInfos(item.blocID);
 
             $('#cellID_'+cellID).append(bloc.drawBlock());
 
