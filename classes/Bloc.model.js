@@ -6,7 +6,7 @@ class Bloc{
     constructor(type, level, quantity){
         this.type = type;
         this.level = level;
-        this.quantity = quantity;
+        this.quantity = quantity || 1;
 
     }
 

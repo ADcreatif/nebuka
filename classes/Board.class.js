@@ -2,37 +2,66 @@
  * Created by Alan on 06/10/2017.
  */
 
-
 "use strict";
 
 class Board {
 
-
     constructor(){
         this.board = $('#board');
+        this.size = 30;
+
+        this.drawBoard();
+        this.drawBlocs();
     }
 
-
     drawBoard() {
-        let size = 40;
         let table = $('<table>');
+        let cellID = 0;
+        let tileY = 0;
+        let tileX;
         let tr;
-        let td;
 
-        for (let tileX = 0; tileX < size; tileX++) {
+        for (tileY ; tileY < this.size; tileY++) {
 
             tr = $('<tr>');
+            tileX = 0;
 
-            for (let tileY = 0; tileY < size; tileY++) {
-                td = $('<td>').data('x', tileX).data('y', tileX);
-                tr.append(td);
+            for (tileX; tileX < this.size; tileX++) {
+                tr.append($('<td>')
+                    .data('x', tileX)
+                    .data('y', tileY)
+                    .attr('id', 'cellID_'+cellID)
+                );
+
+                cellID++
             }
             table.append(tr)
         }
 
         this.board.append(table);
-
     };
+
+    IDToCoord(id){
+        let y = parseInt(id / this.size);
+        let x = parseInt(id % this.size);
+        return {x:x, y:y}
+    }
+
+    coordToID(x,y){
+        return y * this.size + x;
+    }
+
+    drawBlocs(){
+        $.each(inBoard, function(e,item){
+
+            let cellID = this.coordToID(item.x,item.y);
+
+            let bloc = new Bloc(item.type, item.level);
+
+            $('#cellID_'+cellID).append(bloc.drawBlock());
+
+        }.bind(this));
+    }
 }
 
 
