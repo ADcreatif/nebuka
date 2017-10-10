@@ -36,6 +36,11 @@
     box-shadow: 2px 2px 2px #253b53;
 }
 
+.wall_stone{
+    background-color: grey;
+    box-shadow: 2px 2px 2px #253b53;
+}
+
 .tower{
     border-radius : 50%;
     width:50px;

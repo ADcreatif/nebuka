@@ -4,9 +4,10 @@
 "use strict";
 
 let inStorage = [
-    {type:'wall', level : 0, quantity:10},
-    {type:'wall', level : 1, quantity:4},
-    {type:'tower', level : 5, quantity:5},
+    {type:Block.WOOD, level : 0, quantity:10},
+    {type:Block.STONE, level : 1, quantity:4},
+    {type:Block.TOWER, level : 0, quantity:5},
+    {type:Block.STEEL, level : 0, quantity:5},
 ];
 
 let inBoard = {
@@ -22,8 +23,46 @@ $(function(){
     board =  new Board();
 
     toolbox =  new Toolbox();
-    toolbox.refreshToolBox();
+    toolbox.displayToolBox();
 
     $('[draggable]').draggable();
 
+    // TODO : remove test interface
+
+    $("#minusWood").click(function()
+    {
+        let quantity = parseInt($('#quantity').val());
+        toolbox.removeBlock(Block.WOOD, quantity,0);
+    });
+
+    $("#plusWood").click(function()
+    {
+        let quantity = parseInt($('#quantity').val());
+        toolbox.addBlock(Block.WOOD, quantity,0);
+    });
+
+    $("#minusTower").click(function()
+    {
+        let quantity = parseInt($('#quantity').val());
+        toolbox.removeBlock(Block.TOWER, quantity,0);
+    });
+
+    $("#plusTower").click(function()
+    {
+        let quantity = parseInt($('#quantity').val());
+        toolbox.addBlock(Block.TOWER, quantity,0);
+    });
+
+    $("#minusStone").click(function()
+    {
+        let quantity = parseInt($('#quantity').val());
+        toolbox.removeBlock(Block.STONE, quantity,0);
+    });
+
+    $("#plusStone").click(function()
+    {
+        let quantity = parseInt($('#quantity').val());
+        toolbox.addBlock(Block.STONE, quantity,0);
+    });
 });
+
