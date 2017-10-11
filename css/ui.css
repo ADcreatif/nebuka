@@ -3,10 +3,12 @@ main{
 }
 #board table{
     border-collapse: collapse;
-    background: #3c8454
+    background: #3c8454;
+    width: 600px;
 }
 #board td{
     border:1px solid green;
+    box-sizing: border-box;
     width: 20px;
     height: 20px;
     padding: 0;

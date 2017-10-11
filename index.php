@@ -22,22 +22,24 @@
             <div id="board"></div>
             <div id="toolbox"></div>
             <!-- TODO : delete this temporary test -->
-            <div id="render">
-                <button id="export-board">Export Board</button>
-                <button id="start-render">Afficher Rendu</button>
-                <button id="stop-render">Masquer Rendu</button>
-            </div>
-            <div id="shitTest">
-                <label> quantity </label><input type="text" value="1" id="quantity">
-                <p>
-                <button data-material="1" data-type="1" data-increment> + WOOD </button>
-                <button data-material="1" data-type="1"> - WOOD </button>
-                <p>
-                <button data-material="2" data-type="1" data-increment> + STONE </button>
-                <button data-material="2" data-type="1"> - STONE </button>
-                <p>
-                <button data-material="1" data-type="2" data-increment> + TOWER </button>
-                <button data-material="1" data-type="2"> - TOWER </button>
+            <div>
+                <p id="render">
+                    <button id="export-board">Export Board</button>
+                    <button id="start-render">Afficher Rendu</button>
+                    <button id="stop-render">Masquer Rendu</button>
+                </p>
+                <p id="shitTest">
+                    <label> quantity </label><input type="text" value="1" id="quantity">
+                    <br>
+                    <button data-material="1" data-type="1" data-increment> + WOOD </button>
+                    <button data-material="1" data-type="1"> - WOOD </button>
+                    <br>
+                    <button data-material="2" data-type="1" data-increment> + STONE </button>
+                    <button data-material="2" data-type="1"> - STONE </button>
+                    <br>
+                    <button data-material="1" data-type="2" data-increment> + TOWER </button>
+                    <button data-material="1" data-type="2"> - TOWER </button>
+                </br>
             </div>
         </main>
     </body>
