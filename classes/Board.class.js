@@ -8,10 +8,13 @@ class Board {
 
     constructor(){
         this.board = $('#board');
-        this.size = 30;
 
         this.drawBoard();
-        this.drawBlocks();
+        Board.drawBlocks();
+    }
+
+    static getSize(){
+        return 30;
     }
 
     drawBoard() {
@@ -21,12 +24,12 @@ class Board {
         let tileX;
         let tr;
 
-        for (tileY ; tileY < this.size; tileY++) {
+        for (tileY ; tileY < Board.getSize(); tileY++) {
 
             tr = $('<tr>');
             tileX = 0;
 
-            for (tileX; tileX < this.size; tileX++) {
+            for (tileX; tileX < Board.getSize(); tileX++) {
                 tr.append($('<td>')
                     .data('x', tileX)
                     .data('y', tileY)
@@ -47,21 +50,38 @@ class Board {
     //     return {x:x, y:y}
     // }
 
-    coordToID(x,y){
-        return y * this.size + x;
+    static coordToID(x,y){
+        return y * Board.getSize() + x;
     }
 
-    drawBlocks(){
-        $.each(inBoard, function(e,item){
+    static addBlock(type, material,x,y){
+        let blockID = Board.storeBlock(type, material, x, y);
+        Board.drawBlock(type, material, x, y, blockID);
+    }
 
-            let cellID = this.coordToID(item.x,item.y);
+    static storeBlock(type, material, x, y){
+        inBoard.push({type:type, material:material, x:x, y:y});
+        return inBoard.length -1;
+    }
 
-            let bloc = new Bloc(item.type, item.level);
-            bloc.addBoardInfos(item.blocID);
+    static drawBlock(type, material, x, y, blockID ){
+        let cellID = Board.coordToID(x,y);
+        let block = Board.getBlockDisplay(type, material, blockID);
+        $('#cellID_'+cellID).append(block);
+    }
 
-            $('#cellID_'+cellID).append(bloc.drawBlock());
+    static getBlockDisplay(type, material, blockID){
+        return BlockFactory.getBlockDisplay(type, material)
+            .attr('id', 'blocID_' + blockID)
+            .data('blockid', blockID);
+    }
 
-        }.bind(this));
+    static drawBlocks(){
+        for(let i in inBoard){
+            if(inBoard.hasOwnProperty(i)){
+                Board.drawBlock(inBoard[i].type, inBoard[i].material, inBoard[i].x,inBoard[i].y, parseInt(i) );
+            }
+        }
     }
 }
 

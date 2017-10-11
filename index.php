@@ -12,9 +12,7 @@
         <script src="classes/Stock.class.js"></script>
         <script src="classes/Inventory.class.js"></script>
 
-        <script src="classes/Bloc.model.js"></script>
         <script src="classes/Board.class.js"></script>
-        <script src="classes/Toolbox.class.js"></script>
         <script src="classes/draggable.plugin.js"></script>
         <script src="script.js"></script>
     </head>
@@ -23,21 +21,17 @@
             <div id="board"></div>
             <div id="toolbox"></div>
             <!-- TODO : delete this temporary test -->
-            <div>
-                    <label> quantity </label><input type="text" value="1" id="quantity">
-                    <br /><br />
-                    <button id="plusWood"> + WOOD </button>  
-                    <button id="minusWood"> - WOOD </button>  
-                    <br /><br />
-                    <button id="plusStone"> + STONE </button>  
-                    <button id="minusStone"> - STONE </button>  
-                    <br /><br />
-
-                    <button id="plusTower"> + TOWER </button>  
-                    <button id="minusTower"> - TOWER </button>  
-                    <br /><br />
-
-
+            <div id="shitTest">
+                <label> quantity </label><input type="text" value="1" id="quantity">
+                <p>
+                <button data-material="1" data-type="1" data-increment> + WOOD </button>
+                <button data-material="1" data-type="1"> - WOOD </button>
+                <p>
+                <button data-material="2" data-type="1" data-increment> + STONE </button>
+                <button data-material="2" data-type="1"> - STONE </button>
+                <p>
+                <button data-material="1" data-type="2" data-increment> + TOWER </button>
+                <button data-material="1" data-type="2"> - TOWER </button>
             </div>
         </main>
     </body>

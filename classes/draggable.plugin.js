@@ -5,94 +5,103 @@
 "use strict";
 
 (function($) {
-    $.fn.draggable = function(options){
+    $.fn.draggable = function(opt){
 
         let defaults;
-        let dragInfos;
+        let drag;
 
         // ************************* INIT PLUGIN **************************//
         defaults = {
             draggable : '[draggable]',
             droppable : '#board td,#toolbox',
             board     : $('#board'),
-            storage   : $('#toolbox')
+            inventory   : $('#toolbox')
         };
 
-        options = $.extend( {}, defaults, options );
+        drag = {};
+        opt = $.extend( {}, defaults, opt );
 
-        $(this).each(function(){
-            setDragableItem(this);
-        });
-        setDropZones();
-
+        startDrag();
         // *********************** ## INIT PLUGIN ************************//
 
-        // STARTDRAG
-        function onDragItem(){
-            dragInfos = {
-                item : $(this),
-                source : $(this).parent(),
-                clone : $(this).clone(true)
-            };
-
-            $(this).addClass('dragElem');
-
-        }
-
-        // STOPDRAG
-        function onDropItem() {
-            $(this).removeClass('dragElem');
-            return false;
-        }
 
 
-        function onDragover(){return false;}
-        function onDragenter() {$(this).addClass('over');return false;}
-        function onDragleave() {$(this).removeClass('over');return false;}
-
-        function onDrop() {
-            // la cible du drop
-
-            if($(this).is(dragInfos.source)){
-                // droped at same place
-                console.log('same place');
+        function onDragItem(event){
+            if(!event.target.draggable)
                 return false;
 
-            } else if ($(this).is(options.storage)) {
-                // drop on storage
-                console.log('drop on storage');
-                let blocID = parseInt(dragInfos.clone.data('blocID'));
-                let blockInfos = inBoard[blocID];
-                toolbox.addBlock(blockInfos.type, blockInfos.level).refreshToolBox();
+            drag = {
+                item : $(event.target),
+                source : $(event.target).parent(),
+            };
+        }
 
-            } else if ($.contains(options.board[0], this) && $(this).children().length === 0) {
-                // drop on board
-                console.log('drop on board');
-                $(this).append(dragInfos.clone);
-                //setDragableItem(dragInfos.clone);
+        function onDragover(event){event.preventDefault();/*allow drop*/}
+        function onDragenter(event) {if(drag.length)$(event.target).addClass('over')}
+        function onDragleave(event) {$(event.target).removeClass('over')}
+
+        function onDrop(event) {
+            event.preventDefault();
+            $(event.target).removeClass('over');
+
+            // if nothing is dragged || place is not the same || tile is not empty
+            if(drag.length === 0 || $(this).is(drag.source) || !$(this).is(opt.droppable) || ($(this).is('td') && $(this).children().length !== 0))
+                return false;
+
+
+            if(drag.item.data('blockid') === undefined){
+                let type = drag.item.data('type');
+                let material = drag.item.data('material');
+
+                $(event.target).append(
+                    Board.addBlock(type, material, $(event.target).data('x'), $(event.target).data('y'),
+                ));
+                inventory.removeBlock(type, material, 1);
+                inventory.displayInventory();
             } else {
-                console.log("dropped somwhere over the rainbow")
+                $(event.target).append(drag.item.clone(true));
+                drag.item.remove();
             }
 
-            $(dragInfos.source).parent(options.droppable).empty();
-            $(this).removeClass('over');
 
-            return false;
+
+           //
+            drag = {};
+
+/*
+            // droped at same place
+            if($(this).is(drag.source)){
+                return false;
+
+            // drop on inventory
+            } else if ($(this).is(opt.inventory)) {
+                let blocID = parseInt(drag.clone.data('blocID'));
+                let blockInfos = inBoard[blocID];
+                inventory.addBlock(blockInfos.type, blockInfos.material);
+
+            // drop on board
+            } else if ($.contains(opt.board[0], this) && $(this).children().length === 0) {
+                if(drag.source.is(opt.inventory)){
+                    inventory.removeBlock(
+                        drag.clone.data('type'),
+                        drag.clone.data('material')
+                    );
+                    inventory.displayInventory();
+                }
+            }
+
+            */
         }
 
+        function startDrag(){
+            $(document).on('dragstart', '[draggable]', onDragItem);
 
-
-        function setDragableItem(target){
-            $(target).on('dragstart', onDragItem)
-                     .on('dragend', onDropItem);
-        }
-
-        function setDropZones(){
-            $(options.droppable)
+            $(opt.droppable)
                 .on('dragenter', onDragenter)
                 .on('dragover', onDragover)
                 .on('dragleave', onDragleave)
                 .on('drop', onDrop);
+
         }
         return this;
     };

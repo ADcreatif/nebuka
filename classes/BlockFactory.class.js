@@ -3,29 +3,38 @@ class BlockFactory
 	static createBlock(type) {
    		switch (type){
    			case BlockFactory.WOOD:
-   				return new WoodBlock();
+   				return new WallWood();
    			break;
    			case BlockFactory.STONE:
-   				return new StoneBlock();
+   				return new WallStone();
    			break
    		}
    		return null;
   	}
 
-  	static getBlockDisplay(type, quantity, level){
+  	static getBlockDisplay(type, material, quantity){
   		switch (type){
-   			case Block.WOOD:
-   				return WoodBlock.drawBlock(quantity, level);
+   			case Block.WALL:
+   				switch(material){
+					case Block.WOOD :
+                        return WallWood.drawBlock(quantity);
+                        break;
+					case Block.STONE :
+                        return WallStone.drawBlock(quantity);
+                        break;
+					case Block.STEEL :
+                        return WallSteel.drawBlock(quantity);
+                        break;
+				}
+
    			break;
-   			case Block.STONE:
-   				return StoneBlock.drawBlock(quantity, level);
-   			break
-   			case Block.STEEL:
-   				return SteelBlock.drawBlock(quantity, level);
-   			break
    			case Block.TOWER:
-   				return TowerBlock.drawBlock(quantity, level);
-   			break
+                switch(material){
+                    case Block.WOOD :
+                        return TowerBlock.drawBlock(quantity, material);
+                        break
+                }
+                break
    		}
    		return null;
   	}

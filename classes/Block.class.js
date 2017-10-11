@@ -1,16 +1,15 @@
 class Block{
 
     constructor(level){
-        this.level = level;
+        this.material = level;
     }
 
-    static getClass(level){
-        let blockClass = this.getClasses()[level];
-        return 'bloc '+ this.getTypeClass()+' '+ blockClass;
+    static getClass(){
+        return 'bloc '+ this.getTypeClass()+' '+ this.getMaterialClasses();
     }
 
-    static getClasses(){
-        return [];
+    static getMaterialClasses(){
+        return "";
     }
 
     static getTypeClass(){
@@ -20,76 +19,77 @@ class Block{
     static getType(){
         return "";
     }
-    
-    static drawBlock(quantity, level){
-        let quantityDisplay = $('<span>').text(quantity);
-        
-        let bloc = $('<div>')
-            .addClass(this.getClass(level))
-            .attr('draggable','')
-            .append(quantityDisplay);
 
-        /*if(this.blocID){
-            bloc.attr('id', 'blocID_' + this.blocID)
-                .data('blocID', this.blocID);
-        }*/
-       
-        return bloc;
+    static getMaterial(){
+        return "";
+    }
+
+    static drawBlock(quantity){
+        let block = $('<div>')
+            .addClass(this.getClass())
+            .attr('draggable',true)
+            .data('type', this.getType())
+            .data('material', this.getMaterial());
+
+        if(quantity !== undefined){
+            block.append($('<span>').text(quantity))
+        }
+
+        return block;
     }
 }
 
 Block.WOOD = 1;
 Block.STONE = 2;
 Block.STEEL = 3;
-Block.TOWER = 4;
 
-class WoodBlock extends Block
-{
+Block.WALL = 1;
+Block.TOWER = 2;
+
+class Wall extends Block{
     static getType(){
+        return Block.WALL;
+    }
+    static getTypeClass(){
+        return "wall";
+    }
+}
+
+class WallWood extends Wall
+{
+    static getMaterial(){
         return Block.WOOD;
     }
-
-    static getTypeClass(){
-        return "wall";
-    }
-
-    static getClasses(){
-        return ['wall_wood', 'wall_steel'];
+    static getMaterialClasses(){
+        return 'wall_wood';
     }
 }
 
-class StoneBlock extends Block
+class WallStone extends Wall
 {
-    static getType(){
+    static getMaterial(){
         return Block.STONE;
     }
-
-    static getTypeClass(){
-        return "wall";
-    }
-
-    static getClasses(){
-        return ['wall_stone', 'wall_stone'];
+    static getMaterialClasses(){
+        return 'wall_stone';
     }
 }
 
-class SteelBlock extends Block
+class WallSteel extends Wall
 {
-    static getType(){
+    static getMaterial(){
         return Block.STEEL;
     }
-
-    static getTypeClass(){
-        return "wall";
-    }
-
-    static getClasses(){
-        return ['wall_steel', 'wall_steel'];
+    static getMaterialClasses(){
+        return 'wall_steel';
     }
 }
 
 class TowerBlock extends Block
 {
+    static getMaterial(){
+        return Block.WOOD;
+    }
     static getType(){
         return Block.TOWER;
     }
@@ -98,7 +98,7 @@ class TowerBlock extends Block
         return "tower";
     }
 
-    static getClasses(){
-        return ['tower_wood', 'tower_steel'];
+    static getMaterialClasses(){
+        return 'tower_wood';
     }
 }
