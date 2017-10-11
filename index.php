@@ -13,6 +13,7 @@
         <script src="classes/Inventory.class.js"></script>
 
         <script src="classes/Board.class.js"></script>
+        <script src="classes/RenderBoard.class.js"></script>
         <script src="classes/draggable.plugin.js"></script>
         <script src="script.js"></script>
     </head>
@@ -21,6 +22,11 @@
             <div id="board"></div>
             <div id="toolbox"></div>
             <!-- TODO : delete this temporary test -->
+            <div id="render">
+                <button id="export-board">Export Board</button>
+                <button id="start-render">Afficher Rendu</button>
+                <button id="stop-render">Masquer Rendu</button>
+            </div>
             <div id="shitTest">
                 <label> quantity </label><input type="text" value="1" id="quantity">
                 <p>

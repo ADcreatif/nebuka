@@ -23,3 +23,14 @@ main{
     flex-wrap: wrap;
     align-content: flex-start;
 }
+
+#board.render table{
+    background:transparent
+}
+#board.render td{
+    border:0
+}
+#board.render .bloc{
+    background-color:transparent;
+    box-shadow: 0 0;
+}

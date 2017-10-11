@@ -10,11 +10,33 @@ let inStorage = [
     {type : Block.TOWER, material : Block.WOOD, quantity:5},
 ];
 
-let inBoard = [
+/*let inBoard = [
     {type : Block.WALL, material: Block.WOOD, x: 2, y: 3},
-    {type : Block.WALL, material: Block.WOOD, x: 4, y: 9},
-    {type : Block.WALL, material: Block.STEEL, x: 1, y: 1}
+    {type : Block.WALL, material: Block.WOOD, x: 3, y: 3},
+    {type : Block.WALL, material: Block.STEEL, x: 2, y: 4}
+];*/
+
+let inBoard = [
+    {"type":1,"material":3,"x":1,"y":1},
+    {"type":1,"material":1,"x":1,"y":2},
+    {"type":1,"material":1,"x":2,"y":1},
+    {"type":1,"material":1,"x":13,"y":3},
+    {"type":1,"material":1,"x":14,"y":3},
+    {"type":1,"material":1,"x":15,"y":3},
+    {"type":1,"material":1,"x":17,"y":3},
+    {"type":1,"material":1,"x":18,"y":3},
+    {"type":1,"material":1,"x":20,"y":3},
+    {"type":1,"material":1,"x":11,"y":4},
+    {"type":1,"material":1,"x":12,"y":4},
+    {"type":1,"material":1,"x":18,"y":4},
+    {"type":1,"material":1,"x":20,"y":4},
+    {"type":1,"material":1,"x":14,"y":5},
+    {"type":1,"material":1,"x":18,"y":5},
+    {"type":1,"material":1,"x":19,"y":5},
+    {"type":1,"material":1,"x":20,"y":5},
+    {"type":1,"material":1,"x":4,"y":9}
 ];
+
 
 let board;
 let inventory;
@@ -27,7 +49,14 @@ $(function(){
 
     $('[draggable]').draggable();
 
+    let renderBoard = new RenderBoard();
+
     // TODO : remove test interface
+    $('#start-render').click(renderBoard.startRender.bind(renderBoard));
+    $('#stop-render').click(RenderBoard.stopRender);
+    $('#export-board').click(renderBoard.exportBoard.bind(renderBoard));
+
+
     $('#shitTest').find('button').click(function(){
         let quantity = parseInt($('#quantity').val());
 
