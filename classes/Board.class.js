@@ -59,9 +59,22 @@ class Board {
         Board.drawBlock(type, material, x, y, blockID);
     }
 
-    static storeBlock(type, material, x, y){
-        inBoard.push({type:type, material:material, x:x, y:y});
-        return inBoard.length -1;
+    static storeBlock(type, material, x, y,){
+        let blockID = inBoard.length;
+        inBoard.push({type:type, material:material, x:x, y:y, blockID : blockID});
+        return blockID;
+    }
+
+    static updateBlock(blockID, newX, newY, material){
+        for(let index in inBoard){
+            if(inBoard.hasOwnProperty(index)){
+                if(inBoard[index].blockID === blockID){
+                    inBoard[index].blockID.x = newX;
+                    inBoard[index].blockID.y = newY;
+                    inBoard[index].blockID.material = material || inBoard[index].blockID.material;
+                }
+            }
+        }
     }
 
     static drawBlock(type, material, x, y, blockID ){

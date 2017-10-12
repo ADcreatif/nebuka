@@ -14,15 +14,16 @@ class RenderBoard {
         for(let index in inBoard){
             if(inBoard.hasOwnProperty(index)){
                 let block = inBoard[index];
-                let cellID = Board.coordToID(block.x, block.y);console.log(block);
-                $('#cellID_'+cellID).css('background-image', 'url(img/wall/'+ this.getImage(block.x, block.y) +'.png)');
+                let cellID = Board.coordToID(block.x, block.y);
+                $('#cellID_'+cellID).css('background-image', this.getImage(block.x, block.y));
             }
         }
         $('#board').addClass('render');
     }
 
     static stopRender(){
-        $('#board').removeClass('render');
+        $('#board').removeClass('render')
+            .children('td').css('background-image', 'none')
     }
 
     updateBoard(){
@@ -34,9 +35,17 @@ class RenderBoard {
         }
     }
 
-    exportBoard(){
+    exportBoard(json){
         this.updateBoard();
-        console.log(JSON.stringify(this.board));
+        let board = $.grep(this.board, function(n, i){
+            return n !== undefined && n!==null ;
+        });
+
+        if(json === true){
+            board = JSON.stringify(board)
+        }
+
+        console.log(board);
     }
 
     getImage(x, y){
@@ -46,13 +55,12 @@ class RenderBoard {
             this.board[Board.coordToID(x,y+1)] ? 'bottom':'',
             this.board[Board.coordToID(x-1,y)] ? 'left':''
         ];
-        console.log(this.board[Board.coordToID(x,y-1)]);
+
         let blockBackground = surrounding.join('-').replace(/(-){2,}/, '-').replace(/^(-)+/, '').replace(/(-)+$/, '');
 
+        if(blockBackground === '')
+            blockBackground = 'alone';
 
-        /*if(blockBackground == '')
-         blockBackground = 'alone';
-         */
-        return blockBackground;
+        return 'url(img/wall/'+ blockBackground + '.png)';
     }
 }
