@@ -22,6 +22,7 @@ let board;
 let inventory;
 
 $(function(){
+
     board =  new Board();
 
     inventory =  new Inventory();
@@ -30,6 +31,14 @@ $(function(){
     $('[draggable]').draggable();
 
     let renderBoard = new RenderBoard();
+
+    let resources = new ResourceStock($("#resources"));
+
+    resources.addWood(2);
+    resources.addSteel(3);
+    resources.addStone(225);
+
+    resources.displayResources();
 
     // TODO : remove test interface
     $('#start-render').click(renderBoard.startRender.bind(renderBoard));
@@ -46,6 +55,17 @@ $(function(){
             inventory.removeBlock($(this).data('type'),$(this).data('material'), quantity);
         inventory.displayInventory()
     });
+
+    $('#shitTest2').find('button').click(function()
+    {
+        if($(this).data('increment') !== undefined)
+            resources.addResource($(this).data('type'), $("#resource_quantity").val());
+        else
+            resources.removeResource($(this).data('type'), $("#resource_quantity").val());
+
+        resources.displayResources();
+
+    })
 
 });
 

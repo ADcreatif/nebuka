@@ -22,8 +22,8 @@
         opt = $.extend( {}, defaults, opt );
 
         startDrag();
+        
         // *********************** ## INIT PLUGIN ************************//
-
 
 
         function onDragItem(event){

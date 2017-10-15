@@ -59,7 +59,7 @@ class Board {
         Board.drawBlock(type, material, x, y, blockID);
     }
 
-    static storeBlock(type, material, x, y,){
+    static storeBlock(type, material, x, y){
         let blockID = inBoard.length;
         inBoard.push({type:type, material:material, x:x, y:y, blockID : blockID});
         return blockID;

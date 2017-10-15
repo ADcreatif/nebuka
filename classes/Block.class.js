@@ -24,6 +24,10 @@ class Block{
         return "";
     }
 
+    static getCost(){
+        return null;
+    }
+
     static drawBlock(quantity){
         let block = $('<div>')
             .addClass(this.getClass())
@@ -36,6 +40,18 @@ class Block{
         }
 
         return block;
+    }
+}
+
+class Cost{
+    constructor(wood,steel,stone){
+        this.stone = stone;
+        this.wood = wood;
+        this.steel = steel;
+    }
+
+    display(){
+
     }
 }
 
@@ -53,6 +69,10 @@ class Wall extends Block{
     static getTypeClass(){
         return "wall";
     }
+
+    static getCost(){
+        return new Cost(1,0,0);
+    }
 }
 
 class WallWood extends Wall
@@ -62,6 +82,10 @@ class WallWood extends Wall
     }
     static getMaterialClasses(){
         return 'wall_wood';
+    }
+
+    static getCost(){
+        return new Cost(0,1,0);
     }
 }
 
@@ -73,6 +97,9 @@ class WallStone extends Wall
     static getMaterialClasses(){
         return 'wall_stone';
     }
+    static getCost(){
+        return new Cost(0,0,1);
+    }
 }
 
 class WallSteel extends Wall
@@ -82,6 +109,10 @@ class WallSteel extends Wall
     }
     static getMaterialClasses(){
         return 'wall_steel';
+    }
+
+    static getCost(){
+        return new Cost(1,0,0);
     }
 }
 
@@ -96,6 +127,10 @@ class TowerBlock extends Block
 
     static getTypeClass(){
         return "tower";
+    }
+
+     static getCost(){
+        return new Cost(1,1,1);
     }
 
     static getMaterialClasses(){

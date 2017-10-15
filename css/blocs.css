@@ -6,7 +6,7 @@
     margin:20px;
     /*box-shadow: 2px 2px 2px;*/
 }
-#toolbox .bloc span{
+#toolbox .bloc span, #resources span{
     font-size: 80%;
     width: 21px;
     margin-right: -11px;
@@ -47,4 +47,29 @@
     height:50px;
     background-color:red;
     box-shadow: 2px 2px 2px #253b53;
+}
+
+#resources > div
+{
+    display:inline-block;
+    margin-left:1em;
+}
+
+.resource{
+    background-size: contain;
+    background-repeat: no-repeat;
+    width: 30px;
+    height: 30px;
+}
+
+.wood{
+    background-image: url(../img/resource/wood.svg);
+}
+
+.stone{
+    background-image: url(../img/resource/stone.svg);
+}
+
+.steel{
+    background-image: url(../img/resource/steel.svg);
 }
