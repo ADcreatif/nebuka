@@ -15,14 +15,32 @@ class BlockFactory {
                 break;
             case Block.WOOD_TOWER:
                 block = new TowerBlock();
-                break
+                break;
             default:
                 console.log(type +' is not a block type')
         }
 
         if (display == true)
-            return block.drawBlock(quantity);
+            return Block.drawBlock(quantity);
 
         return block;
+    }
+
+    static getBlockDisplay(type, quantity, level){
+        switch (type){
+            case Block.WOOD:
+                return WoodBlock.drawBlock(quantity, level);
+                break;
+            case Block.STONE:
+                return StoneBlock.drawBlock(quantity, level);
+                break;
+            case Block.STEEL:
+                return SteelBlock.drawBlock(quantity, level);
+                break;
+            case Block.TOWER:
+                return TowerBlock.drawBlock(quantity, level);
+                break
+        }
+        return null;
     }
 }

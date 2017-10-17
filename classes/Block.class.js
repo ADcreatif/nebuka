@@ -5,19 +5,19 @@ class Block{
         this.material = 0;
     }
 
-    getClass(){
-        return 'bloc '+ this.getTypeClass()+' '+ this.getMaterialClasses();
+    static getClass(){
+        return 'bloc '+ Block.getTypeClass()+' '+ Block.getMaterialClasses();
     }
 
-    getMaterialClasses(){
+    static getMaterialClasses(){
         return "";
     }
 
-    getTypeClass(){
+    static getTypeClass(){
         return "";
     }
 
-    getType(){
+    static getType(){
         return 0;
     }
 
@@ -38,9 +38,9 @@ class Block{
         this.material();
     }
 
-    drawBlock(quantity){
+    static drawBlock(quantity){
         let block = $('<div>')
-            .addClass(this.getClass())
+            .addClass(Block.getClass())
             .attr('draggable',true)
             .data('type', this.getType());
 
@@ -70,17 +70,15 @@ Block.STEEL_WALL = 3;
 Block.WOOD_TOWER = 11;
 
 class Wall extends Block{
-
     getType(){
         return this.type;
     }
-    getMaterial(){
+    static getMaterial(){
         return this.material;
     }
-    getTypeClass(){
+    static getTypeClass(){
         return "wall";
     }
-
     static getCost(){
         return new Cost(1,0,0);
     }
@@ -91,10 +89,9 @@ class WallWood extends Wall {
         super();
         this.type = Block.WOOD_WALL;
     }
-    getMaterialClasses(){
+    static getMaterialClasses(){
         return 'wall_wood';
     }
-
     static getCost(){
         return new Cost(0,1,0);
     }
@@ -105,7 +102,7 @@ class WallStone extends Wall {
         super();
         this.type = Block.STONE_WALL;
     }
-    getMaterialClasses(){
+    static getMaterialClasses(){
         return 'wall_stone';
     }
     static getCost(){
@@ -118,10 +115,9 @@ class WallSteel extends Wall {
         super();
         this.type = Block.STEEL_WALL;
     }
-    getMaterialClasses(){
+    static getMaterialClasses(){
         return 'wall_steel';
     }
-
     static getCost(){
         return new Cost(1,0,0);
     }
@@ -132,16 +128,13 @@ class TowerBlock extends Block {
         super();
         this.type = Block.WOOD_TOWER;
     }
-
-    getTypeClass(){
+    static getTypeClass(){
         return "tower";
     }
-
     static getCost(){
         return new Cost(1,1,1);
     }
-
-    getMaterialClasses(){
+    static getMaterialClasses(){
         return 'tower_wood';
     }
 }
