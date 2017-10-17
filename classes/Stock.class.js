@@ -17,6 +17,6 @@ class Stock
     }
 
     getDisplay(){
-    	return BlockFactory.getBlock(this.type, true, this.quantity);
+    	return BlockFactory.getBlockDisplay(this.type, this.quantity);
     }
 }

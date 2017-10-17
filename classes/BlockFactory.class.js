@@ -26,19 +26,19 @@ class BlockFactory {
         return block;
     }
 
-    static getBlockDisplay(type, quantity, level){
-        switch (type){
-            case Block.WOOD:
-                return WoodBlock.drawBlock(quantity, level);
+    static getBlockDisplay(type, quantity){
+        switch (parseInt(type)){
+            case Block.WOOD_WALL:
+                return WallWood.drawBlock(quantity);
                 break;
-            case Block.STONE:
-                return StoneBlock.drawBlock(quantity, level);
+            case Block.STONE_WALL:
+                return WallStone.drawBlock(quantity);
                 break;
-            case Block.STEEL:
-                return SteelBlock.drawBlock(quantity, level);
+            case Block.STEEL_WALL:
+                return WallSteel.drawBlock(quantity);
                 break;
-            case Block.TOWER:
-                return TowerBlock.drawBlock(quantity, level);
+            case Block.WOOD_TOWER:
+                return TowerBlock.drawBlock(quantity);
                 break
         }
         return null;

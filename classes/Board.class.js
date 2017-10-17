@@ -50,9 +50,13 @@ class Board {
     }
 
     addBlock(type, x, y) {
-        this.blocks.push(BlockFactory.getBlock(type));
+        let block = BlockFactory.getBlock(type);
+        if( block == null)
+            return;
+        let display = block.constructor.drawBlock(0);
+        this.blocks.push(block);
         $('#cellID_' + Board.coordToID(x, y)).append(
-            BlockFactory.getBlock(type, true).data('id',this.blocks.length-1)
+            display
         );
     }
 
