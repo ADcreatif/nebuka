@@ -6,14 +6,14 @@
 class RenderBoard {
 
     constructor(){
-        this.updateBoard();
+        this.board = [];
     }
 
     startRender(){
         this.updateBoard();
-        for(let index in inBoard){
-            if(inBoard.hasOwnProperty(index)){
-                let block = inBoard[index];
+        for(let index in board.blocks){
+            if(board.blocks.hasOwnProperty(index)){
+                let block = board.blocks[index];
                 let cellID = Board.coordToID(block.x, block.y);
                 $('#cellID_'+cellID).css('background-image', this.getImage(block.x, block.y));
             }
@@ -28,9 +28,13 @@ class RenderBoard {
 
     updateBoard(){
         this.board = new Array(Math.pow(Board.getSize(),2));
-        for(let index in inBoard){
-            if(inBoard.hasOwnProperty(index)){
-                this.board[Board.coordToID(inBoard[index].x, inBoard[index].y)] = inBoard[index];
+        for(let index in board.blocks){
+            if(board.blocks.hasOwnProperty(index)){
+                let bloc= board.blocks[index];
+
+                this.board[Board.coordToID(bloc.x, bloc.y)] = {
+                    type: bloc.type, x:bloc.x, y: bloc.y
+                };
             }
         }
     }

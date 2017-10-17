@@ -46,50 +46,25 @@
             $(event.target).removeClass('over');
 
             // if nothing is dragged || place is not the same || tile is not empty
-            if(drag.length === 0 || $(this).is(drag.source) || !$(this).is(opt.droppable) || ($(this).is('td') && $(this).children().length !== 0))
+            if(drag.length === 0 || $(this).is(drag.source) || !$(this).is(opt.droppable) || ($(this).is('td')  && $(this).children().length ))
                 return false;
 
-            let blockID = drag.item.data('blocid');
-            let type = drag.item.data('type');
-            let material = drag.item.data('material');
             let x = $(event.target).data('x');
             let y = $(event.target).data('y');
 
-            if(drag.item.data('blockid') === undefined){
-                $(event.target).append(Board.addBlock(type, material, x, y));
-                inventory.removeBlock(type, material, 1);
+            if(drag.item.data('id') === undefined){
+                let type = $(drag.item).data('type');
+                board.addBlock(type, x, y);
+                inventory.removeBlock(type, 1);
                 inventory.displayInventory();
             } else {
+                board.moveBlock(drag.item.data('id'), x, y);
                 $(event.target).append(drag.item.clone(true));
-                Board.updateBlock(blockID, x, y);
                 drag.item.remove();
             }
 
             drag = {};
 
-            /*
-                // droped at same place
-                if($(this).is(drag.source)){
-                    return false;
-
-                // drop on inventory
-                } else if ($(this).is(opt.inventory)) {
-                    let blocID = parseInt(drag.clone.data('blocID'));
-                    let blockInfos = inBoard[blocID];
-                    inventory.addBlock(blockInfos.type, blockInfos.material);
-
-                // drop on board
-                } else if ($.contains(opt.board[0], this) && $(this).children().length === 0) {
-                    if(drag.source.is(opt.inventory)){
-                        inventory.removeBlock(
-                            drag.clone.data('type'),
-                            drag.clone.data('material')
-                        );
-                        inventory.displayInventory();
-                    }
-                }
-
-            */
         }
 
         function startDrag(){

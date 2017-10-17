@@ -1,42 +1,28 @@
-class BlockFactory
-{
-	static createBlock(type) {
-   		switch (type){
-   			case BlockFactory.WOOD:
-   				return new WallWood();
-   			break;
-   			case BlockFactory.STONE:
-   				return new WallStone();
-   			break
-   		}
-   		return null;
-  	}
+class BlockFactory {
 
-  	static getBlockDisplay(type, material, quantity){
-  		switch (type){
-   			case Block.WALL:
-   				switch(material){
-					case Block.WOOD :
-                        return WallWood.drawBlock(quantity);
-                        break;
-					case Block.STONE :
-                        return WallStone.drawBlock(quantity);
-                        break;
-					case Block.STEEL :
-                        return WallSteel.drawBlock(quantity);
-                        break;
-				}
+    static getBlock(type, display, quantity) {
+        let block;
 
-   			break;
-   			case Block.TOWER:
-                switch(material){
-                    case Block.WOOD :
-                        return TowerBlock.drawBlock(quantity, material);
-                        break
-                }
+        switch (type) {
+            case Block.WOOD_WALL :
+                block = new WallWood();
+                break;
+            case Block.STONE_WALL :
+                block = new WallStone();
+                break;
+            case Block.STEEL_WALL :
+                block = new WallSteel();
+                break;
+            case Block.WOOD_TOWER:
+                block = new TowerBlock();
                 break
-   		}
-   		return null;
-  	}
-}
+            default:
+                console.log(type +' is not a block type')
+        }
 
+        if (display == true)
+            return block.drawBlock(quantity);
+
+        return block;
+    }
+}

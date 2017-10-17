@@ -5,17 +5,16 @@ class Inventory
 
         this.inventory = $('#toolbox');
         this.initInventory(inStorage);
-
     }
 
-    addBlock(type, material, quantity){
+    addBlock(type, quantity){
     	if(! this.stocks.hasOwnProperty(type)){
-    		 this.stocks[type] = new Stock(type,material);
+    		 this.stocks[type] = new Stock(type);
     	}
     	 this.stocks[type].addBlock(quantity);
     }
 
-    removeBlock(type, material, quantity) {
+    removeBlock(type, quantity) {
         if(! this.stocks.hasOwnProperty(type)){
             return;
         }
@@ -24,7 +23,7 @@ class Inventory
 
     initInventory(blockData){
         for( let i = 0; i < blockData.length; i++) {
-            this.addBlock(blockData[i].type, blockData[i].material, blockData[i].quantity );
+            this.addBlock(blockData[i].type, blockData[i].quantity );
         }
     }
 

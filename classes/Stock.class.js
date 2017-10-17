@@ -1,13 +1,11 @@
 class Stock
 {
-	constructor(type, material){
+	constructor(type){
         this.type = type;
-        this.material = material;
         this.quantity = 0;
     }
 
     addBlock(quantity){
-
     	this.quantity += quantity || 1;
     }
 
@@ -19,6 +17,6 @@ class Stock
     }
 
     getDisplay(){
-    	return BlockFactory.getBlockDisplay(this.type, this.material, this.quantity);
+    	return BlockFactory.getBlock(this.type, true, this.quantity);
     }
 }

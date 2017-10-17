@@ -8,15 +8,15 @@
 }
 #toolbox .bloc span, #resources span{
     font-size: 80%;
-    width: 21px;
     margin-right: -11px;
     float: right;
     margin-top: -8px;
     background-color: rgba(0, 0, 255, 0.25);
     color: white;
-    border-radius: 50%;
+    border-radius: 12px;
     line-height: 1.6;
     text-align: center;
+    padding: 0 6px;
 }
 
 .wall{
@@ -27,12 +27,12 @@
 
 
 .wall_steel{
-    background-color:darkorange;
+    background-color: steelblue;
     box-shadow: 2px 2px 2px #633100;
 }
 
 .wall_wood{
-    background-color: steelblue;
+    background-color:darkorange;
     box-shadow: 2px 2px 2px #253b53;
 }
 

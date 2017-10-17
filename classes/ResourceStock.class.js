@@ -10,9 +10,9 @@ class ResourceStock{
     	if(! this.resources.hasOwnProperty(type)){
     		 this.resources[type] = 0;
     	}
-    	console.log(quantity);
+    	// console.log(quantity);
     	this.resources[type]  += quantity ;
-    	console.log(this.resources);
+    	// console.log(this.resources);
     	
     }
 
