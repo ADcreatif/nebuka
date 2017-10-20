@@ -34,7 +34,7 @@ class Board {
                 tr.append($('<td>')
                     .data('x', tileX)
                     .data('y', tileY)
-                    .attr('id', 'cellID_' + cellID)
+                    .attr('id', cellID)
                 );
 
                 cellID++
@@ -54,14 +54,19 @@ class Board {
         if( block == null)
             return;
         let display = block.constructor.drawBlock(0);
-        this.blocks.push(block);
-        $('#cellID_' + Board.coordToID(x, y)).append(
+        this.blocks[ Board.coordToID(x, y)] = block;
+        $('#' + Board.coordToID(x, y)).append(
             display
         );
     }
 
     moveBlock(blockID, newX, newY) {
-        this.blocks[blockID].setPosition(newX, newY);
+        console.log(this.blocks);
+        console.log(blockID);
+        let block =  this.blocks[blockID];
+       block.setPosition(newX, newY);
+        this.blocks[blockID] = null;
+        this.blocks[Board.coordToID(newX,newY)]  = block;
     }
 
     initBoard() {

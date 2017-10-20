@@ -51,14 +51,15 @@
 
             let x = $(event.target).data('x');
             let y = $(event.target).data('y');
-
-            if(drag.item.data('id') === undefined){
+          
+            if(!drag.item.parent().is("td")){
                 let type = $(drag.item).data('type');
                 board.addBlock(type, x, y);
                 inventory.removeBlock(type, 1);
                 inventory.displayInventory();
+                  
             } else {
-                board.moveBlock(drag.item.data('id'), x, y);
+                board.moveBlock(drag.item.parent().attr('id'), x, y);
                 $(event.target).append(drag.item.clone(true));
                 drag.item.remove();
             }
