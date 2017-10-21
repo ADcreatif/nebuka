@@ -13,8 +13,8 @@
         // ************************* INIT PLUGIN **************************//
         defaults = {
             draggable : '[draggable]',
-            droppable : '#board td,#toolbox',
-            board     : $('#board'),
+            droppable : '#edit-board td,#toolbox',
+            board     : $('#edit-board'),
             inventory   : $('#toolbox')
         };
 
@@ -45,7 +45,7 @@
 
             $(event.target).removeClass('over');
 
-            // if nothing is dragged || place is not the same || tile is not empty
+            // if nothing is dragged || place is the same || tile  is drappable || tile is not empty
             if(drag.length === 0 || $(this).is(drag.source) || !$(this).is(opt.droppable) || ($(this).is('td')  && $(this).children().length ))
                 return false;
 

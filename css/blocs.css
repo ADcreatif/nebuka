@@ -1,13 +1,18 @@
 
-#board .bloc{
+.bloc{
     margin:0 auto;
 }
+.bloc span{
+    display:none;
+}
+
 #toolbox .bloc{
     margin:20px;
     /*box-shadow: 2px 2px 2px;*/
 }
 #toolbox .bloc span, #resources span{
     font-size: 80%;
+    display:inline-block;
     margin-right: -11px;
     float: right;
     margin-top: -8px;
@@ -21,8 +26,8 @@
 
 .wall{
     border-radius:2px;
-    width:20px;
-    height:20px;
+    width: 19px;
+    height: 19px;
 }
 
 

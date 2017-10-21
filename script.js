@@ -35,8 +35,15 @@ $(function(){
     resources.addSteel(3);
     resources.addStone(225);
     resources.displayResources();
-    $('#start-render').click(renderBoard.startRender.bind(renderBoard));
-    $('#stop-render').click(RenderBoard.stopRender);
+    $('#toggle-render').click(function(){
+        if($(this).text() === 'Start'){
+            renderBoard.startRender();
+            $(this).text('Stop');
+        } else {
+            renderBoard.stopRender();
+            $(this).text('Start');
+        }
+    });
     $('#export-board').on('click', function(){renderBoard.exportBoard(true)});
 
 

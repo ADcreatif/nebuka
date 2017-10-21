@@ -1,38 +1,80 @@
 main{
     display:flex;
-}
-#board table{
-    border-collapse: collapse;
-    background: #3c8454;
-    width: 600px;
-}
-#board td{
-    border:1px solid green;
-    box-sizing: border-box;
-    width: 20px;
-    height: 20px;
-    padding: 0;
-    margin: 0;
-    font-size: 0;
-    position:relative;
-    text-align: center;
+    margin: 0 auto;
+    width: 1000px;
 }
 
+/*--------------------- BOARD ---------------------*/
+
+table{
+    border-collapse: collapse;
+    background:url(../img/texture/grass.png);
+}
+td{
+    width: 20px;
+    height: 20px;
+    border:0;
+    padding: 0;
+    position: relative;
+}
+
+/*--------------------- EDIT BOARD ---------------------*/
+#edit-board{
+    width: 600px;
+    overflow: visible;
+    /* background: #3c8454; */
+}
+
+#edit-board td{
+    /* border:1px solid green; */
+}
+
+
+/*--------------------- RENDERER ---------------------*/
+#render-board{
+    width: 600px;
+    overflow: visible;
+    position: absolute;
+    display:none;
+}
+#render-board table{
+}
+#render-board td{
+}
+#render-board .bloc{
+    background-color:transparent;
+    box-shadow: 0 0;
+}
+
+
+
+/*--------------------- TOOLBOX ---------------------*/
 #toolbox{
     display:flex;
-    width: 300px;
+    width: 200px;
     background: green;
     flex-wrap: wrap;
     align-content: flex-start;
 }
 
-#board.render table{
-    background:transparent
+
+/*--------------------- barres ---------------------*/
+.warper.collapsed{
+    width: 20px;
 }
-#board.render td{
-    border:0
+.warper{
+    transition: width ease-out 100ms, margin ease-out 100ms;
+    /* overflow: hidden; */
+    position: relative;
+    width:auto;
 }
-#board.render .bloc{
-    background-color:transparent;
-    box-shadow: 0 0;
+.warper .collapse{
+    position: absolute;
 }
+/*.warper .cover{
+    position: absolute;
+    width: 20px;
+    height: 100%;
+    background: #333;
+    z-index: 100;
+}*/

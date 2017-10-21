@@ -7,7 +7,7 @@
 class Board {
 
     constructor() {
-        this.board = $('#board');
+        this.board = $('#edit-board');
         this.blocks = [];
 
         this.drawBoard();
@@ -15,7 +15,7 @@ class Board {
     }
 
     static getSize() {
-        return 30;
+        return 22;
     }
 
     drawBoard() {
@@ -26,22 +26,18 @@ class Board {
         let tr;
 
         for (tileY; tileY < Board.getSize(); tileY++) {
-
             tr = $('<tr>');
             tileX = 0;
-
             for (tileX; tileX < Board.getSize(); tileX++) {
                 tr.append($('<td>')
                     .data('x', tileX)
                     .data('y', tileY)
                     .attr('id', cellID)
                 );
-
-                cellID++
+                cellID++;
             }
             table.append(tr)
         }
-
         this.board.append(table);
     };
 
@@ -51,22 +47,24 @@ class Board {
 
     addBlock(type, x, y) {
         let block = BlockFactory.getBlock(type);
-        if( block == null)
+
+        if( block === null)
             return;
-        let display = block.constructor.drawBlock(0);
-        this.blocks[ Board.coordToID(x, y)] = block;
-        $('#' + Board.coordToID(x, y)).append(
-            display
+
+        block.setPosition(x, y);
+
+        this.blocks[block.getCellId()] = block;
+
+        $('#' + block.getCellId()).append(
+            block.constructor.drawBlock(0)
         );
     }
 
     moveBlock(blockID, newX, newY) {
-        console.log(this.blocks);
-        console.log(blockID);
         let block =  this.blocks[blockID];
-       block.setPosition(newX, newY);
+        block.setPosition(newX, newY);
         this.blocks[blockID] = null;
-        this.blocks[Board.coordToID(newX,newY)]  = block;
+        this.blocks[block.getCellId()]  = block;
     }
 
     initBoard() {

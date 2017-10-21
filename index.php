@@ -18,22 +18,22 @@
         <script src="classes/Board.class.js"></script>
         <script src="classes/RenderBoard.class.js"></script>
         <script src="classes/draggable.plugin.js"></script>
+        <script src="sources/jQuery.plugin.collapse.js"></script>
         <script src="script.js"></script>
     </head>
     <body>
         <main>
-            <div id="board"></div>
-            <div id="toolbox">
-              
+            <div id="edit-board"></div>
+            <div id="render-board"></div>
+            <div id="toolbox" class="collapse">
+
             </div>
             
             <!-- TODO : delete this temporary test -->
             <div>
                 <div id="resources"></div>
                 <p id="render">
-                    <button id="export-board">Export Board</button>
-                    <button id="start-render">Afficher Rendu</button>
-                    <button id="stop-render">Masquer Rendu</button>
+                    Renderer : <button id="export-board">Export</button><button id="toggle-render">Start</button>
                 </p>
                 <p id="shitTest">
                     <label> quantity </label><input type="text" value="1" id="quantity">

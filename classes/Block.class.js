@@ -34,6 +34,10 @@ class Block{
         this.y = y;
     }
 
+    getCellId(){
+        return Board.coordToID(this.x, this.y);
+    }
+
     setMaterial(newMaterial){
         this.material();
     }
