@@ -25,6 +25,10 @@ class Block{
         return "";
     }
 
+    static getShape(){
+        return [];
+    }
+
     static getCost(){
         return null;
     }
@@ -35,7 +39,7 @@ class Block{
     }
 
     getCellId(){
-        return Board.coordToID(this.x, this.y);
+        return Board.getIdFromCoord(this.x, this.y);
     }
 
     setMaterial(newMaterial){
@@ -117,7 +121,7 @@ class WallWood extends Wall {
     }
 
     static getMaterialClasses(){
-        return ' wall_wood';
+        return 'wall_wood';
     }
     static getCost(){
         return new Cost(0,1,0);
@@ -162,6 +166,14 @@ class WallSteel extends Wall {
 class TowerBlock extends Block {
     static getType(){
         return Block.WOOD_TOWER;
+    }
+
+    static getShape(){
+        return [
+            [1,1,1],
+            [1,1,1],
+            [1,1,1]
+        ];
     }
 
     static getTypeClass(){

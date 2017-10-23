@@ -1,0 +1,128 @@
+
+.bloc{
+    margin:0 auto;
+}
+.bloc span{
+    display:none;
+}
+
+#toolbox .bloc{
+    margin:20px;
+    /*box-shadow: 2px 2px 2px;*/
+}
+#toolbox .bloc span, #resources span{
+    font-size: 80%;
+    display:inline-block;
+    margin-right: -11px;
+    float: right;
+    margin-top: -8px;
+    background-color: rgba(0, 0, 255, 0.25);
+    color: white;
+    border-radius: 12px;
+    line-height: 1.6;
+    text-align: center;
+    padding: 0 6px;
+}
+
+.wall{
+    border-radius:2px;
+    width: 19px;
+    height: 19px;
+}
+
+
+div.wall_steel{
+    background-color: steelblue;
+    box-shadow: 2px 2px 2px #633100;
+}
+
+div.wall_wood{
+    background-color:darkorange;
+    box-shadow: 2px 2px 2px #253b53;
+}
+
+div.wall_stone{
+    background-color: grey;
+    box-shadow: 2px 2px 2px #253b53;
+}
+
+div.tower{
+    border-radius : 50%;
+    width:50px;
+    height:50px;
+    background-color:red;
+    box-shadow: 2px 2px 2px #253b53;
+}
+
+#resources > div
+{
+    display:inline-block;
+    margin-left:1em;
+}
+
+.resource{
+    background-size: contain;
+    background-repeat: no-repeat;
+    width: 30px;
+    height: 30px;
+}
+
+.wood{
+    background-image: url(../img/resource/wood.svg);
+}
+
+.stone{
+    background-image: url(../img/resource/stone.svg);
+}
+
+.steel{
+    background-image: url(../img/resource/steel.svg);
+}
+
+
+
+#render-board td{
+    background: url('../img/block/tileset.png') bottom right;
+}
+#render-board .wall_wood, #render-board .wall_steel{
+    background-color:transparent;
+    box-shadow: 0;
+}
+#render-board .wall_wood.right                  { background-position: 0 0 }
+#render-board .wall_wood.right-bottom-left      { background-position: -20px 0 }
+#render-board .wall_wood.left                   { background-position: -40px 0 }
+#render-board .wall_wood.right-bottom           { background-position: -80px 0 }
+#render-board .wall_wood.right-left             { background-position: -100px 0 }
+#render-board .wall_wood.bottom-left            { background-position: -120px 0 }
+#render-board .wall_wood.top-bottom             { background-position: -80px -20px }
+#render-board .wall_wood.top-right-left         { background-position: -20px -40px }
+#render-board .wall_wood.top-right              { background-position: -80px -40px }
+#render-board .wall_wood.top-left               { background-position: -120px -40px }
+#render-board .wall_wood.alone                  { background-position: 0 -80px }
+#render-board .wall_wood.top-right-bottom-left  { background-position: -40px -80px }
+#render-board .wall_wood.bottom                 { background-position: -120px -80px }
+#render-board .wall_wood.top-right-bottom       { background-position: -80px -100px }
+#render-board .wall_wood.top-bottom-left        { background-position: -120px -80px }
+#render-board .wall_wood.top                    { background-position: -120px -120px }#render-board .wall_wood.right  { background-position: 0 0 }
+
+#render-board .wall_steel.right                 { background-position: -140px 0 }
+#render-board .wall_steel.right-bottom-left     { background-position: -160px 0 }
+#render-board .wall_steel.left                  { background-position: -180px 0 }
+#render-board .wall_steel.right-bottom          { background-position: -220px 0 }
+#render-board .wall_steel.right-left            { background-position: -240px 0 }
+#render-board .wall_steel.bottom-left           { background-position: -260px 0 }
+#render-board .wall_steel.top-bottom            { background-position: -220px -20px }
+#render-board .wall_steel.top-right-left        { background-position: -160px -40px }
+#render-board .wall_steel.top-right             { background-position: -220px -40px }
+#render-board .wall_steel.top-left              { background-position: -260px -40px }
+#render-board .wall_steel.alone                 { background-position: -140px -80px }
+#render-board .wall_steel.top-right-bottom-left { background-position: -180px -80px }
+#render-board .wall_steel.bottom                { background-position: -260px -80px }
+#render-board .wall_steel.top-right-bottom      { background-position: -240px -100px }
+#render-board .wall_steel.top-bottom-left       { background-position: -260px -80px }
+#render-board .wall_steel.top                   { background-position: -240px -120px }
+
+
+
+
+

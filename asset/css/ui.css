@@ -22,11 +22,9 @@ td{
 #edit-board{
     width: 600px;
     overflow: visible;
-    /* background: #3c8454; */
 }
 
 #edit-board td{
-    /* border:1px solid green; */
 }
 
 
@@ -39,12 +37,7 @@ td{
 }
 #render-board table{
 }
-#render-board td{
-}
-#render-board .bloc{
-    background-color:transparent;
-    box-shadow: 0 0;
-}
+
 
 
 

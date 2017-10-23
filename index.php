@@ -1,33 +1,31 @@
 <html>
     <head>
         <!--<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>-->
-        <link rel="stylesheet" href="css/ui.css">
-        <link rel="stylesheet" href="css/blocs.css">
-        <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet" href="asset/css/ui.css">
+        <link rel="stylesheet" href="asset/css/blocs.css">
+        <link rel="stylesheet" href="asset/css/style.css">
 
         <script src="jquery-3.2.1.min.js"></script>
 
-        <script src="classes/Resource.class.js"></script>
-        <script src="classes/ResourceStock.class.js"></script>
+        <script src="class/Resource.class.js"></script>
+        <script src="class/ResourceStock.class.js"></script>
 
-        <script src="classes/Block.class.js"></script>
-        <script src="classes/BlockFactory.class.js"></script>
-        <script src="classes/Stock.class.js"></script>
-        <script src="classes/Inventory.class.js"></script>
+        <script src="class/Block.class.js"></script>
+        <script src="class/BlockFactory.class.js"></script>
+        <script src="class/Stock.class.js"></script>
+        <script src="class/Inventory.class.js"></script>
 
-        <script src="classes/Board.class.js"></script>
-        <script src="classes/RenderBoard.class.js"></script>
-        <script src="classes/draggable.plugin.js"></script>
-        <script src="sources/jQuery.plugin.collapse.js"></script>
-        <script src="script.js"></script>
+        <script src="class/Board.class.js"></script>
+        <script src="class/RenderBoard.class.js"></script>
+        <script src="plugin/jquery.draggable.js"></script>
+        <script src="plugin/jquery.collapse.js"></script>
+        <script src="main.js"></script>
     </head>
     <body>
         <main>
             <div id="edit-board"></div>
             <div id="render-board"></div>
-            <div id="toolbox" class="collapse">
-
-            </div>
+            <div id="toolbox" class="collapse"></div>
             
             <!-- TODO : delete this temporary test -->
             <div>

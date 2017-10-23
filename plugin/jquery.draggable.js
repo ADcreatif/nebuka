@@ -1,7 +1,3 @@
-/**
- * Created by Alan on 06/10/2017.
- */
-
 "use strict";
 
 (function($) {
@@ -68,6 +64,24 @@
 
         }
 
+        function canDropHere(type,dropX,dropY){
+            let shape = type.getShape();
+            let coordX,coordY;
+            let isFree = true;
+
+            for(let x = 0; x < shape; x++){
+                if(shape.hasOwnProperty(x)){
+                    for(let y = 0; y < shape; y++){
+                        coordX = dropX + x;
+                        coordY = dropY + y;
+console.log('case:'+ shape[x][y] , )
+                        if(shape[x][y] == 1 && $('#'+Board.getIdFromCoord()).children().length){
+                            isFree = false;
+                        }
+                    }
+                }
+            }
+        }
         function startDrag(){
             $(document).on('dragstart', '[draggable]', onDragItem);
 
