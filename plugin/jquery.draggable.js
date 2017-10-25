@@ -74,7 +74,7 @@
                     for(let y = 0; y < shape; y++){
                         coordX = dropX + x;
                         coordY = dropY + y;
-console.log('case:'+ shape[x][y] , )
+//console.log('case:'+ shape[x][y]  )
                         if(shape[x][y] == 1 && $('#'+Board.getIdFromCoord()).children().length){
                             isFree = false;
                         }

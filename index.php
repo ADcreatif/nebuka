@@ -10,6 +10,11 @@
         <script src="class/Resource.class.js"></script>
         <script src="class/ResourceStock.class.js"></script>
 
+        <script src="class/SkillTree.class.js"></script>
+        <script src="class/Skill.class.js"></script>
+        <script src="class/Character.class.js"></script>
+        <script src="class/Game.class.js"></script>
+
         <script src="class/Block.class.js"></script>
         <script src="class/BlockFactory.class.js"></script>
         <script src="class/Stock.class.js"></script>
@@ -58,6 +63,12 @@
                     <button data-type="3" data-increment> + STEEL </button>
                     <button data-type="3"> - STEEL </button>
                 </p>
+                <div id="data">
+                </div>
+                <div id="actions">
+                </div>
+                <div id="character">
+                </div>
             </div>
         </main>
     </body>

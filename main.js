@@ -19,21 +19,22 @@ let l = log=>console.log(log);
 
 $(function(){
 
+    var game = new Game();
+    game.start();
+
     board =  new Board();
 
-    inventory =  new Inventory();
+    inventory = game.inventory;
     inventory.displayInventory();
 
     $('[draggable]').draggable();
 
     let renderBoard = new RenderBoard();
 
-    let resources = new ResourceStock($("#resources"));
+    let resources = game.resources;
 
     // TODO : remove test interface
-    resources.addWood(2);
-    resources.addSteel(3);
-    resources.addStone(225);
+    
     resources.displayResources();
     $('#toggle-render').click(function(){
         if($(this).text() === 'Start'){
@@ -67,6 +68,25 @@ $(function(){
         resources.displayResources();
 
     });
+
+    // skill learning events
+
+
+    $("body").on("click" , ".learn", function(){
+        let charId = $(this).data("char_id");
+        let skillId = $(this).data("skill_id");
+        game.learnSkill(charId,skillId);
+        game.displayCharactersStats();
+    })
+
+    // exploration
+
+    $("body").on("click" , ".explore", function(){
+        let charId = $(this).data("char_id");
+        
+        game.doExploration(charId);
+        game.updateDisplay();
+    })
 
 });
 
