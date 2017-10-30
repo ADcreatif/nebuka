@@ -1,95 +1,103 @@
 class RenderBoard {
 
-
-
-    constructor(){
-        this.board = $('#render-board');
-        this.block_dir = "asset/imgph/block/";
+    constructor(board) {
+        this.boardDOM = $('#render-board');
         this.cellList = [];
+        this.board = board;
 
         this.drawBoard();
     }
 
-    startRender(){
+    startRender() {
         this.updateBoard();
-        let backgoundImage;
+        let backgroundClass;
 
-        for(let cell=0; cell < this.cellList.length ; cell++){
+        for (let cell = 0; cell < this.cellList.length; cell++) {
             let block = this.cellList[cell];
-            if(block !== undefined){
-                backgoundImage = this.getImage(block.x, block.y, block.type);
-
-console.log(block.class,backgoundImage);
-
-
-                this.board.find('#'+cell).addClass(block.class+' '+backgoundImage);
-            } else{
-                //backgoundImage = "none";
-                this.board.find('#'+cell).removeClass();
+            if (block !== undefined) {
+                backgroundClass = this.getClass(block.x, block.y, block.type);
+                this.boardDOM.find('#' + cell).addClass(block.class + ' ' + backgroundClass);
+            } else {
+                this.boardDOM.find('#' + cell).removeClass();
             }
-
-            //this.board.find('#'+cell).css('background-image',backgoundImage);
         }
 
-        this.board.fadeIn();
+        this.boardDOM.fadeIn();
     }
 
-    stopRender(){
-        this.board.fadeOut();
+    stopRender() {
+        this.boardDOM.fadeOut();
     }
 
-    updateBoard(){
-        this.cellList = new Array(Math.pow(Board.getSize(),2));
-        for(let index in board.blocks){
-            if(board.blocks.hasOwnProperty(index) && board.blocks[index] !== null){
-                let bloc = board.blocks[index];
+    /**
+     * rebuild the whole blockList
+     */
+    updateBoard() {
+        this.cellList = new Array(Math.pow(Board.getSize(), 2));
+
+        for (let index in this.board.blocks) {
+            if (this.board.blocks.hasOwnProperty(index) && this.board.blocks[index] !== null) {
+                let bloc = this.board.blocks[index];
 
                 this.cellList[Board.getIdFromCoord(bloc.x, bloc.y)] = {
                     type: bloc.constructor.getType(),
-                    class:bloc.constructor.getMaterialClasses(),
-                    x:bloc.x,
+                    class: bloc.constructor.getTypeClass(),
+                    x: bloc.x,
                     y: bloc.y
                 };
             }
         }
     }
 
-    exportBoard(json){
+    /**
+     * display the list of blocks on full board in the console for backup
+     * @param json bool will output json or string
+     */
+    exportBoard(json) {
         this.updateBoard();
-        let board = $.grep(this.cellList, n=>  n !== undefined && n!==null );
-        /*let board = $.grep(this.cellList, function(n, i){
-            return n !== undefined && n!==null ;
-        });*/
+        let board = $.grep(this.cellList, n => n !== undefined && n !== null);
 
-        if(json === true){
+        if (json === true) {
             board = JSON.stringify(board)
         }
 
         console.log(board);
     }
 
-    getImage(x, y, type){
-        let tCell = this.cellList[Board.getIdFromCoord(x,y-1)];
-        let rCell = this.cellList[Board.getIdFromCoord(x+1,y)];
-        let bCell = this.cellList[Board.getIdFromCoord(x,y+1)];
-        let lCell = this.cellList[Board.getIdFromCoord(x-1,y)];
+    /**
+     * return the css class depending on surrouding,
+     * displaying connection between blocks as well
+     * @param x int
+     * @param y int
+     * @param type int
+     * @returns {string}
+     */
+    getClass(x, y, type) {
+        let tCell = this.cellList[Board.getIdFromCoord(x, y - 1)];
+        let rCell = this.cellList[Board.getIdFromCoord(x + 1, y)];
+        let bCell = this.cellList[Board.getIdFromCoord(x, y + 1)];
+        let lCell = this.cellList[Board.getIdFromCoord(x - 1, y)];
 
         let surrounding = [
-            tCell && tCell.type === type ? 'top':'',
-            rCell && rCell.type === type ? 'right':'',
-            bCell && bCell.type === type ? 'bottom':'',
-            lCell && lCell.type === type ? 'left':''
+            tCell && tCell.type === type ? 'top' : '',
+            rCell && rCell.type === type ? 'right' : '',
+            bCell && bCell.type === type ? 'bottom' : '',
+            lCell && lCell.type === type ? 'left' : ''
         ];
 
-        let blockBackground = surrounding.join('-').replace(/(-){2,}/, '-').replace(/^(-)+/, '').replace(/(-)+$/, '');
+        // remove useless "-"
+        let backgroundClass = surrounding.join('-').replace(/(-){2,}/, '-').replace(/^(-)+/, '').replace(/(-)+$/, '');
 
-        if(blockBackground === '')
-            blockBackground = 'alone';
+        // if no surrounding
+        if (backgroundClass === '')
+            backgroundClass = 'alone';
 
-        return blockBackground;
-        //return 'url('+ this.block_dir + blockBackground + '.png)';
+        return backgroundClass;
     }
 
+    /**
+     * build render board on init();
+     */
     drawBoard() {
         let table = $('<table>');
         let cellID = 0;
@@ -110,6 +118,6 @@ console.log(block.class,backgoundImage);
             }
             table.append(tr)
         }
-        this.board.append(table);
+        this.boardDOM.append(table);
     };
 }

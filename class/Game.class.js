@@ -1,149 +1,151 @@
-class Game{
-	 constructor( ){
-	 	this.characters = [new Character("alan"), new Character("dany")];
-	 	this.actionDiv = $("#actions");
-	 	this.dataDiv = $("#data");
-	 	this.charactersDiv = $("#character");
-	 	this.researchPoints = 0;
-	 	this.turn = 0;
-	 	this.inventory = new Inventory;
-	 	this.resources = new ResourceStock($("#resources"));
+class Game {
+    constructor() {
+        this.characters = [new Character("alan"), new Character("dany")];
+        this.actionDiv = $("#actions");
+        this.dataDiv = $("#data");
+        this.charactersDiv = $("#character");
+        this.researchPoints = 0;
+        this.turn = 0;
+        this.inventory = new Inventory;
+        this.board = new Board();
+        this.renderBoard = new RenderBoard(this.board);
+        this.resources = new ResourceStock();
+    }
 
-	 }
+    start() {
+        this.displayGameActions();
 
-	 start(){
-	 	this.displayGameActions();
-	 	this.nextTurn();
-	 }
+        // todo : removehere
+        this.resources.addWood(7);
+        this.resources.addStone(8);
+        this.resources.addSteel(9);
 
-	 displayGameData(){
-	 	this.dataDiv.empty();
+        this.resources.displayResources();
+        this.inventory.displayInventory();
 
-	 	this.dataDiv.append($("<p> Turn " + this.turn + "</p>"));
-	 	this.dataDiv.append($("<p> Research points " + this.researchPoints + "</p>"));
-	 }
+        this.nextTurn();
+    }
 
-	 displayGameActions(){
-	 	this.actionDiv.empty();
+    displayGameData() {
+        this.dataDiv.empty();
 
-	 	let nextTurn = $("<button>Next Turn</button>").click(function()
-	 	{
-	 		this.nextTurn();
-	 	}.bind(this));
-	 	this.actionDiv.append(nextTurn);
-	 }
+        this.dataDiv.append($("<p> Turn " + this.turn + "</p>"));
+        this.dataDiv.append($("<p> Research points " + this.researchPoints + "</p>"));
+    }
 
-	 nextTurn(){
-	 	this.turn ++;
-	 	this.calculateResearchPoints()
-	 	this.executeTurnActions();
-	 	this.updateDisplay();
-	 }
+    displayGameActions() {
+        this.actionDiv.empty();
 
-	 updateDisplay(){
-	 	this.displayGameData();
-	 	this.displayCharactersStats();
-	 }
+        let nextTurn = $("<button>Next Turn</button>").click(function () {
+            this.nextTurn();
+        }.bind(this));
+        this.actionDiv.append(nextTurn);
+    }
 
-	 executeTurnActions(){
-	 	for(let i = 0; i < this.characters.length; i++)
-	 	{
-	 		 this.characters[i].newTurnAction();
-	 	}
-	 }
+    nextTurn() {
+        this.turn++;
+        this.calculateResearchPoints();
+        this.executeTurnActions();
+        this.updateDisplay();
+    }
 
-	 calculateResearchPoints(){
-	 	let points = 0;
-	 	for(let i = 0; i < this.characters.length; i++)
-	 	{
-	 		points += this.characters[i].researchPointPerTurn;
-	 	}
+    updateDisplay() {
+        this.displayGameData();
+        this.displayCharactersStats();
+    }
 
-	 	this.researchPoints += points;
-	 }
+    executeTurnActions() {
+        for (let i = 0; i < this.characters.length; i++) {
+            this.characters[i].newTurnAction();
+        }
+    }
 
-	 displayCharactersStats(){
-	 	this.charactersDiv.empty()
-	 	for(let i = 0; i < this.characters.length; i++)
-	 	{
-	 		this.charactersDiv.append($("<hr />"));
-	 		
+    calculateResearchPoints() {
+        let points = 0;
+        for (let i = 0; i < this.characters.length; i++) {
+            points += this.characters[i].researchPointPerTurn;
+        }
 
-	 		this.displayCharacterSkill( this.characters[i]);
-	 	}
-	 }
+        this.researchPoints += points;
+    }
 
-	 displayCharacterSkill(character){
-	 	this.charactersDiv.append(character.getStatsDisplay());
-	 }
+    displayCharactersStats() {
+        this.charactersDiv.empty();
+        for (let i = 0; i < this.characters.length; i++) {
+            this.displayCharacterSkill(this.characters[i]);
+        }
+    }
 
-	 getCharacterById(id){
-	 	for(let i = 0; i < this.characters.length; i++)
-	 	{
-	 		if(this.characters[i].id == id)
-	 			return this.characters[i];
-	 	}
-	 	return null;
-	 }
+    displayCharacterSkill(character) {
+        this.charactersDiv.append(character.getStatsDisplay());
+    }
 
-	 learnSkill(characterId, skillId){
-	 	let char = this.getCharacterById(characterId);
-	 	if( char != null){
-	 		console.log(char.name + " is learning skill " + skillId)
-	 		char.learnSkill(skillId);
-	 	}
-	 }
+    getCharacterById(id) {
+        for (let i = 0; i < this.characters.length; i++) {
+            if (this.characters[i].id === id)
+                return this.characters[i];
+        }
+        return null;
+    }
 
-	 doExploration(characterId){
-	 	let char = this.getCharacterById(characterId);
+    learnSkill(characterId, skillId) {
+        let char = this.getCharacterById(characterId);
+        if (char !== null) {
+            console.log(char.name + " is learning skill " + skillId);
+            char.learnSkill(skillId);
+        }
+    }
 
-	 	if( char.currentActionPoints < 2){
-	 		console.log("not enough action points");
-	 		return;
-	 	}
+    doExploration(characterId) {
+        let char = this.getCharacterById(characterId);
 
-	 	var roll = this.getRoll100();
-	 	if( roll < char.explorationSuccess){
-	 		var resourceCount = 2;
-	 		for( let i = 0; i< resourceCount; i++)
-	 			this.getRandomResource();
+        if (char.currentActionPoints < 2) {
+            console.log("not enough action points");
+            return;
+        }
 
-	 		for( let i = 0; i< char.explorationResourceBonus; i++){
-	 			console.log( char.name + " found extra resources ")
-	 			this.getRandomResource();
-	 		}
-	 		
-	 		this.resources.displayResources();	
-	 	}
-	 	else{
-	 		console.log("exploration failed");
-	 	}
+        let roll = this.getRoll100();
+        if (roll < char.explorationSuccess) {
+            let resourceCount = 2;
+            for (let i = 0; i < resourceCount; i++)
+                this.getRandomResource();
 
-	 	char.currentActionPoints -= 2;
-	 }
+            for (let i = 0; i < char.explorationResourceBonus; i++) {
+                console.log(char.name + " found extra resources ");
+                this.getRandomResource();
+            }
 
-	 getRandomResource(){
-	 	var roll = this.getRoll100();
+            this.resources.displayResources();
+        }
+        else {
+            console.log("exploration failed");
+        }
 
-	 	if( roll <= 33){
-	 		console.log("found Wood");
-	 		this.resources.addWood(1);
-	 	}
-	 	else if( roll <= 66){
-	 		console.log("found Stone");
-	 		this.resources.addStone(1);
-	 	}
-	 	else{
-	 		console.log("found Steel");
-	 		this.resources.addSteel(1);
-	 	}
-	 }
+        char.currentActionPoints -= 2;
+    }
 
-	 getRoll100(){
-	 	return this.getRandomNumber(0,100);
-	 }
+    getRandomResource() {
+        let roll = this.getRoll100();
 
-	 getRandomNumber(min,max){
-	 	return Math.floor(Math.random() * (max - min +1)) + min;
-	 }
+        if (roll <= 33) {
+            console.log("found Wood");
+            this.resources.addWood(1);
+        }
+        else if (roll <= 66) {
+            console.log("found Stone");
+            this.resources.addStone(1);
+        }
+        else {
+            console.log("found Steel");
+            this.resources.addSteel(1);
+        }
+    }
+
+    getRoll100() {
+        return this.getRandomNumber(0, 100);
+    }
+
+    getRandomNumber(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
 }

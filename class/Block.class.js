@@ -6,11 +6,7 @@ class Block{
     }
 
     static getClass(){
-        return 'bloc '+ this.getTypeClass()+' '+ this.getMaterialClasses();
-    }
-
-    static getMaterialClasses(){
-        return "";
+        return 'block ' + this.getTypeClass();
     }
 
     static getTypeClass(){
@@ -26,7 +22,7 @@ class Block{
     }
 
     static getShape(){
-        return [];
+        return [[1]];
     }
 
     static getCost(){
@@ -111,51 +107,41 @@ class Wall extends Block{
     }
 }
 
-class WallWood extends Wall {
+class WoodWall extends Wall {
     static getType(){
         return Block.WOOD_WALL;
     }
 
     static getTypeClass(){
-        return "wall wall_wood";
+        return "wall wood_wall";
     }
 
-    static getMaterialClasses(){
-        return 'wall_wood';
-    }
     static getCost(){
         return new Cost(0,1,0);
     }
 }
 
-class WallStone extends Wall {
+class StoneWall extends Wall {
     static getType(){
         return  Block.STONE_WALL;
     }
 
      static getTypeClass(){
-        return "wall wall_stone";
+         return "wall stone_wall";
     }
    
-    static getMaterialClasses(){
-        return 'wall_stone';
-    }
     static getCost(){
         return new Cost(0,0,1);
     }
 }
 
-class WallSteel extends Wall {
+class SteelWall extends Wall {
     static getType(){
         return Block.STEEL_WALL;
     }
 
     static getTypeClass(){
-        return "wall wall_steel";
-    }
-  
-    static getMaterialClasses(){
-        return 'wall_steel';
+        return "wall steel_wall";
     }
 
     static getCost(){
@@ -163,7 +149,7 @@ class WallSteel extends Wall {
     }
 }
 
-class TowerBlock extends Block {
+class WoodTower extends Block {
     static getType(){
         return Block.WOOD_TOWER;
     }
@@ -177,13 +163,9 @@ class TowerBlock extends Block {
     }
 
     static getTypeClass(){
-        return "wall tower";
+        return "tower bloc wood_tower";
     }
     static getCost(){
         return new Cost(1,1,1);
-    }
-
-    static getMaterialClasses(){
-        return 'tower_wood';
     }
 }

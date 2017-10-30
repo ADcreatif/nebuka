@@ -17,6 +17,7 @@ class Board {
          * the cell list by instance
          * @type {Array}
          */
+
         this.blocks = [];
 
         this.drawBoard();
@@ -31,6 +32,9 @@ class Board {
         return y * Board.getSize() + x;
     }
 
+    static getBlock(cellID) {
+        return this.blocks[cellID]
+    }
     /**
      * Create a new block on board (ex, from inventory)
      * @param type String the type of block to create
@@ -50,6 +54,10 @@ class Board {
         $('#' + block.getCellId()).append(
             block.constructor.drawBlock(0)
         );
+    }
+
+    removeBlock(blockID) {
+        this.blocks[blockID] = null;
     }
 
     /**

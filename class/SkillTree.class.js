@@ -3,7 +3,7 @@ class SkillTree{
 		this.roots = [];
 		this.nodes = [];
 		this.character = character;
-		var explorerNode = this.createSkillNode(new ExplorerSkill);
+        let explorerNode = this.createSkillNode(new ExplorerSkill);
 		explorerNode.addChildNode(  this.createSkillNode(new LuckySkill));
 
 		this.addRootNode(explorerNode);
@@ -21,8 +21,8 @@ class SkillTree{
 	}
 
 	learnAndGetSkill(skillId){
-		var node = this.findNode(skillId);
-		if( node != null)
+        let node = this.findNode(skillId);
+        if (node !== null)
 		{
 			node.learned = true;
 			return node.skill;
@@ -31,18 +31,18 @@ class SkillTree{
 	}
 
 	findNode(skillId){
-		this.resetVisitedNodes()
-		for(var i = 0; i < this.nodes.length ; i++)
+        this.resetVisitedNodes();
+        for (let i = 0; i < this.nodes.length; i++)
 		{
-			var node = this.nodes[i]
-			if( node.getSkillId() == skillId){
+            let node = this.nodes[i];
+            if (node.getSkillId() === skillId) {
 				return node
 			}
 			else
 			{
 				
 				let skillNode = node.findSkill(skillId);
-				if( skillNode != null)
+                if (skillNode !== null)
 					return skillNode;
 
 			}
@@ -52,7 +52,7 @@ class SkillTree{
 	}
 
 	resetVisitedNodes(){
-		for(var i = 0; i < this.nodes.length ; i++)
+        for (let i = 0; i < this.nodes.length; i++)
 		{
 			this.nodes[i].resetVisited();
 		}
@@ -60,7 +60,7 @@ class SkillTree{
 
 	getDisplay(){
 		let contents = $('<div>');
-        for (var i = 0; i < this.roots.length; i++) {
+        for (let i = 0; i < this.roots.length; i++) {
             contents.append(this.roots[i].getDisplay());
         }
         return contents.children();
@@ -118,14 +118,14 @@ class TreeNode{
     	if(!this.visited){
     		this.visited = true;
 	    	for(let i = 0; i < this.childs.length; i++){
-	    		
-	    		if( this.childs[i].skill.getSkillId() == skillId)
+
+                if (this.childs[i].skill.getSkillId() === skillId)
 	    		{
 	    			return this.childs[i]
 	    		}
 	    		else{
 	    			let node  = this.childs[i].findSkill(skillId);
-	    			if( node != null)
+                    if (node !== null)
 	    				return node;
 	    		}
 	    	}
@@ -137,13 +137,13 @@ class TreeNode{
 
     drawSkill(){
     	let contents = $('<div>').addClass("skill");
-    	let content = $('<p> Name : ' + this.skill.name + "<br /> "+this.skill.description + " </p>");
+        let content = $('<p><strong>' + this.skill.name + "</strong><br><em> " + this.skill.description + "</em></p>");
     	contents.append(content);
     	if ( this.learned ){
     		contents.append($("<p> learned</p>"));
     	}
     	else{
-    		let learnButton = $("<br /><button class='learn' data-skill_id='"+this.skill.getSkillId()+"' data-char_id='"+this.character.id+"'>Learn Skill</button> ")
+            let learnButton = $("<button class='learn' data-skill_id='" + this.skill.getSkillId() + "' data-char_id='" + this.character.id + "'>Learn Skill</button> ");
     		contents.append($("<p> not learned  </p>").append(learnButton));
     		
     	}

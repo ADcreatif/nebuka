@@ -1,22 +1,23 @@
 
-.bloc{
+.block {
     margin:0 auto;
 }
-.bloc span{
+
+.block span {
     display:none;
 }
 
-#toolbox .bloc{
+#toolbox .block {
     margin:20px;
-    /*box-shadow: 2px 2px 2px;*/
 }
-#toolbox .bloc span, #resources span{
+
+#toolbox .block span, #resources span {
     font-size: 80%;
     display:inline-block;
     margin-right: -11px;
     float: right;
     margin-top: -8px;
-    background-color: rgba(0, 0, 255, 0.25);
+    background-color: rgba(0, 0, 255, 0.1);
     color: white;
     border-radius: 12px;
     line-height: 1.6;
@@ -24,34 +25,46 @@
     padding: 0 6px;
 }
 
-.wall{
+.wall, .tower {
     border-radius:2px;
     width: 19px;
     height: 19px;
 }
 
-
-div.wall_steel{
+.steel_wall {
     background-color: steelblue;
     box-shadow: 2px 2px 2px #633100;
+    opacity: .8;
 }
 
-div.wall_wood{
+.wood_wall {
     background-color:darkorange;
     box-shadow: 2px 2px 2px #253b53;
 }
 
-div.wall_stone{
+.stone_wall {
     background-color: grey;
     box-shadow: 2px 2px 2px #253b53;
 }
 
-div.tower{
+.wood_tower {
+    border-radius: 50%;
+    background-color: red;
+    box-shadow: 2px 2px 2px #253b53;
+}
+
+.tower {
     border-radius : 50%;
-    width:50px;
-    height:50px;
+    width: 55px;
+    height: 55px;
     background-color:red;
     box-shadow: 2px 2px 2px #253b53;
+}
+
+#edit-board .tower {
+    position: absolute;
+    margin-top: -28px;
+    margin-left: -20px;
 }
 
 #resources > div
@@ -68,61 +81,171 @@ div.tower{
 }
 
 .wood{
-    background-image: url(../img/resource/wood.svg);
+    background-image: url(../images/resource/wood.svg);
 }
 
 .stone{
-    background-image: url(../img/resource/stone.svg);
+    background-image: url(../images/resource/stone.svg);
 }
 
 .steel{
-    background-image: url(../img/resource/steel.svg);
+    background-image: url(../images/resource/steel.svg);
 }
 
+/***************************** jQerury UI *****************************/
+.ui-draggable-dragging {
+    opacity: 0.5
+}
 
+.ui-draggable-dragging span {
+    display: none;
+}
+
+/***************************** EDIT-BOARD *****************************/
+
+.hoverBusy {
+    background-color: rgba(256, 0, 0, .3);
+}
+
+.hoverFree {
+    background-color: rgba(0, 256, 0, .3);
+}
+
+/***************************** RENDER-BOARD *****************************/
 
 #render-board td{
-    background: url('../img/block/tileset.png') bottom right;
+    background: url('../images/texture/tileset.png') bottom right;
 }
-#render-board .wall_wood, #render-board .wall_steel{
+
+#render-board .wood_wall, #render-board .steel_wall {
     background-color:transparent;
-    box-shadow: 0;
+    box-shadow: none;
 }
-#render-board .wall_wood.right                  { background-position: 0 0 }
-#render-board .wall_wood.right-bottom-left      { background-position: -20px 0 }
-#render-board .wall_wood.left                   { background-position: -40px 0 }
-#render-board .wall_wood.right-bottom           { background-position: -80px 0 }
-#render-board .wall_wood.right-left             { background-position: -100px 0 }
-#render-board .wall_wood.bottom-left            { background-position: -120px 0 }
-#render-board .wall_wood.top-bottom             { background-position: -80px -20px }
-#render-board .wall_wood.top-right-left         { background-position: -20px -40px }
-#render-board .wall_wood.top-right              { background-position: -80px -40px }
-#render-board .wall_wood.top-left               { background-position: -120px -40px }
-#render-board .wall_wood.alone                  { background-position: 0 -80px }
-#render-board .wall_wood.top-right-bottom-left  { background-position: -40px -80px }
-#render-board .wall_wood.bottom                 { background-position: -120px -80px }
-#render-board .wall_wood.top-right-bottom       { background-position: -80px -100px }
-#render-board .wall_wood.top-bottom-left        { background-position: -120px -80px }
-#render-board .wall_wood.top                    { background-position: -120px -120px }#render-board .wall_wood.right  { background-position: 0 0 }
 
-#render-board .wall_steel.right                 { background-position: -140px 0 }
-#render-board .wall_steel.right-bottom-left     { background-position: -160px 0 }
-#render-board .wall_steel.left                  { background-position: -180px 0 }
-#render-board .wall_steel.right-bottom          { background-position: -220px 0 }
-#render-board .wall_steel.right-left            { background-position: -240px 0 }
-#render-board .wall_steel.bottom-left           { background-position: -260px 0 }
-#render-board .wall_steel.top-bottom            { background-position: -220px -20px }
-#render-board .wall_steel.top-right-left        { background-position: -160px -40px }
-#render-board .wall_steel.top-right             { background-position: -220px -40px }
-#render-board .wall_steel.top-left              { background-position: -260px -40px }
-#render-board .wall_steel.alone                 { background-position: -140px -80px }
-#render-board .wall_steel.top-right-bottom-left { background-position: -180px -80px }
-#render-board .wall_steel.bottom                { background-position: -260px -80px }
-#render-board .wall_steel.top-right-bottom      { background-position: -240px -100px }
-#render-board .wall_steel.top-bottom-left       { background-position: -260px -80px }
-#render-board .wall_steel.top                   { background-position: -240px -120px }
+#render-board .wood_wall.alone {
+    background-position: 0 -80px
+}
 
+#render-board .wood_wall.top {
+    background-position: -120px -120px
+}
 
+#render-board .wood_wall.top-right {
+    background-position: -80px -40px
+}
 
+#render-board .wood_wall.top-right-left {
+    background-position: -20px -40px
+}
 
+#render-board .wood_wall.top-right-bottom {
+    background-position: -80px -100px
+}
 
+#render-board .wood_wall.top-right-bottom-left {
+    background-position: -40px -80px
+}
+
+#render-board .wood_wall.top-bottom {
+    background-position: -80px -20px
+}
+
+#render-board .wood_wall.top-bottom-left {
+    background-position: -120px -100px
+}
+
+#render-board .wood_wall.top-left {
+    background-position: -120px -40px
+}
+
+#render-board .wood_wall.right {
+    background-position: 0 0
+}
+
+#render-board .wood_wall.right-bottom {
+    background-position: -80px 0
+}
+
+#render-board .wood_wall.right-bottom-left {
+    background-position: -20px 0
+}
+
+#render-board .wood_wall.right-left {
+    background-position: -100px 0
+}
+
+#render-board .wood_wall.bottom-left {
+    background-position: -120px 0
+}
+
+#render-board .wood_wall.left {
+    background-position: -40px 0
+}
+
+#render-board .wood_wall.bottom {
+    background-position: -120px -80px
+}
+
+#render-board .steel_wall.alone {
+    background-position: -140px -80px
+}
+
+#render-board .steel_wall.top {
+    background-position: -260px -120px;
+}
+
+#render-board .steel_wall.top-right {
+    background-position: -220px -40px
+}
+
+#render-board .steel_wall.top-right-left {
+    background-position: -160px -40px
+}
+
+#render-board .steel_wall.top-right-bottom {
+    background-position: -220px -100px;
+}
+
+#render-board .steel_wall.top-right-bottom-left {
+    background-position: -180px -80px
+}
+
+#render-board .steel_wall.top-bottom {
+    background-position: -220px -20px
+}
+
+#render-board .steel_wall.top-bottom-left {
+    background-position: -260px -100px;
+}
+
+#render-board .steel_wall.top-left {
+    background-position: -260px -40px
+}
+
+#render-board .steel_wall.right {
+    background-position: -140px 0
+}
+
+#render-board .steel_wall.right-bottom {
+    background-position: -220px 0
+}
+
+#render-board .steel_wall.right-bottom-left {
+    background-position: -160px 0
+}
+
+#render-board .steel_wall.right-left {
+    background-position: -240px 0
+}
+
+#render-board .steel_wall.bottom-left {
+    background-position: -260px 0
+}
+
+#render-board .steel_wall.left {
+    background-position: -180px 0
+}
+
+#render-board .steel_wall.bottom {
+    background-position: -260px -80px
+}

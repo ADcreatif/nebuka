@@ -9,6 +9,10 @@ class Stock
     	this.quantity += quantity || 1;
     }
 
+    setQuantity(quantity) {
+        this.quantity = quantity;
+    }
+
     removeBlock(quantity){
     	this.quantity -= quantity || 1;
     	if(this.quantity < 0){

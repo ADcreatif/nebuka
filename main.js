@@ -2,88 +2,66 @@
  * Created by Alan on 06/10/2017.
  */
 "use strict";
-
-let inStorage = [
-    {type : Block.WOOD_WALL, quantity:10},
-    {type : Block.STONE_WALL, quantity:4},
-    {type : Block.STEEL_WALL,  quantity:5},
-    {type : Block.WOOD_TOWER, quantity:5},
-];
-
-
-let inBoard = [{"type":1,"material":3,"x":1,"y":1},{"type":2,"material":1,"x":2,"y":1},{"type":3,"material":1,"x":1,"y":2},{"type":1,"material":1,"x":7,"y":2},{"type":1,"material":1,"x":14,"y":2},{"type":1,"material":1,"x":5,"y":3},{"type":1,"material":1,"x":6,"y":3},{"type":1,"material":1,"x":7,"y":3},{"type":1,"material":1,"x":8,"y":3},{"type":1,"material":1,"x":12,"y":3},{"type":1,"material":1,"x":13,"y":3},{"type":1,"material":1,"x":14,"y":3},{"type":1,"material":1,"x":15,"y":3},{"type":1,"material":1,"x":17,"y":3},{"type":1,"material":1,"x":18,"y":3},{"type":1,"material":1,"x":20,"y":3},{"type":1,"material":1,"x":5,"y":4},{"type":1,"material":1,"x":8,"y":4},{"type":1,"material":1,"x":9,"y":4},{"type":1,"material":1,"x":11,"y":4},{"type":1,"material":1,"x":12,"y":4},{"type":1,"material":1,"x":14,"y":4},{"type":1,"material":1,"x":18,"y":4},{"type":1,"material":1,"x":20,"y":4},{"type":1,"material":1,"x":5,"y":5},{"type":1,"material":1,"x":6,"y":5},{"type":1,"material":1,"x":7,"y":5},{"type":1,"material":1,"x":8,"y":5},{"type":1,"material":1,"x":14,"y":5},{"type":1,"material":1,"x":18,"y":5},{"type":1,"material":1,"x":19,"y":5},{"type":1,"material":1,"x":20,"y":5},{"type":1,"material":1,"x":5,"y":6},{"type":1,"material":1,"x":19,"y":6},{"type":1,"material":1,"x":5,"y":7},{"type":1,"material":1,"x":6,"y":7},{"type":1,"material":1,"x":8,"y":7},{"type":1,"material":1,"x":9,"y":7},{"type":1,"material":1,"x":10,"y":7},{"type":1,"material":1,"x":11,"y":7},{"type":1,"material":1,"x":12,"y":7},{"type":1,"material":1,"x":13,"y":7},{"type":1,"material":1,"x":14,"y":7},{"type":1,"material":1,"x":15,"y":7},{"type":1,"material":1,"x":16,"y":7},{"type":1,"material":1,"x":17,"y":7},{"type":1,"material":1,"x":18,"y":7},{"type":1,"material":1,"x":19,"y":7},{"type":1,"material":1,"x":4,"y":9}];
-
 let board;
-let inventory;
-let l = log=>console.log(log);
+let l = log => console.log(log);
 
-$(function(){
+$(function () {
 
-    var game = new Game();
+    let game = new Game();
     game.start();
 
-    board =  new Board();
+    let dragBloc = new Draggable(game.inventory, game.board);
+    dragBloc.startDrag();
 
-    inventory = game.inventory;
-    inventory.displayInventory();
+    $('#GUI').accordion({
+        collapsible: true,
+        event: "click tap",
+        heightStyle: "content"
+    });
 
-    $('[draggable]').draggable();
-
-    let renderBoard = new RenderBoard();
-
-    let resources = game.resources;
-
-    // TODO : remove test interface
-    
-    resources.displayResources();
-    $('#toggle-render').click(function(){
-        if($(this).text() === 'Start'){
-            renderBoard.startRender();
+    $('#toggle-render').click(function () {
+        if ($(this).text() === 'Start') {
+            game.renderBoard.startRender();
             $(this).text('Stop');
         } else {
-            renderBoard.stopRender();
+            game.renderBoard.stopRender();
             $(this).text('Start');
         }
     });
-    $('#export-board').on('click', function(){renderBoard.exportBoard(true)});
-
-
-    $('#shitTest').find('button').click(function(){
-        let quantity = parseInt($('#quantity').val());
-
-        if($(this).data('increment') !== undefined)
-            inventory.addBlock($(this).data('type'),$(this).data('material'), quantity);
-        else
-            inventory.removeBlock($(this).data('type'),$(this).data('material'), quantity);
-        inventory.displayInventory()
+    $('#export-board').on('click', function () {
+        game.renderBoard.exportBoard(true)
     });
 
-    $('#shitTest2').find('button').click(function()
-    {
-        if($(this).data('increment') !== undefined)
-            resources.addResource($(this).data('type'), $("#resource_quantity").val());
-        else
-            resources.removeResource($(this).data('type'), $("#resource_quantity").val());
+    // init stock
+    $('#wall_wood_inv').val(game.inventory.getBlockQuantity(Block.WOOD_WALL));
+    $('#wall_stone_inv').val(game.inventory.getBlockQuantity(Block.STONE_WALL));
+    $('#tower_wood_inv').val(game.inventory.getBlockQuantity(Block.WOOD_TOWER));
 
-        resources.displayResources();
+    $('#block_debug').find('input').change(function () {
+        game.inventory.setBlockQuantity($(this).data('type'), $(this).val());
+        game.inventory.displayInventory()
+    });
 
+    $('#ressource_debug').find('input').change(function () {
+        game.resources.setResourceQuantity($(this).data('type'), $(this).val());
+        game.resources.displayResources();
     });
 
     // skill learning events
 
 
-    $("body").on("click" , ".learn", function(){
+    $("body").on("click", ".learn", function () {
         let charId = $(this).data("char_id");
         let skillId = $(this).data("skill_id");
-        game.learnSkill(charId,skillId);
+        game.learnSkill(charId, skillId);
         game.displayCharactersStats();
-    })
+    });
 
     // exploration
 
-    $("body").on("click" , ".explore", function(){
+    $("body").on("click", ".explore", function () {
         let charId = $(this).data("char_id");
-        
+
         game.doExploration(charId);
         game.updateDisplay();
     })

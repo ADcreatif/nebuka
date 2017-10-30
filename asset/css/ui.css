@@ -1,14 +1,25 @@
 main{
-    display:flex;
     margin: 0 auto;
-    width: 1000px;
+    width: 1200px;
+}
+
+#GUI {
+    flex-basis: 550px;
+}
+
+GUI ul {
+    width: 100px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
 }
 
 /*--------------------- BOARD ---------------------*/
 
 table{
     border-collapse: collapse;
-    background:url(../img/texture/grass.png);
+    background: url(../images/texture/grass.png);
+    /* box-sizing: border-box; */
 }
 td{
     width: 20px;
@@ -16,15 +27,16 @@ td{
     border:0;
     padding: 0;
     position: relative;
+    box-sizing: border-box;
 }
 
 /*--------------------- EDIT BOARD ---------------------*/
 #edit-board{
-    width: 600px;
     overflow: visible;
 }
 
-#edit-board td{
+#edit-board td {
+    border: 1px solid;
 }
 
 
@@ -39,35 +51,31 @@ td{
 }
 
 
-
-
 /*--------------------- TOOLBOX ---------------------*/
 #toolbox{
     display:flex;
-    width: 200px;
+    flex-basis: 290px;
     background: green;
     flex-wrap: wrap;
     align-content: flex-start;
 }
 
+/*------------------------ Ressource-------------------------*/
+#stock .bloc {
+    margin: 0;
+    display: inline-block;
+    max-width: 20px;
+    max-height: 20px;
+}
 
-/*--------------------- barres ---------------------*/
-.warper.collapsed{
-    width: 20px;
+#stock input {
+    width: 4em;
 }
-.warper{
-    transition: width ease-out 100ms, margin ease-out 100ms;
-    /* overflow: hidden; */
-    position: relative;
-    width:auto;
+
+/*--------------------- Caracters Stats ---------------------*/
+
+.characterStats {
+    width: 250px;
+    line-height: .9;
 }
-.warper .collapse{
-    position: absolute;
-}
-/*.warper .cover{
-    position: absolute;
-    width: 20px;
-    height: 100%;
-    background: #333;
-    z-index: 100;
-}*/
+

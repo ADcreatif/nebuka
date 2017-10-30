@@ -5,22 +5,22 @@ class BlockFactory {
 
         switch (type) {
             case Block.WOOD_WALL :
-                block = new WallWood();
+                block = new WoodWall();
                 break;
             case Block.STONE_WALL :
-                block = new WallStone();
+                block = new StoneWall();
                 break;
             case Block.STEEL_WALL :
-                block = new WallSteel();
+                block = new SteelWall();
                 break;
             case Block.WOOD_TOWER:
-                block = new TowerBlock();
+                block = new WoodTower();
                 break;
             default:
                 console.log(type +' is not a block type')
         }
 
-        if (display == true)
+        if (display === true)
             return Block.drawBlock(quantity);
 
         return block;
@@ -29,16 +29,16 @@ class BlockFactory {
     static getBlockDisplay(type, quantity){
         switch (parseInt(type)){
             case Block.WOOD_WALL:
-                return WallWood.drawBlock(quantity);
+                return WoodWall.drawBlock(quantity);
                 break;
             case Block.STONE_WALL:
-                return WallStone.drawBlock(quantity);
+                return StoneWall.drawBlock(quantity);
                 break;
             case Block.STEEL_WALL:
-                return WallSteel.drawBlock(quantity);
+                return SteelWall.drawBlock(quantity);
                 break;
             case Block.WOOD_TOWER:
-                return TowerBlock.drawBlock(quantity);
+                return WoodTower.drawBlock(quantity);
                 break
         }
         return null;
