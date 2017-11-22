@@ -10,6 +10,11 @@ class Game {
         this.board = new Board();
         this.renderBoard = new RenderBoard(this.board);
         this.resources = new ResourceStock();
+        this.controller = new ZombieController(this.board);
+       
+
+        this.nightTurn();
+        this.interval = null;
     }
 
     start() {
@@ -48,6 +53,17 @@ class Game {
         this.executeTurnActions();
         this.updateDisplay();
     }
+
+    nightTurn()
+    {
+        this.board.colorPath(0,0,18,7);
+        this.controller.setDestination(18,7);
+        this.controller.startNight()
+      
+    }
+
+  
+   
 
     updateDisplay() {
         this.displayGameData();

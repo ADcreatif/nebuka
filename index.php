@@ -9,7 +9,8 @@
         <script src="asset/js/jquery-ui.min.js"></script>
 
         <script src="datas.js"></script>
-
+         <script src="class/Zombie.class.js"></script>
+          <script src="class/ZombieController.class.js"></script>
         <script src="class/Resource.class.js"></script>
         <script src="class/ResourceStock.class.js"></script>
 

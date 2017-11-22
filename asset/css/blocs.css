@@ -53,6 +53,17 @@
     box-shadow: 2px 2px 2px #253b53;
 }
 
+.zombie {
+    border-radius: 50%;
+    background-color: pink;
+    box-shadow: 2px 2px 2px #253b53;
+    width: 10px;
+    height: 10px;
+    position:absolute;
+    top:5px;
+    left:5px;
+}
+
 .tower {
     border-radius : 50%;
     width: 55px;

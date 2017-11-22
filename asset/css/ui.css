@@ -32,7 +32,12 @@ td{
 
 /*--------------------- EDIT BOARD ---------------------*/
 #edit-board{
+    position: relative;
     overflow: visible;
+}
+
+#edit-board .path{
+    background-color:yellow;
 }
 
 #edit-board td {
