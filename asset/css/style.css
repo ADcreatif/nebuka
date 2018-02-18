@@ -24,3 +24,12 @@ ul {
     top: 0;
     left: 0;
 }
+
+.line {
+    height: 2px;
+    background-color: black;
+    display: block;
+    position: absolute;
+    transform-origin: 0;
+    width: 1000px;
+}

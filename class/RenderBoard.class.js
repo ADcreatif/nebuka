@@ -14,9 +14,10 @@ class RenderBoard {
 
         for (let cell = 0; cell < this.cellList.length; cell++) {
             let block = this.cellList[cell];
+
             if (block !== undefined) {
                 backgroundClass = this.getClass(block.x, block.y, block.type);
-                this.boardDOM.find('#' + cell).addClass(block.class + ' ' + backgroundClass);
+                this.boardDOM.find('#' + cell).removeClass().addClass(block.class + ' ' + backgroundClass);
             } else {
                 this.boardDOM.find('#' + cell).removeClass();
             }
@@ -33,6 +34,7 @@ class RenderBoard {
      * rebuild the whole blockList
      */
     updateBoard() {
+
         this.cellList = new Array(Math.pow(Board.getSize(), 2));
 
         for (let index in this.board.blocks) {
@@ -73,20 +75,22 @@ class RenderBoard {
      * @returns {string}
      */
     getClass(x, y, type) {
-        let tCell = this.cellList[Board.getIdFromCoord(x, y - 1)];
-        let rCell = this.cellList[Board.getIdFromCoord(x + 1, y)];
-        let bCell = this.cellList[Board.getIdFromCoord(x, y + 1)];
-        let lCell = this.cellList[Board.getIdFromCoord(x - 1, y)];
+        let topCell = this.cellList[Board.getIdFromCoord(x, y - 1)];
+        let rightCell = this.cellList[Board.getIdFromCoord(x + 1, y)];
+        let bottomCell = this.cellList[Board.getIdFromCoord(x, y + 1)];
+        let leftCell = this.cellList[Board.getIdFromCoord(x - 1, y)];
 
         let surrounding = [
-            tCell && tCell.type === type ? 'top' : '',
-            rCell && rCell.type === type ? 'right' : '',
-            bCell && bCell.type === type ? 'bottom' : '',
-            lCell && lCell.type === type ? 'left' : ''
+            topCell && topCell.type === type ? 'top' : '',
+            rightCell && rightCell.type === type ? 'right' : '',
+            bottomCell && bottomCell.type === type ? 'bottom' : '',
+            leftCell && leftCell.type === type ? 'left' : ''
         ];
 
         // remove useless "-"
         let backgroundClass = surrounding.join('-').replace(/(-){2,}/, '-').replace(/^(-)+/, '').replace(/(-)+$/, '');
+
+        console.log(Board.getIdFromCoord(x, y), x, y, type, surrounding);
 
         // if no surrounding
         if (backgroundClass === '')

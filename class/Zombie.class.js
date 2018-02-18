@@ -4,8 +4,8 @@ class Zombie {
         this.y = 0;
         this.currentx = 0;
         this.currenty = 0;
-        Zombie.COUNT++;
-        this.id =  Zombie.COUNT;
+         this.id = Zombie.COUNT;
+         Zombie.COUNT++;
         this.display = $("<div class='zombie' id='"+this.getId()+"'></div>");
         this.div = null;
 
@@ -15,6 +15,9 @@ class Zombie {
         this.intervals = Math.floor( Zombie.TICK_PER_SECOND / this.tilePerSecond)+1;
         this.moves = [];
         this.board = board;
+
+         this.health = 100;
+         this.damages = 20;
     }
 
     setPosition(x, y){
@@ -35,14 +38,17 @@ class Zombie {
     	if(this.y > 5)
     		this.currenty ++;
 
+        this.div.css("left", this.currentx + "px");
+        this.div.css("top", this.currenty + "px");
+    }
 
-    	this.div.css("left" , this.currentx+"px");
-    	this.div.css("top" , this.currenty+"px");
+    removeFromBoard() {
+        this.board.board.remove('#zombie_' + this.id);
     }
 
     smoothPosition(){
-    	this.currentx = Math.round(this.currentx / Board.TILE_SIZE) * Board.TILE_SIZE 
-    	this.currenty = Math.round(this.currenty / Board.TILE_SIZE) * Board.TILE_SIZE
+        this.currentx = Math.round(this.currentx / Board.TILE_SIZE) * Board.TILE_SIZE;
+        this.currenty = Math.round(this.currenty / Board.TILE_SIZE) * Board.TILE_SIZE;
 
     	this.appendToBoard();
     }
@@ -54,6 +60,27 @@ class Zombie {
     getId(){
     	return "zombie_"+this.id;
     }
+
+
+    /************************************************************************
+     *
+     *                                FIGHT
+     *
+     ************************************************************************/
+
+    get_damage(damages) {
+        this.health -= damages;
+
+        this.div.blink('being_hurt');
+
+        //console.log(this.health);
+    }
+
+    /************************************************************************
+     *
+     *                                MOVES
+     *
+     ************************************************************************/
 
     moveBottom(){
     	this.div.css("top" , this.currenty+"px");
@@ -81,58 +108,78 @@ class Zombie {
     	this.updatePosition();
     }
 
+    next_move() {
+        this.func = this.moves.shift();
+    }
 
+    update(delta) {
 
-    move(){
-    	if(this.moves.length == 0)
+        if (this.counter === undefined) {
+            this.counter = 0;
+        }
+        if (this.moves.length === 0) {
+            l('remove');
+            gameLoop.removeAction(this);
+        }
+        console.log(this.counter + '/' + this.intervals);
+        if (this.counter >= this.intervals) {
+            this.smoothPosition();
+            this.counter = 0;
+        } else {
+            this.next_move();
+        }
+        this.counter++;
+    };
+
+	/* move(){
+	 if(this.moves.length === 0)
     		return;
 
-    	var func = this.moves.shift();
-    	var counter = 0;
-    	var timer =
+	 let func = this.moves.shift();
+	 let counter = 0;
+	 let timer =
     	setInterval(function()
     	{
-    			
-    		if( counter >=  this.intervals  )
+
+	 if( counter >= this.intervals  )
     		{
     			clearInterval(timer);
     			this.smoothPosition();
     			this.move();
     		}
-    			
+
     		else
     		{
-    			
+
     			func.call(this);
     		}
     		counter++;
-    			
-    	}.bind(this), 1000/Zombie.TICK_PER_SECOND );
-    }
 
+    	}.bind(this), 1000/Zombie.TICK_PER_SECOND );
+	 }*/
 
     setDestination(board, destx, desty){
-    	var path = board.getPath(this.x, this.y, destx, desty);
+        let path = board.getPath(this.x, this.y, destx, desty);
     	this.createMoves(path);
     }
 
     createMoves( path ){
-    	var currentIndex = Board.getIdFromCoord(this.x,this.y)
+        let currentIndex = Board.getIdFromCoord(this.x, this.y);
     	for( let i =  path.length-1 ; i >= 0  ; i-- ) {
 
-    		var next = path[i];
-  
-    		if( currentIndex + 1 == next ){
+            let next = path[i];
+
+            if (currentIndex + 1 === next) {
     			this.moves.push(this.moveRight);
     		}
-    		else if(currentIndex + Board.getSize() == next){
+            else if (currentIndex + Board.getSize() === next) {
     			this.moves.push(this.moveBottom);
     		}
-    		else if(currentIndex - 1 == next){
+            else if (currentIndex - 1 === next) {
     			console.log("left");
     			this.moves.push(this.moveLeft);
     		}
-    		else if(currentIndex -  Board.getSize() == next){
+            else if (currentIndex - Board.getSize() === next) {
     			this.moves.push(this.moveTop);
     		}
     		
@@ -140,7 +187,6 @@ class Zombie {
     		currentIndex = next;
     	}
     }
-
 
     updatePosition(){
     	this.x = Math.round(this.currentx / Board.TILE_SIZE);

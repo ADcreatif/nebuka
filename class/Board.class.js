@@ -15,8 +15,9 @@ class Board {
          */
         this.board = $('#edit-board');
 
+
         /**
-         * the cell list by instance
+         * the blocks list by instance
          * @type {Array}
          */
 
@@ -27,7 +28,7 @@ class Board {
     }
 
     static getSize() {
-        return 22;
+        return Board.TILE_SIZE;
     }
 
     static getIdFromCoord(x, y) {
@@ -64,9 +65,9 @@ class Board {
 
         block.setPosition(x, y);
 
-        this.blocks[block.getCellId()] = block;
+        this.blocks[block.get_cell_id()] = block;
 
-        $('#' + block.getCellId()).append(
+        $('#' + block.get_cell_id()).append(
             block.constructor.drawBlock(0)
         );
     }
@@ -85,7 +86,7 @@ class Board {
         let block =  this.blocks[blockID];
         block.setPosition(newX, newY);
         this.blocks[blockID] = null;
-        this.blocks[block.getCellId()]  = block;
+        this.blocks[block.get_cell_id()] = block;
     }
 
     /**
@@ -126,24 +127,23 @@ class Board {
     };
 
     getPath(x1,y1,x2,y2){
-        let b = [];
-        for(let i = 0 ; i < Board.getSize() * Board.getSize(); i++ ){
-            b[i] = { distance : null, visited : false};
+        let board = [];
+        for (let index = 0; index < Board.getSize() * Board.getSize(); index++) {
+            board[index] = {distance: null, visited: false};
         }
         let source =  Board.getIdFromCoord(x1, y1);
         let dest = Board.getIdFromCoord(x2, y2);
-        let currentIndex = source
+        let currentIndex = source;
 
-        b[currentIndex].distance = 0;
+        board[currentIndex].distance = 0;
         let visit = [];
-        var test = 0;
-        while(currentIndex != dest){
+        let test = 0;
+        while (currentIndex !== dest) {
             let adjacentCells = getAdjacentCells(currentIndex);
 
-        
             for(let i = 0; i < adjacentCells.length; i++){
-                let cell = b[adjacentCells[i]];
-                if(cell == null)
+                let cell = board[adjacentCells[i]];
+                if (cell === null)
                 {
                     console.log("rofl" +adjacentCells[i]);
                     continue;
@@ -152,15 +152,15 @@ class Board {
                     continue;
 
                 if(!cell.visited){
-                   if(cell.distance == null || cell.distance >  b[currentIndex].distance +1 ) {
-                     cell.distance = b[currentIndex].distance + 1;
+                    if (cell.distance === null || cell.distance > board[currentIndex].distance + 1) {
+                        cell.distance = board[currentIndex].distance + 1;
                      
                      visit.push(adjacentCells[i]);
                    }
                    
                 }
             }
-            b[currentIndex].visited = true;
+            board[currentIndex].visited = true;
             currentIndex = visit.shift();
             test ++;
             if( test > 100000)
@@ -171,12 +171,11 @@ class Board {
 
         }
 
-
         currentIndex = dest;
         let path = [];
         path.push(currentIndex);
         test = 0;
-        while(currentIndex != source){
+        while (currentIndex !== source) {
             let adjacentCells = getAdjacentCells(currentIndex);
 
             let min = 100000;
@@ -184,8 +183,8 @@ class Board {
             for(let i = 0; i < adjacentCells.length; i++){
                  if(this.isObstacle(adjacentCells[i]))
                     continue;
-                if( min > b[adjacentCells[i]].distance &&  b[adjacentCells[i]].distance != null){
-                    min =  b[adjacentCells[i]].distance;
+                if (min > board[adjacentCells[i]].distance && board[adjacentCells[i]].distance !== null) {
+                    min = board[adjacentCells[i]].distance;
                     index = adjacentCells[i];
                     
                 }
@@ -208,10 +207,10 @@ class Board {
             if( id >= Board.getSize())
                 cells.push(id - Board.getSize());
 
-            if( id %  Board.getSize() != 0 )
+            if (id % Board.getSize() !== 0)
                 cells.push(id-1);
 
-            if( (id+1) %  Board.getSize() != 0 && id < Board.getSize()*Board.getSize())
+            if ((id + 1) % Board.getSize() !== 0 && id < Board.getSize() * Board.getSize())
                  cells.push(id+1);
 
              if( id < Board.getSize() * ( Board.getSize() -1))
@@ -222,13 +221,19 @@ class Board {
     }
 
     // path finding using lee algorithm
-
     colorPath(x1,y1,x2,y2){
-        let path = this.getPath(x1,y1,x2,y2)
-        for(let i = 0; i < path.length; i++){
-             this.getBlock(path[i]).addClass("path");
+        let path = this.getPath(x1, y1, x2, y2);
+        for (let index = 0; index < path.length; index++) {
+            this.getBlock(path[index]).addClass("path");
         }
 
+    }
+
+    startNight(zombieController) {
+        $.each(this.blocks, function (i, block) {
+            if (block)
+                block.startNight(zombieController);
+        }.bind(this))
     }
 }
 

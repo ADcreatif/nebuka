@@ -1,13 +1,26 @@
 main{
     margin: 0 auto;
-    width: 1200px;
+    max-width: 820px;
+    justify-content: space-around;
 }
 
 #GUI {
-    flex-basis: 550px;
+    flex-basis: 500px;
 }
 
-GUI ul {
+@media screen and (min-width: 420px) {
+    #GUI {
+        flex-basis: 400px;
+    }
+}
+
+@media screen and (min-width: 820px) and (max-width: 1100px) {
+    #GUI {
+        flex-basis: 360px;
+    }
+}
+
+#GUI ul {
     width: 100px;
     list-style: none;
     padding: 0;

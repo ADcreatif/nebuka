@@ -6,15 +6,17 @@ class Game {
         this.charactersDiv = $("#character");
         this.researchPoints = 0;
         this.turn = 0;
+
         this.inventory = new Inventory;
         this.board = new Board();
         this.renderBoard = new RenderBoard(this.board);
         this.resources = new ResourceStock();
-        this.controller = new ZombieController(this.board);
+        this.zombieController = new ZombieController(this.board);
        
 
         this.nightTurn();
-        this.interval = null;
+        //this.interval = null;
+
     }
 
     start() {
@@ -47,35 +49,33 @@ class Game {
         this.actionDiv.append(nextTurn);
     }
 
+
+    nightTurn() {
+        this.board.colorPath(0, 0, 18, 7);
+        this.zombieController.setDestination(18, 7);
+        this.zombieController.startNight();
+        this.board.startNight(this.zombieController);
+    }
+
+
+    /**
+     * TODO : move relatives functions to player's class
+     */
     nextTurn() {
         this.turn++;
         this.calculateResearchPoints();
         this.executeTurnActions();
         this.updateDisplay();
     }
-
-    nightTurn()
-    {
-        this.board.colorPath(0,0,18,7);
-        this.controller.setDestination(18,7);
-        this.controller.startNight()
-      
-    }
-
-  
-   
-
     updateDisplay() {
         this.displayGameData();
         this.displayCharactersStats();
     }
-
     executeTurnActions() {
         for (let i = 0; i < this.characters.length; i++) {
             this.characters[i].newTurnAction();
         }
     }
-
     calculateResearchPoints() {
         let points = 0;
         for (let i = 0; i < this.characters.length; i++) {
@@ -84,18 +84,15 @@ class Game {
 
         this.researchPoints += points;
     }
-
     displayCharactersStats() {
         this.charactersDiv.empty();
         for (let i = 0; i < this.characters.length; i++) {
             this.displayCharacterSkill(this.characters[i]);
         }
     }
-
     displayCharacterSkill(character) {
         this.charactersDiv.append(character.getStatsDisplay());
     }
-
     getCharacterById(id) {
         for (let i = 0; i < this.characters.length; i++) {
             if (this.characters[i].id === id)
@@ -103,7 +100,6 @@ class Game {
         }
         return null;
     }
-
     learnSkill(characterId, skillId) {
         let char = this.getCharacterById(characterId);
         if (char !== null) {
@@ -111,7 +107,6 @@ class Game {
             char.learnSkill(skillId);
         }
     }
-
     doExploration(characterId) {
         let char = this.getCharacterById(characterId);
 
@@ -120,7 +115,7 @@ class Game {
             return;
         }
 
-        let roll = this.getRoll100();
+        let roll = getRoll100();
         if (roll < char.explorationSuccess) {
             let resourceCount = 2;
             for (let i = 0; i < resourceCount; i++)
@@ -139,9 +134,8 @@ class Game {
 
         char.currentActionPoints -= 2;
     }
-
     getRandomResource() {
-        let roll = this.getRoll100();
+        let roll = getRoll100();
 
         if (roll <= 33) {
             console.log("found Wood");
@@ -157,11 +151,5 @@ class Game {
         }
     }
 
-    getRoll100() {
-        return this.getRandomNumber(0, 100);
-    }
 
-    getRandomNumber(min, max) {
-        return Math.floor(Math.random() * (max - min + 1)) + min;
-    }
 }

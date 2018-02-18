@@ -8,7 +8,7 @@ class ZombieController{
 
 	spawnZombies(){
 		this.zombiesCount = 5;
-        for( var i = 0; i < this.zombiesCount ; i ++ )
+        for (let i = 0; i < this.zombiesCount; i++)
         {
            this.spawnRandomZombie();
         }
@@ -18,18 +18,32 @@ class ZombieController{
 		let zombie = new Zombie(this.board);
         let index;
         do{
-        	index = this.getRandom(0,Board.getSize() * Board.getSize() -1)
-        }while(this.board.isObstacle(index) == true);
+            index = getRandom(0, Board.getSize() * Board.getSize() - 1)
+        } while (this.board.isObstacle(index) === true);
      
         zombie.setPosition(Board.getXFromIndex(index), Board.getYFromIndex(index));
         this.zombies.push(zombie);
         zombie.appendToBoard();
 	}
 
-	getRandom(min, max)
-	{
-		return Math.floor(Math.random() * (max - min +1)) + min;
+    killZombie(zombie_id) {
+        let zombie = this.findZombie(zombie_id);
+        console.log(zombie);
+        zombie.removeFromBoard();
+        zombie = null;
 	}
+
+    findZombie(zombie_id) {
+        let the_one;
+        $.each(this.zombies, function (i, z) {
+            if (z.id = zombie_id) {
+                the_one = z;
+                return false;
+            }
+        }.bind(this));
+        return the_one || null;
+    }
+
 
 	setDestination(x, y){
 		this.destx = x;
@@ -39,14 +53,18 @@ class ZombieController{
 	startNight(){
 		this.spawnZombies();
 		this.moveZombies();
+        gameLoop.addAction(this);
 	}
+
+    update(delta) {
+        $(this.zombies).each((i, zombie) => zombie.update(delta))
+    }
 
 	moveZombies()
 	{
 		for( let i = 0; i < this.zombies.length ; i++)
         {
         	this.zombies[i].setDestination(this.board, this.destx, this.desty);
-        	this.zombies[i].move();
         }
 	}
 

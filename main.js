@@ -1,16 +1,21 @@
-/**
- * Created by Alan on 06/10/2017.
- */
 "use strict";
 let board;
-let l = log => console.log(log);
+let gameLoop;
+let l = s => {
+    s = s || 'test';
+    console.log(s)
+};
 
 $(function () {
 
-    let game = new Game();
+    let game, dragBloc;
+
+    gameLoop = new GameLoop();
+
+    game = new Game();
     game.start();
 
-    let dragBloc = new Draggable(game.inventory, game.board);
+    dragBloc = new Draggable(game.inventory, game.board);
     dragBloc.startDrag();
 
     $('#GUI').accordion({
@@ -64,6 +69,12 @@ $(function () {
 
         game.doExploration(charId);
         game.updateDisplay();
+    });
+
+    // todo : remove
+    $(document).mousemove(function () {
+        $('#mousex').val(event.x);
+        $('#mousey').val(event.y);
     })
 
 });
