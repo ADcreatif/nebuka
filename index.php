@@ -9,20 +9,25 @@
         <script src="asset/js/jquery-ui.min.js"></script>
 
         <script src="datas.js"></script>
-         <script src="class/Zombie.class.js"></script>
-          <script src="class/ZombieController.class.js"></script>
+        <script src="tools.js"></script>
+
+        <script src="class/Zombie.class.js"></script>
+        <script src="class/ZombieController.class.js"></script>
         <script src="class/Resource.class.js"></script>
         <script src="class/ResourceStock.class.js"></script>
 
-        <script src="class/SkillTree.class.js"></script>
-        <script src="class/Skill.class.js"></script>
-        <script src="class/Character.class.js"></script>
+        <script src="class/player/SkillTree.class.js"></script>
+        <script src="class/player/Skill.class.js"></script>
+        <script src="class/player/Character.class.js"></script>
+
+        <script src="class/GameLoop.class.js"></script>
         <script src="class/Game.class.js"></script>
 
-        <script src="class/Block.class.js"></script>
-        <script src="class/BlockFactory.class.js"></script>
-        <script src="class/Stock.class.js"></script>
-        <script src="class/Inventory.class.js"></script>
+        <script src="class/blocks/Block.class.js"></script>
+        <script src="class/blocks/BlockTower.class.js"></script>
+        <script src="class/blocks/BlockFactory.class.js"></script>
+        <script src="class/blocks/Stock.class.js"></script>
+        <script src="class/blocks/Inventory.class.js"></script>
 
         <script src="class/Board.class.js"></script>
         <script src="class/RenderBoard.class.js"></script>
@@ -77,7 +82,12 @@
                 </div>
                 <div id="character" class="flex"></div>
                 </div>
+            <h3>Debug</h3>
+            <div id="debug">
+                <input id="mousex">
+                <input id="mousey">
             </div>
+        </div>
         </main>
     </body>
 </html>
