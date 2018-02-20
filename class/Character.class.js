@@ -13,6 +13,10 @@ class Character{
 
         this.explorationSuccess = 50;
         this.explorationResourceBonus = 0;
+
+        this.position = 0;
+
+        this.target = null;
     }
 
     learnSkill(skillId){
@@ -32,6 +36,14 @@ class Character{
         content.append(this.getActionDisplay());
         content.append(this.skillTree.getDisplay());
         return content;
+    }
+
+    getBoardDisplay(){
+        let x = Board.getXFromIndex(this.position);
+        let y = Board.getYFromIndex(this.position);
+        let left = x * Board.TILE_SIZE + 2;
+        let top = y * Board.TILE_SIZE + 2;
+        return $("<div style='left : "+left+"px; top:"+top+"px ' class='player' id='player_"+this.id+"'></div>");
     }
 
     // TODO implement proper actions

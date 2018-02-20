@@ -1,6 +1,7 @@
 class Game {
     constructor() {
         this.characters = [new Character("alan"), new Character("dany")];
+
         this.actionDiv = $("#actions");
         this.dataDiv = $("#data");
         this.charactersDiv = $("#character");
@@ -17,7 +18,18 @@ class Game {
         this.interval = null;
     }
 
+    setCharacterPosition(characterId, position){
+        let c = this.characters[characterId];
+        c.position = position;
+       this.displayCharactersOnBoard();
+
+    }
+
     start() {
+
+        this.displayCharactersOnBoard();
+
+        this.setCharacterPosition(0,50);
         this.displayGameActions();
 
         // todo : removehere
@@ -59,7 +71,17 @@ class Game {
         this.board.colorPath(0,0,18,7);
         this.controller.setDestination(18,7);
         this.controller.startNight()
-      
+        
+        // player control
+
+        setTimeout(function()
+        {
+
+        },1000/Game.TICK_PER_SECOND)
+    }
+
+    findTarget(board,character,zombies){
+        
     }
 
   
@@ -68,6 +90,7 @@ class Game {
     updateDisplay() {
         this.displayGameData();
         this.displayCharactersStats();
+
     }
 
     executeTurnActions() {
@@ -89,6 +112,15 @@ class Game {
         this.charactersDiv.empty();
         for (let i = 0; i < this.characters.length; i++) {
             this.displayCharacterSkill(this.characters[i]);
+        }
+    }
+
+    displayCharactersOnBoard(){
+
+         for (let i = 0; i < this.characters.length; i++) {
+            console.log(this.board.board.find("#player_"+this.characters[i].id));
+            this.board.board.find("#player_"+this.characters[i].id).remove();
+            this.board.board.append(this.characters[i].getBoardDisplay());
         }
     }
 
@@ -165,3 +197,5 @@ class Game {
         return Math.floor(Math.random() * (max - min + 1)) + min;
     }
 }
+
+Game.TICK_PER_SECOND = 40;

@@ -11,8 +11,8 @@ class Zombie {
 
         this.tilePerSecond = 4 ;
 
-        this.speed = ( this.tilePerSecond * Board.TILE_SIZE) / Zombie.TICK_PER_SECOND ;
-        this.intervals = Math.floor( Zombie.TICK_PER_SECOND / this.tilePerSecond)+1;
+        this.speed = ( this.tilePerSecond * Board.TILE_SIZE) / Game.TICK_PER_SECOND ;
+        this.intervals = Math.floor( Game.TICK_PER_SECOND / this.tilePerSecond)+1;
         this.moves = [];
         this.board = board;
     }
@@ -107,7 +107,7 @@ class Zombie {
     		}
     		counter++;
     			
-    	}.bind(this), 1000/Zombie.TICK_PER_SECOND );
+    	}.bind(this), 1000/Game.TICK_PER_SECOND );
     }
 
 
@@ -151,4 +151,3 @@ class Zombie {
 }
 
 Zombie.COUNT = 0;
-Zombie.TICK_PER_SECOND = 60;

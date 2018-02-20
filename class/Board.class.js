@@ -125,6 +125,11 @@ class Board {
         this.board.append(table);
     };
 
+
+
+
+    // path finding algorithm using lee algorithm
+
     getPath(x1,y1,x2,y2){
         let b = [];
         for(let i = 0 ; i < Board.getSize() * Board.getSize(); i++ ){
@@ -221,7 +226,6 @@ class Board {
         }
     }
 
-    // path finding using lee algorithm
 
     colorPath(x1,y1,x2,y2){
         let path = this.getPath(x1,y1,x2,y2)
