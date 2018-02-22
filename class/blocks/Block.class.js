@@ -29,9 +29,6 @@ class Block {
         return null;
     }
 
-    startNight(controller) {
-    }
-
     /**
      * set the centers coordinates in pixel
      */

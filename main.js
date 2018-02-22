@@ -10,10 +10,15 @@ $(function () {
 
     let game, dragBloc;
 
-    gameLoop = new GameLoop();
+    //gameLoop = new GameLoop();
+
+
 
     game = new Game();
     game.start();
+
+    game.startNight();
+    game.startInterval();
 
     dragBloc = new Draggable(game.inventory, game.board);
     dragBloc.startDrag();
@@ -72,7 +77,7 @@ $(function () {
     });
 
     // todo : remove
-    $(document).mousemove(function () {
+    $(document).mousemove(function (event) {
         $('#mousex').val(event.x);
         $('#mousey').val(event.y);
     })

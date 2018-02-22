@@ -148,7 +148,7 @@ class Board {
 
             for(let i = 0; i < adjacentCells.length; i++){
                 let cell = board[adjacentCells[i]];
-                if (cell === null)
+                if (cell === null || cell == undefined)
                 {
                     console.log("rofl" +adjacentCells[i]);
                     continue;
@@ -233,12 +233,14 @@ class Board {
 
     }
 
+    /*
     startNight(zombieController) {
         $.each(this.blocks, function (i, block) {
             if (block)
                 block.startNight(zombieController);
         }.bind(this))
     }
+    */
 }
 
 Board.TILE_SIZE = 20;

@@ -15,7 +15,7 @@ class Game {
         this.zombieController = new ZombieController(this.board);
        
 
-        this.nightTurn();
+     
         //this.interval = null;
 
     }
@@ -62,12 +62,6 @@ class Game {
     }
 
 
-    nightTurn() {
-        this.board.colorPath(0, 0, 18, 7);
-        this.zombieController.setDestination(18, 7);
-        this.zombieController.startNight();
-        this.board.startNight(this.zombieController);
-    }
 
 
     /**
@@ -80,19 +74,26 @@ class Game {
         this.updateDisplay();
     }
 
-    nightTurn()
+    startNight()
     {
-        this.board.colorPath(0,0,18,7);
-        this.controller.setDestination(18,7);
-        this.controller.startNight()
-        
-        // player control
+        this.board.colorPath(0, 0, 18, 7);
 
-        setTimeout(function()
-        {
-
-        },1000/Game.TICK_PER_SECOND)
+        this.zombieController.initNight();
+        Game.FUNCTIONS.push(this.zombieController.moveZombies.bind(this.zombieController));
     }
+
+    startInterval()
+    {
+        setInterval(function()
+        {
+            for( let i = 0; i < Game.FUNCTIONS.length; i++)
+            {
+                Game.FUNCTIONS[i].call();
+            }
+        }.bind(this)
+        , Game.TICK_PER_SECOND);
+    }
+
 
     findTarget(board,character,zombies){
         
@@ -197,3 +198,6 @@ class Game {
 
 
 }
+
+Game.TICK_PER_SECOND = 1000/60;
+Game.FUNCTIONS = [];

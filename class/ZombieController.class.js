@@ -8,8 +8,7 @@ class ZombieController{
 
 	spawnZombies(){
 		this.zombiesCount = 5;
-        for (let i = 0; i < this.zombiesCount; i++)
-        {
+        for( var i = 0; i < this.zombiesCount ; i ++ ){
            this.spawnRandomZombie();
         }
 	}
@@ -18,53 +17,41 @@ class ZombieController{
 		let zombie = new Zombie(this.board);
         let index;
         do{
-            index = getRandom(0, Board.getSize() * Board.getSize() - 1)
-        } while (this.board.isObstacle(index) === true);
+        	index = this.getRandom(0,Board.getSize() * Board.getSize() -1)
+        }while(this.board.isObstacle(index) == true);
      
         zombie.setPosition(Board.getXFromIndex(index), Board.getYFromIndex(index));
         this.zombies.push(zombie);
         zombie.appendToBoard();
 	}
 
-    killZombie(zombie_id) {
-        let zombie = this.findZombie(zombie_id);
-        console.log(zombie);
-        zombie.removeFromBoard();
-        zombie = null;
+	getRandom(min, max){
+		return Math.floor(Math.random() * (max - min +1)) + min;
 	}
-
-    findZombie(zombie_id) {
-        let the_one;
-        $.each(this.zombies, function (i, z) {
-            if (z.id = zombie_id) {
-                the_one = z;
-                return false;
-            }
-        }.bind(this));
-        return the_one || null;
-    }
-
 
 	setDestination(x, y){
 		this.destx = x;
 		this.desty = y;
 	}
-
-	startNight(){
+	
+	initNight(){
 		this.spawnZombies();
-		this.moveZombies();
-        gameLoop.addAction(this);
+		this.setDestination(18, 7);
+        this.setZombiesDestination();
 	}
 
-    update(delta) {
-        $(this.zombies).each((i, zombie) => zombie.update(delta))
-    }
+	setZombiesDestination()
+	{
+		for( let i = 0; i < this.zombies.length ; i++){
+        	this.zombies[i].setDestination(this.board, this.destx, this.desty);
+
+        }
+	}
 
 	moveZombies()
 	{
-		for( let i = 0; i < this.zombies.length ; i++)
-        {
-        	this.zombies[i].setDestination(this.board, this.destx, this.desty);
+		for( let i = 0; i < this.zombies.length ; i++){
+        	this.zombies[i].move();
         }
 	}
 

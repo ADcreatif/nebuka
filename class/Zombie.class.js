@@ -13,11 +13,15 @@ class Zombie {
 
         this.speed = ( this.tilePerSecond * Board.TILE_SIZE) / Game.TICK_PER_SECOND ;
         this.intervals = Math.floor( Game.TICK_PER_SECOND / this.tilePerSecond)+1;
+
+        this.currentMove = null;
+        this.counter = 0;
         this.moves = [];
         this.board = board;
 
          this.health = 100;
          this.damages = 20;
+
     }
 
     setPosition(x, y){
@@ -131,32 +135,29 @@ class Zombie {
         this.counter++;
     };
 
-	/* move(){
-	 if(this.moves.length === 0)
-    		return;
+    move(){
 
-	 let func = this.moves.shift();
-	 let counter = 0;
-	 let timer =
-    	setInterval(function()
-    	{
+        if( this.currentMove == null && this.moves.length == 0 )
+            return;
 
-	 if( counter >= this.intervals  )
-    		{
-    			clearInterval(timer);
-    			this.smoothPosition();
-    			this.move();
-    		}
+        if( this.currentMove == null )
+            this.currentMove = this.moves.shift();
 
-    		else
-    		{
+        // move is finished : reset status
+        if( this.counter >= this.intervals)
+        {
+             this.smoothPosition();
+             this.currentMove = null;
+             this.counter = 0;
+        }
+        else
+        {
+            this.counter ++;
+            this.currentMove.call(this);
+        }
+    }
 
-    			func.call(this);
-    		}
-    		counter++;
 
-    	}.bind(this), 1000/Game.TICK_PER_SECOND );
-	 }*/
 
     setDestination(board, destx, desty){
         let path = board.getPath(this.x, this.y, destx, desty);
