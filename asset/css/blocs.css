@@ -64,6 +64,10 @@
     left:5px;
 }
 
+.dead:before {
+    content: "𒄃";
+}
+
 .player {
     border-radius: 50%;
     background-color: orange;

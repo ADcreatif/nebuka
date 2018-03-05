@@ -13,17 +13,16 @@ class Game {
         this.renderBoard = new RenderBoard(this.board);
         this.resources = new ResourceStock();
         this.zombieController = new ZombieController(this.board);
-       
 
-     
+
         //this.interval = null;
 
     }
 
-    setCharacterPosition(characterId, position){
+    setCharacterPosition(characterId, position) {
         let c = this.characters[characterId];
         c.position = position;
-       this.displayCharactersOnBoard();
+        this.displayCharactersOnBoard();
 
     }
 
@@ -31,7 +30,7 @@ class Game {
 
         this.displayCharactersOnBoard();
 
-        this.setCharacterPosition(0,50);
+        this.setCharacterPosition(0, 50);
         this.displayGameActions();
 
         // todo : removehere
@@ -61,12 +60,36 @@ class Game {
         this.actionDiv.append(nextTurn);
     }
 
+    /*******************************************************************
+     *
+     *                          THE LOOP
+     *
+     *******************************************************************/
+    startNight() {
+        this.board.colorPath(0, 0, 18, 7);
 
+        this.zombieController.initNight();
+        this.board.initNight(this.zombieController);
+        Game.FUNCTIONS.push(
+            this.zombieController.moveZombies.bind(this.zombieController),
+            this.board.activateDefences.bind(this.board)
+        );
+    }
 
+    startInterval() {
+        setInterval(function () {
+                for (let i = 0; i < Game.FUNCTIONS.length; i++) {
+                    Game.FUNCTIONS[i].call();
+                }
+            }.bind(this)
+            , Game.TICK_PER_SECOND);
+    }
 
-    /**
+    /*******************************************************************
+     *
      * TODO : move relatives functions to player's class
-     */
+     *
+     *******************************************************************/
     nextTurn() {
         this.turn++;
         this.calculateResearchPoints();
@@ -74,44 +97,22 @@ class Game {
         this.updateDisplay();
     }
 
-    startNight()
-    {
-        this.board.colorPath(0, 0, 18, 7);
+    findTarget(board, character, zombies) {
 
-        this.zombieController.initNight();
-        Game.FUNCTIONS.push(this.zombieController.moveZombies.bind(this.zombieController));
     }
-
-    startInterval()
-    {
-        setInterval(function()
-        {
-            for( let i = 0; i < Game.FUNCTIONS.length; i++)
-            {
-                Game.FUNCTIONS[i].call();
-            }
-        }.bind(this)
-        , Game.TICK_PER_SECOND);
-    }
-
-
-    findTarget(board,character,zombies){
-        
-    }
-
-  
-   
 
     updateDisplay() {
         this.displayGameData();
         this.displayCharactersStats();
 
     }
+
     executeTurnActions() {
         for (let i = 0; i < this.characters.length; i++) {
             this.characters[i].newTurnAction();
         }
     }
+
     calculateResearchPoints() {
         let points = 0;
         for (let i = 0; i < this.characters.length; i++) {
@@ -120,24 +121,26 @@ class Game {
 
         this.researchPoints += points;
     }
+
     displayCharactersStats() {
         this.charactersDiv.empty();
         for (let i = 0; i < this.characters.length; i++) {
             this.displayCharacterSkill(this.characters[i]);
         }
     }
-    displayCharactersOnBoard(){
 
-         for (let i = 0; i < this.characters.length; i++) {
-            console.log(this.board.board.find("#player_"+this.characters[i].id));
-            this.board.board.find("#player_"+this.characters[i].id).remove();
-            this.board.board.append(this.characters[i].getBoardDisplay());
+    displayCharactersOnBoard() {
+        for (let i = 0; i < this.characters.length; i++) {
+            // console.log(this.board.board.find("#player_" + this.characters[i].id));
+            this.board.dom.find("#player_" + this.characters[i].id).remove();
+            this.board.dom.append(this.characters[i].getBoardDisplay());
         }
     }
 
     displayCharacterSkill(character) {
         this.charactersDiv.append(character.getStatsDisplay());
     }
+
     getCharacterById(id) {
         for (let i = 0; i < this.characters.length; i++) {
             if (this.characters[i].id === id)
@@ -145,6 +148,7 @@ class Game {
         }
         return null;
     }
+
     learnSkill(characterId, skillId) {
         let char = this.getCharacterById(characterId);
         if (char !== null) {
@@ -152,6 +156,7 @@ class Game {
             char.learnSkill(skillId);
         }
     }
+
     doExploration(characterId) {
         let char = this.getCharacterById(characterId);
 
@@ -179,6 +184,7 @@ class Game {
 
         char.currentActionPoints -= 2;
     }
+
     getRandomResource() {
         let roll = getRoll100();
 
@@ -199,5 +205,5 @@ class Game {
 
 }
 
-Game.TICK_PER_SECOND = 1000/60;
+Game.TICK_PER_SECOND = 1000 / 60;
 Game.FUNCTIONS = [];

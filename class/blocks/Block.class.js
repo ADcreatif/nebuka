@@ -17,6 +17,10 @@ class Block {
         return 0;
     }
 
+    update() {
+    }
+
+
     static getMaterial() {
         return "";
     }

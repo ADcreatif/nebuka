@@ -5,9 +5,9 @@ class WoodTower extends Block {
     constructor(board) {
         super();
 
-        this.board = board;
+        this.dom = board;
 
-        this.damages = 20;
+        this.damages = 5;
         this.health = 130;
         this.range = 6;
 
@@ -43,16 +43,13 @@ class WoodTower extends Block {
 
     find_enemy() {
         let distance, closest;
-
         closest = null;
-
         $.each(this.zombieController.zombies, function (index, zombie) {
             distance = this.get_target_distance(zombie.currentx, zombie.currenty);
             if (closest === null || distance <= this.range * Board.getSize() && distance < this.get_target_distance(closest.currentx, closest.currenty)) {
                 closest = zombie;
             }
         }.bind(this));
-
         this.aim.target = closest;
     }
 
@@ -72,10 +69,10 @@ class WoodTower extends Block {
             return;
         }
         if (target.health <= 0) {
-            /*this.zombieController.killZombie(target.id);
+            this.zombieController.killZombie(target.id);
              this.aim.line.hide();
              this.aim.target = null;
-             return*/
+            return
         }
 
         this.aim.target.get_damage(this.damages);
@@ -86,16 +83,16 @@ class WoodTower extends Block {
         this.zombieController = zombieController;
         this.aim.line = this.draw_line();
         this.aim.target = null;
-        gameLoop.addAction(this);
     }
 
-    update(delta) {
-        if (this.aim.target === null) {
+    update() {
+        if (!this.aim.target) {
             this.find_enemy();
-        } else {
-            this.aim.line.show();
-            this.target_enemy();
+            return;
         }
+
+        this.aim.line.show();
+        this.target_enemy();
     }
 
     /**************************************

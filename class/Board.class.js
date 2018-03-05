@@ -10,17 +10,15 @@ class Board {
 
     constructor() {
         /**
-         * the DOM element containing <table> and cells
-         * @type {*}
+         * the Board, from DOM (<table>)
          */
-        this.board = $('#edit-board');
+        this.dom = $('#edit-board');
 
 
         /**
          * the blocks list by instance
          * @type {Array}
          */
-
         this.blocks = [];
 
         this.drawBoard();
@@ -45,7 +43,7 @@ class Board {
 
 
     getBlock(cellID) {
-        return this.board.find("#"+cellID);
+        return this.dom.find("#" + cellID);
     }
 
     isObstacle(id){
@@ -123,14 +121,13 @@ class Board {
             }
             table.append(tr)
         }
-        this.board.append(table);
+        this.dom.append(table);
     };
 
 
 
 
     // path finding algorithm using lee algorithm
-
     getPath(x1,y1,x2,y2){
         let board = [];
         for (let index = 0; index < Board.getSize() * Board.getSize(); index++) {
@@ -233,14 +230,35 @@ class Board {
 
     }
 
-    /*
-    startNight(zombieController) {
+    /**
+     * returns the id of a cell on the board. You can specify if you want the cell to be empty
+     * @param needEmptyCell bool whether the cell need to be empty
+     * @returns {int} the id of a cell
+     */
+    getRandomCell(needEmptyCell) {
+        let cell_id;
+        do {
+            cell_id = getRandom(0, Board.getSize() * Board.getSize() - 1)
+        } while (this.isObstacle(cell_id) === true && needEmptyCell);
+
+        return cell_id;
+    }
+
+    initNight(zombieController) {
         $.each(this.blocks, function (i, block) {
-            if (block)
+            if (block && typeof block.startNight === 'function') {
                 block.startNight(zombieController);
+            }
         }.bind(this))
     }
-    */
+
+    activateDefences() {
+        $.each(this.blocks, function (i, block) {
+            if (block)
+                block.update();
+        }.bind(this));
+    }
+
 }
 
 Board.TILE_SIZE = 20;

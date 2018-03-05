@@ -6,6 +6,8 @@ class Zombie {
         this.currenty = 0;
          this.id = Zombie.COUNT;
          Zombie.COUNT++;
+
+         // TODO : c'est quoi la différence entre display et div ? Et on va appeler l'elm associé this.dom ok ?
         this.display = $("<div class='zombie' id='"+this.getId()+"'></div>");
         this.div = null;
 
@@ -30,7 +32,7 @@ class Zombie {
     }
 
     appendToBoard(){
-    	this.board.board.append(this.display);
+        this.board.dom.append(this.display);
     	this.div = $("#"+this.getId());
 
     	this.currentx = this.x * Board.TILE_SIZE + 2;
@@ -47,7 +49,7 @@ class Zombie {
     }
 
     removeFromBoard() {
-        this.board.board.remove('#zombie_' + this.id);
+        this.board.dom.remove('#zombie_' + this.id);
     }
 
     smoothPosition(){
@@ -99,11 +101,9 @@ class Zombie {
     }
 
     moveRight(){
-    	
     	this.div.css("left" , this.currentx+"px");
     	this.currentx += this.speed ;
     	this.updatePosition();
-    	
     }
 
     moveLeft(){
@@ -137,10 +137,10 @@ class Zombie {
 
     move(){
 
-        if( this.currentMove == null && this.moves.length == 0 )
+        if (this.currentMove === null && this.moves.length === 0)
             return;
 
-        if( this.currentMove == null )
+        if (this.currentMove === null)
             this.currentMove = this.moves.shift();
 
         // move is finished : reset status
@@ -156,8 +156,6 @@ class Zombie {
             this.currentMove.call(this);
         }
     }
-
-
 
     setDestination(board, destx, desty){
         let path = board.getPath(this.x, this.y, destx, desty);
@@ -183,7 +181,6 @@ class Zombie {
             else if (currentIndex - Board.getSize() === next) {
     			this.moves.push(this.moveTop);
     		}
-    		
 
     		currentIndex = next;
     	}
@@ -193,8 +190,6 @@ class Zombie {
     	this.x = Math.round(this.currentx / Board.TILE_SIZE);
     	this.y = Math.round(this.currenty / Board.TILE_SIZE);
     }
-
-
 }
 
 Zombie.COUNT = 0;

@@ -26,7 +26,6 @@ function getRandom(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-
 function save_local_storage(key, data) {
     window.localStorage.setItem(key, JSON.stringify(data));
 }
