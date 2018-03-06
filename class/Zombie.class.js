@@ -7,8 +7,6 @@ class Zombie {
          this.id = Zombie.COUNT;
          Zombie.COUNT++;
 
-         // TODO : c'est quoi la différence entre display et div ? Et on va appeler l'elm associé this.dom ok ?
-        this.display = $("<div class='zombie' id='"+this.getId()+"'></div>");
          this.dom = null;
 
         this.tilePerSecond = 4 ;
@@ -32,7 +30,8 @@ class Zombie {
     }
 
     appendToBoard(){
-        this.board.dom.append(this.display);
+        let display = $("<div>").addClass('zombie').attr('id', this.getId());
+        this.board.dom.append(display);
         this.dom = $("#" + this.getId());
 
     	this.currentx = this.x * Board.TILE_SIZE + 2;
@@ -59,9 +58,9 @@ class Zombie {
     	this.appendToBoard();
     }
 
-    getDisplay(){
+    /*getDisplay(){
     	return this.display;
-    }
+     }*/
 
     getId(){
     	return "zombie_"+this.id;
@@ -76,10 +75,7 @@ class Zombie {
 
     get_damage(damages) {
         this.health -= damages;
-
         this.dom.blink('being_hurt');
-
-        //console.log(this.health);
     }
 
     /************************************************************************
