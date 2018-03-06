@@ -20,7 +20,7 @@ class ZombieController {
         let zombie_index = this.findZombie(zombie_id);
         let zombie = this.zombies[zombie_index];
         zombie.removeFromBoard();
-        zombie.div.addClass('dead');
+        zombie.dom.addClass('dead');
         this.zombies.splice(zombie_index, 1);
     }
 

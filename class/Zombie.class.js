@@ -9,7 +9,7 @@ class Zombie {
 
          // TODO : c'est quoi la différence entre display et div ? Et on va appeler l'elm associé this.dom ok ?
         this.display = $("<div class='zombie' id='"+this.getId()+"'></div>");
-        this.div = null;
+         this.dom = null;
 
         this.tilePerSecond = 4 ;
 
@@ -33,7 +33,7 @@ class Zombie {
 
     appendToBoard(){
         this.board.dom.append(this.display);
-    	this.div = $("#"+this.getId());
+        this.dom = $("#" + this.getId());
 
     	this.currentx = this.x * Board.TILE_SIZE + 2;
     	this.currenty = this.y * Board.TILE_SIZE + 2;
@@ -44,8 +44,8 @@ class Zombie {
     	if(this.y > 5)
     		this.currenty ++;
 
-        this.div.css("left", this.currentx + "px");
-        this.div.css("top", this.currenty + "px");
+        this.dom.css("left", this.currentx + "px");
+        this.dom.css("top", this.currenty + "px");
     }
 
     removeFromBoard() {
@@ -77,7 +77,7 @@ class Zombie {
     get_damage(damages) {
         this.health -= damages;
 
-        this.div.blink('being_hurt');
+        this.dom.blink('being_hurt');
 
         //console.log(this.health);
     }
@@ -89,25 +89,25 @@ class Zombie {
      ************************************************************************/
 
     moveBottom(){
-    	this.div.css("top" , this.currenty+"px");
+        this.dom.css("top", this.currenty + "px");
     	this.currenty += this.speed ;
     	this.updatePosition();
     }
 
     moveTop(){
-    	this.div.css("top" , this.currenty+"px");
+        this.dom.css("top", this.currenty + "px");
     	this.currenty -= this.speed ;
     	this.updatePosition();
     }
 
     moveRight(){
-    	this.div.css("left" , this.currentx+"px");
+        this.dom.css("left", this.currentx + "px");
     	this.currentx += this.speed ;
     	this.updatePosition();
     }
 
     moveLeft(){
-    	this.div.css("left" , this.currentx+"px");
+        this.dom.css("left", this.currentx + "px");
     	this.currentx -= this.speed ;
     	this.updatePosition();
     }

@@ -66,6 +66,9 @@
 
 .dead:before {
     content: "𒄃";
+    display: inline-block;
+    margin-left: -.5em;
+    margin-top: -.5em;
 }
 
 .player {
