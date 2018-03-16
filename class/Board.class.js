@@ -1,10 +1,4 @@
-/**
- * Created by Alan on 06/10/2017.
- */
-
 "use strict";
-
-
 
 class Board {
 
@@ -33,21 +27,32 @@ class Board {
         return y * Board.getSize() + x;
     }
 
-    static getXFromIndex(index){
-        return index % Board.getSize();
+    static getXFromIndex(cellID) {
+        return cellID % Board.getSize();
     }
 
-    static getYFromIndex(index){
-        return Math.floor(index / Board.getSize() ) ;
+    static getYFromIndex(cellID) {
+        return Math.floor(cellID / Board.getSize());
     }
 
 
-    getBlock(cellID) {
+    getCellDOM(cellID) {
         return this.dom.find("#" + cellID);
     }
 
-    isObstacle(id){
-        return this.getBlock(id).find("div").length > 0;
+    getBlockinCell(cellID) {
+        return this.blocks[cellID];
+    }
+
+    isOutOfBound(x, y) {
+        return x >= Board.getSize() ||
+            y >= Board.getSize() ||
+            x < 0 ||
+            y < 0
+    }
+
+    isOccupied(cellID) {
+        return this.getCellDOM(cellID).hasClass('occupied');
     }
     /**
      * Create a new block on board (ex, from inventory)
@@ -63,11 +68,70 @@ class Board {
 
         block.setPosition(x, y);
 
-        this.blocks[block.get_cell_id()] = block;
+        this.blocks[block.getCellID()] = block;
+        this.setOccupied(block);
 
-        $('#' + block.get_cell_id()).append(
+        $('#' + block.getCellID()).append(
             block.constructor.drawBlock(0)
         );
+    }
+
+    /**
+     * set .occupied class on cell which is actually occupied
+     * (usefull especialy with specials shaped blocs)
+     * @param   block {Block}
+     * **/
+    setOccupied(block) {
+        let coordX, coordY, posX, posY, shape, cells, origin;
+
+        // for one size blocks
+        if (block.numberOfCell() === 1) {
+            $('#' + Board.getIdFromCoord(block.x, block.y)).addClass('occupied');
+            return;
+        }
+
+        shape = block.getShape();
+        origin = block.getOrigin();
+        cells = [];
+
+        // for biggers blocks
+        for (coordY = 0; coordY < shape.length; coordY++) {
+            for (coordX = 0; coordX < shape.length; coordX++) {
+                posX = origin.x + coordX;
+                posY = origin.y + coordY;
+                cells.push('#' + Board.getIdFromCoord(posX, posY));
+            }
+        }
+        $(cells.toString()).addClass('occupied')
+    }
+
+    /**
+     * remove .occupied class on cell when dropped on board
+     * (usefull especialy with specials shaped blocs)
+     * @param   block {Block}
+     * **/
+    removeOccupied(block) {
+        let coordX, coordY, posX, posY, shape, cells, origin;
+
+        // for one size blocks
+        if (block.numberOfCell() === 1) {
+            $('#' + Board.getIdFromCoord(block.x, block.y)).removeClass('occupied');
+            return;
+        }
+
+        shape = block.getShape();
+        origin = block.getOrigin();
+        cells = [];
+
+        // for biggers blocks
+        for (coordY = 0; coordY < shape.length; coordY++) {
+            for (coordX = 0; coordX < shape.length; coordX++) {
+                posX = origin.x + coordX;
+                posY = origin.y + coordY;
+                cells.push('#' + Board.getIdFromCoord(posX, posY));
+            }
+        }
+        $(cells.toString()).removeClass('occupied')
     }
 
     removeBlock(blockID) {
@@ -82,14 +146,16 @@ class Board {
      */
     moveBlock(blockID, newX, newY) {
         let block =  this.blocks[blockID];
+
+        this.removeOccupied(block);
         block.setPosition(newX, newY);
         this.blocks[blockID] = null;
-        this.blocks[block.get_cell_id()] = block;
+        this.blocks[block.getCellID()] = block;
+
+        this.setOccupied(block)
     }
 
-    /**
-     * fill board with tiles at init
-     */
+    /** fill board with tiles at init **/
     initBoard() {
         for (let i in inBoard) {
             if (inBoard.hasOwnProperty(i)) {
@@ -98,9 +164,7 @@ class Board {
         }
     }
 
-    /**
-     * build board and cells at init()
-     */
+    /** build board and cells at init() */
     drawBoard() {
         let table = $('<table>');
         let cellID = 0;
@@ -124,10 +188,7 @@ class Board {
         this.dom.append(table);
     };
 
-
-
-
-    // path finding algorithm using lee algorithm
+    /** path finding algorithm using lee algorithm **/
     getPath(x1,y1,x2,y2){
         let board = [];
         for (let index = 0; index < Board.getSize() * Board.getSize(); index++) {
@@ -145,12 +206,12 @@ class Board {
 
             for(let i = 0; i < adjacentCells.length; i++){
                 let cell = board[adjacentCells[i]];
-                if (cell === null || cell == undefined)
+                if (cell === null || cell === undefined)
                 {
-                    console.log("rofl" +adjacentCells[i]);
+                    console.log("rofl" + adjacentCells[i]);
                     continue;
                 }
-                if(this.isObstacle(adjacentCells[i]))
+                if (this.isOccupied(adjacentCells[i]))
                     continue;
 
                 if(!cell.visited){
@@ -162,6 +223,7 @@ class Board {
                    
                 }
             }
+
             board[currentIndex].visited = true;
             currentIndex = visit.shift();
             test ++;
@@ -183,7 +245,7 @@ class Board {
             let min = 100000;
             let index = -1;
             for(let i = 0; i < adjacentCells.length; i++){
-                 if(this.isObstacle(adjacentCells[i]))
+                if (this.isOccupied(adjacentCells[i]))
                     continue;
                 if (min > board[adjacentCells[i]].distance && board[adjacentCells[i]].distance !== null) {
                     min = board[adjacentCells[i]].distance;
@@ -225,7 +287,7 @@ class Board {
     colorPath(x1,y1,x2,y2){
         let path = this.getPath(x1, y1, x2, y2);
         for (let index = 0; index < path.length; index++) {
-            this.getBlock(path[index]).addClass("path");
+            this.getCellDOM(path[index]).addClass("path");
         }
 
     }
@@ -239,7 +301,7 @@ class Board {
         let cell_id;
         do {
             cell_id = getRandom(0, Board.getSize() * Board.getSize() - 1)
-        } while (this.isObstacle(cell_id) === true && needEmptyCell);
+        } while (this.isOccupied(cell_id) === true && needEmptyCell);
 
         return cell_id;
     }

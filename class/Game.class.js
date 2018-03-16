@@ -202,7 +202,6 @@ class Game {
         }
     }
 
-
 }
 
 Game.TICK_PER_SECOND = 1000 / 60;

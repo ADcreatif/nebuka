@@ -134,14 +134,24 @@
     display: none;
 }
 
-/***************************** EDIT-BOARD *****************************/
+/*****************************    DRAG    *****************************/
 
+.occupied:before {
+    content: ".";
+    position: absolute;
+    /* font-weight: bold; */
+    /* font-size: 150%; */
+    z-index: 200;
+    line-height: 0;
+    top: 0;
+    left: 0;
+}
 .hoverBusy {
-    background-color: rgba(256, 0, 0, .3);
+    background-color: rgba(256, 0, 0, .6);
 }
 
 .hoverFree {
-    background-color: rgba(0, 256, 0, .3);
+    background-color: rgba(0, 256, 0, .6);
 }
 
 /***************************** RENDER-BOARD *****************************/

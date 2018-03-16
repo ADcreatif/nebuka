@@ -76,11 +76,17 @@ $(function () {
         game.updateDisplay();
     });
 
-    // todo : remove
+    /************************************************************
+     *
+     *           -------       DEBUG        -------
+     *
+     ************************************************************/
     $(document).mousemove(function (event) {
-        $('#mousex').val(event.x);
-        $('#mousey').val(event.y);
-    })
+        $('#mousex').val('x:' + event.clientX + ' y:' + event.clientY);
+    });
 
+    $('#edit-board').find('td').hover(function () {
+        $('#mousey').val('x:' + $(this).data('x') + ' y:' + $(this).data('y'))
+    })
 });
 

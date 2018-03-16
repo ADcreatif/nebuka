@@ -3,7 +3,7 @@ class Inventory
 	constructor(){
         this.stocks = {};
 
-        this.inventory = $('#toolbox');
+        this.dom = $('#toolbox');
 
         // todo : remove ressouces
         this.addBlock(Block.WOOD_WALL, 10);
@@ -35,8 +35,13 @@ class Inventory
         this.stocks[type].addBlock(parseInt(quantity));
     }
 
+    /**
+     * decrease the quantity in the inventory
+     * @param type {int} const Block.TYPE
+     * @param quantity {int}
+     */
     removeBlock(type, quantity) {
-        if(! this.stocks.hasOwnProperty(type)){
+        if (!this.stocks.hasOwnProperty(type)) {
             return;
         }
         this.stocks[type].removeBlock(parseInt(quantity));
@@ -60,6 +65,6 @@ class Inventory
     }
 
     displayInventory(){
-        this.inventory.empty().append(this.getBlockDisplay());
+        this.dom.empty().append(this.getBlockDisplay());
     }
 }

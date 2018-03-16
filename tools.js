@@ -1,6 +1,6 @@
 "use strict";
 
-function get_biggest_array_size(array) {
+function getBiggestArraySize(array) {
 
     let lengths = array.map(function (a) {
         return a.length;

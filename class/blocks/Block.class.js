@@ -3,6 +3,7 @@ class Block {
     constructor() {
         this.type = Block.getType();
         this.material = 0;
+        this.size = this.numberOfCell();
     }
 
     static getClass() {
@@ -20,12 +21,15 @@ class Block {
     update() {
     }
 
-
     static getMaterial() {
         return "";
     }
 
-    static getShape() {
+    setMaterial(newMaterial) {
+        this.material();
+    }
+
+    getShape() {
         return [[1]];
     }
 
@@ -33,13 +37,40 @@ class Block {
         return null;
     }
 
-    /**
-     * set the centers coordinates in pixel
-     */
-    set_center() {
-        let shape = this.constructor.getShape();
-        this.centerX = (get_biggest_array_size(shape) / 2 + this.x) * Board.getSize();
-        this.centerY = (shape.length / 2 + this.y) * Board.getSize();
+    /** sets the centers coordinates including shape */
+    setCenter() {
+        let shape = this.getShape();
+        this.centerX = Math.floor(getBiggestArraySize(shape) / 2 + this.x);
+        this.centerY = Math.floor(shape.length / 2 + this.y);
+    }
+
+    getOrigin() {
+        let shape = this.getShape();
+        this.originX = this.x - Math.floor(getBiggestArraySize(shape) / 2);
+        this.originY = this.y - Math.floor(shape.length / 2);
+        return {x: this.originX, y: this.originY};
+    }
+
+    getCenter() {
+        return {x: this.centerX, y: this.centerY};
+    }
+
+    getCenterInPixel() {
+        return {x: this.centerX * Board.getSize(), y: this.centerY * Board.getSize()};
+    }
+
+    numberOfCell() {
+        if (this.size)
+            return this.size;
+
+        let shape = this.getShape();
+        let count = 0;
+
+        $(shape).each(function () {
+            count += this.length;
+        });
+
+        return count;
     }
 
     /**
@@ -50,15 +81,11 @@ class Block {
     setPosition(x, y) {
         this.x = x;
         this.y = y;
-        this.set_center();
+        this.setCenter();
     }
 
-    get_cell_id() {
+    getCellID() {
         return Board.getIdFromCoord(this.x, this.y);
-    }
-
-    setMaterial(newMaterial) {
-        this.material();
     }
 
     static drawBlock(quantity) {
@@ -66,7 +93,6 @@ class Block {
             .addClass(this.getClass())
             .attr('draggable', true)
             .data('type', this.getType());
-
 
         if (quantity !== undefined) {
             block.append($('<span>').text(quantity))

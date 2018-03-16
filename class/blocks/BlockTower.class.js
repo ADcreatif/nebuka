@@ -5,8 +5,6 @@ class WoodTower extends Block {
     constructor(board) {
         super();
 
-        this.dom = board;
-
         this.damages = 5;
         this.health = 130;
         this.range = 6;
@@ -15,14 +13,14 @@ class WoodTower extends Block {
     }
 
     get_target_distance(x, y) {
-        return get_distance(this.centerX, this.centerY, x, y);
+        let center = this.getCenterInPixel();
+        return get_distance(center.x, center.y, x, y);
     }
-
 
     get_target_angle(x, y) {
-        return get_target_angle(this.centerX, this.centerY, x, y)
+        let center = this.getCenterInPixel();
+        return get_target_angle(center.x, center.y, x, y)
     }
-
 
     draw_line() {
         // todo: récupérer le vrai millieu de la pièce
@@ -30,7 +28,7 @@ class WoodTower extends Block {
             'top': '30px',
             'left': '30px'
         });
-        $('#' + this.get_cell_id()).children('div').append(line);
+        $('#' + this.getCellID()).children('div').append(line);
         return line;
     }
 
@@ -103,7 +101,7 @@ class WoodTower extends Block {
         return Block.WOOD_TOWER;
     }
 
-    static getShape() {
+    getShape() {
         return [
             [1, 1, 1],
             [1, 1, 1],

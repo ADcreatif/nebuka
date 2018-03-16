@@ -7,8 +7,11 @@ class Draggable {
         this.board = board;
         this.draggable = '[draggable]';
         this.droppable = '#edit-board td,#toolbox';
-        this.boardDOM = $('#edit-board');
-        this.inventoryDOM = $('#toolbox');
+        this.hoverCells = [];
+
+    }
+
+    onStartDrag(event, ui) {
     }
 
     onDrag(event, ui) {
@@ -16,93 +19,100 @@ class Draggable {
 
     onHover(event, ui) {
         if ($(event.target).is('td')) {
-            let type = ui.draggable.data('type');
             let x = $(event.target).data('x');
             let y = $(event.target).data('y');
-            this.canDropHere(type, x, y, true);
+            let blockType = $(ui.draggable).data('type');
+            this.canDropHere(blockType, x, y, true);
         }
     }
 
     onDrop(event, ui) {
         let target = $(event.target);
-        let item = $(ui.draggable);
-        let itemID = parseInt(item.parent().attr('id'));
-        let type = item.data('type');
+        let blockDOM = $(ui.draggable);
+        let blockID = parseInt(blockDOM.parent().attr('id'));
+        let blockType = blockDOM.data('type');
         let x = target.data('x');
         let y = target.data('y');
 
-        $(this.hiddenCells).removeClass();
 
-        //$(this.hiddenCells).each((a,b)=>$(b).removeClass());
-        if (!this.canDropHere(type, x, y))
+        this.clearHelpers();
+
+        if (!this.canDropHere(blockType, x, y)) {
             return false;
+        }
 
         if (target.is('#toolbox')) {
             // board -> toolbox
-            this.board.removeBlock(itemID);
-            item.parent().empty();
-            this.inventory.addBlock(type);
+            this.board.removeBlock(blockID);
+            blockDOM.parent().empty();
+            this.inventory.addBlock(blockType);
             this.inventory.displayInventory();
             this.setDraggable(this.draggable);
 
-        } else if (item.parent().is('#toolbox')) {
+        } else if (blockDOM.parent().is('#toolbox')) {
             // toolbox -> board
-            this.board.addBlock(type, x, y);
-            this.inventory.removeBlock(type, 1);
+            this.board.addBlock(blockType, x, y);
+            this.inventory.removeBlock(blockType, 1);
             this.inventory.displayInventory();
             this.setDraggable(this.draggable);
-
         } else {
             // board -> board
-            this.board.moveBlock(itemID, x, y);
-            item.appendTo(target);
+            this.board.moveBlock(blockID, x, y);
+            blockDOM.appendTo(target);
         }
+
     }
 
-    canDropHere(type, hoverX, hoverY, visual) {
-        // TODO : avoid self detection.
-        let shape = BlockFactory.getBlock(type).constructor.getShape();
-        let isFree = true;
-        visual = visual || false;
+    /** remove helpers on hovered classes **/
+    clearHelpers() {
+        $(this.hoverCells.toString()).removeClass('hoverBusy hoverFree');
+        this.hoverCells = [];
+    }
 
-        let block, coordX, coordY;
+    canDropHere(blockType, targetX, targetY, display) {
+        let cellDom, checkingX, checkingY, cellID, domClass;
 
-        // erase previous hovered cell
-        $(this.hiddenCells).each((a, b) => $(b).removeClass());
-        this.hiddenCells = [];
+        display = display || false;
+        let isOccupied = false;
+        let outOfBound = false;
 
-        // find central point
-        let origin = {
-            x: Math.floor(shape[0].length / 2),
-            y: Math.floor(shape.length / 2)
-        };
+        this.clearHelpers();
 
-        for (let x = 0; x < shape.length; x++) {
-            if (shape.hasOwnProperty(x)) {
-                for (let y = 0; y < shape.length; y++) {
-                    coordX = hoverX + x - origin.x;
-                    coordY = hoverY + y - origin.y;
+        let block = BlockFactory.getBlock(blockType);
+        let shape = block.getShape();
+        block.setPosition(targetX, targetY);
+        let origin = block.getOrigin();
 
-                    block = $('#' + Board.getIdFromCoord(coordX, coordY));
-                    this.hiddenCells.push(block);
+        for (let y = 0; y < shape.length; y++) {
+            for (let x = 0; x < getBiggestArraySize(shape); x++) {
+                checkingX = origin.x + x;
+                checkingY = origin.y + y;
 
-                    if (coordX >= Board.getSize() || coordY >= Board.getSize() || coordX < 0 || coordY < 0 || block.children().length) {
-                        isFree = false;
-                        if (visual)
-                            block.addClass('hoverBusy')
-                    } else if (visual) {
-                        block.addClass('hoverFree')
-                    }
+                cellID = Board.getIdFromCoord(checkingX, checkingY);
+                cellDom = $('#' + cellID);
+
+                if (this.board.isOutOfBound(checkingX, checkingY)) {
+                    outOfBound = true;
+                } else {
+                    this.hoverCells.push('#' + cellID);
+                }
+                if (this.board.isOccupied(cellID) || outOfBound) {
+                    isOccupied = true;
                 }
             }
         }
-        return isFree;
+        if (display) {
+            domClass = isOccupied ? 'hoverBusy' : 'hoverFree';
+            $(this.hoverCells.toString()).addClass(domClass);
+        }
+        return !isOccupied;
     }
 
     setDraggable(target) {
         $(target).draggable({
             //snap: this.droppable,
             helper: 'clone',
+            start: this.onStartDrag.bind(this),
             drag: this.onDrag.bind(this)
         });
     }
@@ -119,38 +129,3 @@ class Draggable {
         });
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
