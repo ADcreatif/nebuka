@@ -63,7 +63,7 @@ class Game {
         this.renderBoard.startRender();
         this.renderBoard.dom.show();
         this.board.dom.hide();
-        //this.renderBoard.colorPath(0, 0, 18, 7);
+        this.renderBoard.colorPath(0, 0, 18, 7);
         this.zombieController.initNight();
         this.renderBoard.initNight(this.zombieController);
         Game.LOOP_FUNCTION.push(

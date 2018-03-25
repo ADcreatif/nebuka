@@ -1,0 +1,297 @@
+@block: 20px;
+
+.block {
+	margin: 0 auto;
+}
+
+.block span {
+	display: none;
+}
+
+#inventory .block {
+	margin: @block;
+}
+
+#inventory .block span, #resources span {
+	font-size: 80%;
+	display: inline-block;
+	margin-right: -11px;
+	float: right;
+	margin-top: -8px;
+	background-color: rgba(0, 0, 255, 0.1);
+	color: white;
+	border-radius: 12px;
+	line-height: 1.6;
+	text-align: center;
+	padding: 0 6px;
+}
+
+#edit-board, #inventory {
+	.wall, .tower {
+		border-radius: 2px;
+		width: -1+@block;
+		height: -1+@block;
+	}
+	.steel_wall {
+		background-color: steelblue;
+		box-shadow: 2px 2px 2px #633100;
+		opacity: .8;
+	}
+
+	.wood_wall {
+		background-color: darkorange;
+		box-shadow: 2px 2px 2px #253b53;
+	}
+
+	.stone_wall {
+		background-color: grey;
+		box-shadow: 2px 2px 2px #253b53;
+	}
+
+	.wood_tower {
+		border-radius: 50%;
+		background-color: red;
+		box-shadow: 2px 2px 2px #253b53;
+	}
+}
+
+.zombie {
+	border-radius: 50%;
+	background-color: pink;
+	box-shadow: 2px 2px 2px #253b53;
+	width: 10px;
+	height: 10px;
+	position: absolute;
+	top: 5px;
+	left: 5px;
+}
+
+.dead:before {
+	content: "死";
+	display: inline-block;
+	margin-top: -.5em;
+}
+
+.player {
+	border-radius: 50%;
+	background-color: orange;
+	box-shadow: 2px 2px 2px #253b53;
+	width: 10px;
+	height: 10px;
+	position: absolute;
+	top: 5px;
+	left: 5px;
+}
+
+.being_hurt {
+	background-color: red;
+}
+
+#edit-board .tower {
+	border-radius: 50%;
+	width: 55px;
+	height: 55px;
+	background-color: red;
+	box-shadow: 2px 2px 2px #253b53;
+}
+
+#edit-board .tower {
+	position: absolute;
+	margin-top: -28px;
+	margin-left: -20px;
+}
+
+#resources > div {
+	display: inline-block;
+	margin-left: 1em;
+}
+
+.resource {
+	background-size: contain;
+	background-repeat: no-repeat;
+	width: 30px;
+	height: 30px;
+}
+
+.wood {
+	background-image: url(../images/resource/wood.svg);
+}
+
+.stone {
+	background-image: url(../images/resource/stone.svg);
+}
+
+.steel {
+	background-image: url(../images/resource/steel.svg);
+}
+
+/***************************** jQerury UI *****************************/
+.ui-draggable-dragging {
+	opacity: 0.5
+}
+
+.ui-draggable-dragging span {
+	display: none;
+}
+
+/*****************************    DRAG    *****************************/
+
+.occupied:before {
+	/*content: ".";
+	position: absolute;
+	z-index: 200;
+	line-height: 0;
+	top: 0;
+	left: 0;*/
+}
+
+.hoverBusy {
+	background-color: rgba(256, 0, 0, .6);
+}
+
+.hoverFree {
+	background-color: rgba(0, 256, 0, .6);
+}
+
+/***************************** RENDER-BOARD *****************************/
+
+#render-board td {
+	background: url('../images/texture/tileset.png') bottom right;
+}
+
+#render-board .wood_wall, & {
+	background-color: transparent;
+	box-shadow: none;
+}
+
+#render-board .wall.wood_wall {
+	&.alone {
+		background-position: -0*@block -4*@block
+	}
+	&.top {
+		background-position: -6*@block -6*@block
+	}
+	&.top-right {
+		background-position: -4*@block -2*@block
+	}
+	&.top-right-left {
+		background-position: -1*@block -2*@block
+	}
+	&.top-right-bottom {
+		background-position: -4*@block -5*@block
+	}
+	&.top-right-bottom-left {
+		background-position: -2*@block -4*@block
+	}
+	&.top-bottom {
+		background-position: -1*@block -1*@block
+	}
+	&.top-bottom-left {
+		background-position: -6*@block -5*@block
+	}
+	&.top-left {
+		background-position: -6*@block -2*@block
+	}
+	&.right {
+		background-position: -0*@block -0*@block
+	}
+	&.right-bottom {
+		background-position: -4*@block -0*@block
+	}
+	&.right-bottom-left {
+		background-position: -1*@block -0*@block
+	}
+	&.right-left {
+		background-position: -5*@block -0*@block
+	}
+	&.bottom-left {
+		background-position: -6*@block -0*@block
+	}
+	&.left {
+		background-position: -2*@block -0*@block
+	}
+	&.bottom {
+		background-position: -6*@block -4*@block
+	}
+}
+
+#render-board .wall.steel_wall {
+	&.alone {
+		background-position: -7*@block -4*@block
+	}
+	&.top {
+		background-position: -13*@block -6*@block
+	}
+	&.top-right {
+		background-position: -11*@block -2*@block
+	}
+	&.top-right-left {
+		background-position: -8*@block -2*@block
+	}
+	&.top-right-bottom {
+		background-position: -11*@block -5*@block
+	}
+	&.top-right-bottom-left {
+		background-position: -9*@block -4*@block
+	}
+	&.top-bottom {
+		background-position: -11*@block -1*@block
+	}
+	&.top-bottom-left {
+		background-position: -13*@block -5*@block
+	}
+	&.top-left {
+		background-position: -13*@block -2*@block
+	}
+	&.right {
+		background-position: -7*@block 0
+	}
+	&.right-bottom {
+		background-position: -11*@block 0
+	}
+	&.right-bottom-left {
+		background-position: -8*@block 0
+	}
+	&.right-left {
+		background-position: -12*@block 0
+	}
+	&.bottom-left {
+		background-position: -13*@block 0
+	}
+	&.left {
+		background-position: -9*@block 0
+	}
+	&.bottom {
+		background-position: -13*@block -4*@block
+	}
+}
+
+#render-board .tower.wood_tower {
+	&.right-bottom {
+		background-position: -0*@block -6*@block
+	}
+	&.right-bottom-left {
+		background-position: -1*@block -6*@block
+	}
+	&.bottom-left {
+		background-position: -2*@block -6*@block
+	}
+	&.top-right-bottom {
+		background-position: -0*@block -7*@block
+	}
+	&.top-right-bottom-left {
+		background-position: -1*@block -7*@block
+	}
+	&.top-bottom-left {
+		background-position: -2*@block -7*@block
+	}
+	&.top-right {
+		background-position: -0*@block -8*@block
+	}
+	&.top-right-left {
+		background-position: -1*@block -8*@block
+	}
+	&.top-left {
+		background-position: -2*@block -8*@block
+	}
+}
