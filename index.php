@@ -1,8 +1,26 @@
 <html>
     <head>
+        <link href="asset/css/blocks.less" rel="stylesheet/less"/>
+
+        <script>
+            less = {
+                env: "development",
+                async: false,
+                fileAsync: false,
+                poll: 1000,
+                functions: {},
+                dumpLineNumbers: "comments",
+                //relativeUrls: false,
+                //rootpath: ":/a.com/"
+            };
+        </script>
+        <script src="asset/js/less.min.js" type="text/javascript"></script>
+        <script>less.watch();</script>
+
+
         <link rel="stylesheet" href="asset/css/jquery-ui.min.css">
         <link rel="stylesheet" href="asset/css/ui.css">
-        <link rel="stylesheet" href="asset/css/blocs.css">
+        <!--link rel="stylesheet" href="asset/css/blocs.css"-->
         <link rel="stylesheet" href="asset/css/style.css">
 
         <script src="asset/js/jquery-3.2.1.min.js"></script>
@@ -37,12 +55,15 @@
     </head>
     <body>
     <main class="flex">
-            <div id="edit-board"></div>
-            <div id="render-board"></div>
+        <div id="board">
+            <table id="edit-board"></table>
+            <table id="render-board" class="hidden"></table>
+        </div>
         <div id="GUI">
-            <h3>Inventaire <span id="render" class="fright">Renderer<button id="export-board">Export</button><button
-                            id="toggle-render">Start</button></span></h3>
-            <div id="toolbox" class="collapse"></div>
+            <h3>Inventaire
+                <button class="fright button" id="start-night">START NIGHT(MARE)</button>
+            </h3>
+            <div id="inventory" class="collapse"></div>
             <h3>Boutique</h3>
             <div id="stock">
                 <ul id="blocks">
@@ -84,10 +105,13 @@
                 </div>
             <h3>Debug</h3>
             <div id="debug">
-                <input id="mousex">
-                <input id="mousey">
+                <input id="mousecell">
+                <input id="mousecoord">
+                <p>Renderer
+                    <button class="button" id="export-board">Export</button>
+                </p>
             </div>
         </div>
-        </main>
+    </main>
     </body>
 </html>

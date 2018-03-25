@@ -6,8 +6,7 @@ class Board {
         /**
          * the Board, from DOM (<table>)
          */
-        this.dom = $('#edit-board');
-
+        this.dom = $();
 
         /**
          * the blocks list by instance
@@ -15,8 +14,18 @@ class Board {
          */
         this.blocks = [];
 
-        this.drawBoard();
-        this.initBoard();
+        this.init();
+    }
+
+    init() {
+        this.dom = this.drawBoard('edit-board');
+
+        /** fill board with tiles at init **/
+        for (let i in inBoard) {
+            if (inBoard.hasOwnProperty(i)) {
+                this.addBlock(inBoard[i].type, inBoard[i].x, inBoard[i].y);
+            }
+        }
     }
 
     static getSize() {
@@ -35,13 +44,8 @@ class Board {
         return Math.floor(cellID / Board.getSize());
     }
 
-
     getCellDOM(cellID) {
         return this.dom.find("#" + cellID);
-    }
-
-    getBlockinCell(cellID) {
-        return this.blocks[cellID];
     }
 
     isOutOfBound(x, y) {
@@ -82,11 +86,11 @@ class Board {
      * @param   block {Block}
      * **/
     setOccupied(block) {
-        let coordX, coordY, posX, posY, shape, cells, origin;
+        let coordX, coordY, shape, cells, cell, origin, shapeX, shapeY;
 
         // for one size blocks
         if (block.numberOfCell() === 1) {
-            $('#' + Board.getIdFromCoord(block.x, block.y)).addClass('occupied');
+            this.getCellDOM(block.getCellID()).addClass('occupied');
             return;
         }
 
@@ -95,23 +99,25 @@ class Board {
         cells = [];
 
         // for biggers blocks
-        for (coordY = 0; coordY < shape.length; coordY++) {
-            for (coordX = 0; coordX < shape.length; coordX++) {
-                posX = origin.x + coordX;
-                posY = origin.y + coordY;
-                cells.push('#' + Board.getIdFromCoord(posX, posY));
+        for (shapeY = 0; shapeY < shape.length; shapeY++) {
+            for (shapeX = 0; shapeX < shape.length; shapeX++) {
+                coordX = origin.x + shapeX;
+                coordY = origin.y + shapeY;
+                cell = '#' + Board.getIdFromCoord(coordX, coordY);
+
+                cells.push(cell);
             }
         }
         $(cells.toString()).addClass('occupied')
     }
 
     /**
-     * remove .occupied class on cell when dropped on board
+     * remove .occupied class on cell when remove or move objexts on board
      * (usefull especialy with specials shaped blocs)
      * @param   block {Block}
      * **/
     removeOccupied(block) {
-        let coordX, coordY, posX, posY, shape, cells, origin;
+        let coordX, coordY, shape, cells, origin, shapeX, shapeY;
 
         // for one size blocks
         if (block.numberOfCell() === 1) {
@@ -124,14 +130,14 @@ class Board {
         cells = [];
 
         // for biggers blocks
-        for (coordY = 0; coordY < shape.length; coordY++) {
-            for (coordX = 0; coordX < shape.length; coordX++) {
-                posX = origin.x + coordX;
-                posY = origin.y + coordY;
-                cells.push('#' + Board.getIdFromCoord(posX, posY));
+        for (shapeY = 0; shapeY < shape.length; shapeY++) {
+            for (shapeX = 0; shapeX < shape.length; shapeX++) {
+                coordX = origin.x + shapeX;
+                coordY = origin.y + shapeY;
+                cells.push('#' + Board.getIdFromCoord(coordX, coordY));
             }
         }
-        $(cells.toString()).removeClass('occupied')
+        $(cells.toString()).removeClass('occupied');
     }
 
     removeBlock(blockID) {
@@ -155,27 +161,19 @@ class Board {
         this.setOccupied(block)
     }
 
-    /** fill board with tiles at init **/
-    initBoard() {
-        for (let i in inBoard) {
-            if (inBoard.hasOwnProperty(i)) {
-                this.addBlock(inBoard[i].type, inBoard[i].x, inBoard[i].y);
-            }
-        }
-    }
+
 
     /** build board and cells at init() */
-    drawBoard() {
-        let table = $('<table>');
+    drawBoard(selector) {
+        let table = $('<table>').attr('id', selector);
         let cellID = 0;
-        let tileY = 0;
+        let tileY;
         let tileX;
         let tr;
 
-        for (tileY; tileY < Board.getSize(); tileY++) {
+        for (tileY = 0; tileY < Board.getSize(); tileY++) {
             tr = $('<tr>');
-            tileX = 0;
-            for (tileX; tileX < Board.getSize(); tileX++) {
+            for (tileX = 0; tileX < Board.getSize(); tileX++) {
                 tr.append($('<td>')
                     .data('x', tileX)
                     .data('y', tileY)
@@ -185,149 +183,12 @@ class Board {
             }
             table.append(tr)
         }
-        this.dom.append(table);
+        $('#' + selector).replaceWith(table);
+        return table;
     };
 
-    /** path finding algorithm using lee algorithm **/
-    getPath(x1,y1,x2,y2){
-        let board = [];
-        for (let index = 0; index < Board.getSize() * Board.getSize(); index++) {
-            board[index] = {distance: null, visited: false};
-        }
-        let source =  Board.getIdFromCoord(x1, y1);
-        let dest = Board.getIdFromCoord(x2, y2);
-        let currentIndex = source;
 
-        board[currentIndex].distance = 0;
-        let visit = [];
-        let test = 0;
-        while (currentIndex !== dest) {
-            let adjacentCells = getAdjacentCells(currentIndex);
-
-            for(let i = 0; i < adjacentCells.length; i++){
-                let cell = board[adjacentCells[i]];
-                if (cell === null || cell === undefined)
-                {
-                    console.log("rofl" + adjacentCells[i]);
-                    continue;
-                }
-                if (this.isOccupied(adjacentCells[i]))
-                    continue;
-
-                if(!cell.visited){
-                    if (cell.distance === null || cell.distance > board[currentIndex].distance + 1) {
-                        cell.distance = board[currentIndex].distance + 1;
-                     
-                     visit.push(adjacentCells[i]);
-                   }
-                   
-                }
-            }
-
-            board[currentIndex].visited = true;
-            currentIndex = visit.shift();
-            test ++;
-            if( test > 100000)
-            {
-                console.log("wut");
-                break;
-            }
-
-        }
-
-        currentIndex = dest;
-        let path = [];
-        path.push(currentIndex);
-        test = 0;
-        while (currentIndex !== source) {
-            let adjacentCells = getAdjacentCells(currentIndex);
-
-            let min = 100000;
-            let index = -1;
-            for(let i = 0; i < adjacentCells.length; i++){
-                if (this.isOccupied(adjacentCells[i]))
-                    continue;
-                if (min > board[adjacentCells[i]].distance && board[adjacentCells[i]].distance !== null) {
-                    min = board[adjacentCells[i]].distance;
-                    index = adjacentCells[i];
-                    
-                }
-            }
-           
-            path.push(index);
-            currentIndex = index;
-            test++;
-            if(test > 100000)
-            {
-                console.log("wat");
-            }
-        }
-
-        return path;
-
-
-        function getAdjacentCells(id){
-            let cells = [];
-            if( id >= Board.getSize())
-                cells.push(id - Board.getSize());
-
-            if (id % Board.getSize() !== 0)
-                cells.push(id-1);
-
-            if ((id + 1) % Board.getSize() !== 0 && id < Board.getSize() * Board.getSize())
-                 cells.push(id+1);
-
-             if( id < Board.getSize() * ( Board.getSize() -1))
-                cells.push(id + Board.getSize());
-
-            return cells;
-        }
-    }
-
-    colorPath(x1,y1,x2,y2){
-        let path = this.getPath(x1, y1, x2, y2);
-        for (let index = 0; index < path.length; index++) {
-            this.getCellDOM(path[index]).addClass("path");
-        }
-
-    }
-
-    /**
-     * returns the id of a cell on the board. You can specify if you want the cell to be empty
-     * @param needEmptyCell bool whether the cell need to be empty
-     * @returns {int} the id of a cell
-     */
-    getRandomCell(needEmptyCell) {
-        let cell_id;
-        do {
-            cell_id = getRandom(0, Board.getSize() * Board.getSize() - 1)
-        } while (this.isOccupied(cell_id) === true && needEmptyCell);
-
-        return cell_id;
-    }
-
-    initNight(zombieController) {
-        $.each(this.blocks, function (i, block) {
-            if (block && typeof block.startNight === 'function') {
-                block.startNight(zombieController);
-            }
-        }.bind(this))
-    }
-
-    activateDefences() {
-        $.each(this.blocks, function (i, block) {
-            if (block)
-                block.update();
-        }.bind(this));
-    }
 
 }
 
 Board.TILE_SIZE = 20;
-
-
-// IDToCoord(id){
-//     let y = parseInt(id / this.size);
-//     let x = parseInt(id % this.size);
-//     return {x:x, y:y}
-// }

@@ -110,7 +110,7 @@ class WoodTower extends Block {
     }
 
     static getTypeClass() {
-        return "tower bloc wood_tower";
+        return "tower wood_tower";
     }
 
     static getCost() {

@@ -3,7 +3,7 @@ class Inventory
 	constructor(){
         this.stocks = {};
 
-        this.dom = $('#toolbox');
+        this.dom = $('#inventory');
 
         // todo : remove ressouces
         this.addBlock(Block.WOOD_WALL, 10);

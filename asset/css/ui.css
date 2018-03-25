@@ -23,39 +23,49 @@
     margin: 0;
 }
 
+.button {
+    padding: 5px 10px;
+    background-color: green;
+    border: 0;
+    border-radius: 5px;
+    color: white;
+    text-shadow: -1px 1px 1px black;
+}
+
+.button:hover {
+    text-shadow: 1px -1px 1px black;
+    box-shadow: inset -1px 1px 5px #555;
+}
+
 /*--------------------- EDIT BOARD ---------------------*/
 #edit-board{
     position: relative;
     overflow: visible;
 }
 
-#edit-board .path{
-    background-color:yellow;
-}
-
 #edit-board td {
     border: 1px solid #2dd00047;
 }
 
-
 /*--------------------- RENDERER ---------------------*/
 #render-board{
-    width: 600px;
+    position: relative;
     overflow: visible;
-    position: absolute;
-    display:none;
-}
-#render-board table{
+    zoom: .9;
 }
 
+#render-board .path {
+    background-color: #ffff0042;
+}
 
-/*--------------------- TOOLBOX ---------------------*/
-#toolbox{
+/*--------------------- inventory ---------------------*/
+#inventory {
     display:flex;
-    flex-basis: 290px;
-    background: green;
+    /* flex-basis: 290px; */
+    /* background: green; */
     flex-wrap: wrap;
     align-content: flex-start;
+    width: 100%;
 }
 
 /*------------------------ Ressource-------------------------*/

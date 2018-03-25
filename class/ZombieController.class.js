@@ -1,6 +1,7 @@
 class ZombieController {
-    constructor(board) {
-        this.board = board;
+    constructor(board, renderboard) {
+        //this.board = board;
+        this.renderboard = renderboard;
         this.zombies = [];
         this.destx = 0;
         this.desty = 0;
@@ -19,24 +20,22 @@ class ZombieController {
     killZombie(zombie_id) {
         let zombie_index = this.findZombie(zombie_id);
         let zombie = this.zombies[zombie_index];
-        zombie.removeFromBoard();
-        zombie.dom.addClass('dead');
+
+        zombie.showEpicDeadth();
         this.zombies.splice(zombie_index, 1);
     }
 
     /** @returns {int} the index of zombie in this zombie stack, -1 if not found **/
     findZombie(zombie_id) {
-        for (let index in this.zombies) {
-            if (this.zombies.hasOwnProperty(index) && zombie_id === this.zombies[index].id) {
+        for (let index = 0; index < this.zombies.length; index++)
+            if (zombie_id === this.zombies[index].id)
                 return parseInt(index);
-            }
-        }
         return -1;
     }
 
     spawnRandomZombie() {
-        let zombie = new Zombie(this.board);
-        let cell_id = this.board.getRandomCell(true);
+        let zombie = new Zombie(this.renderboard);
+        let cell_id = this.renderboard.getRandomCell(true);
 
         zombie.setPosition(Board.getXFromIndex(cell_id), Board.getYFromIndex(cell_id));
         this.zombies.push(zombie);
@@ -52,13 +51,11 @@ class ZombieController {
         this.spawnZombies();
         this.setDestination(18, 7);
         this.setZombiesDestination();
-        //this.board.activateDefences(this);
     }
 
     setZombiesDestination() {
         for (let i = 0; i < this.zombies.length; i++) {
-            this.zombies[i].setDestination(this.board, this.destx, this.desty);
-
+            this.zombies[i].setDestination(this.renderboard, this.destx, this.desty);
         }
     }
 

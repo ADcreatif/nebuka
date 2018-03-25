@@ -120,9 +120,6 @@ Block.STEEL_WALL = 3;
 Block.WOOD_TOWER = 11;
 
 class Wall extends Block {
-    static getTypeClass() {
-        return "";
-    }
 
     static getType() {
         return this.type;

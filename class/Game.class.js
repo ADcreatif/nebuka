@@ -12,22 +12,16 @@ class Game {
         this.board = new Board();
         this.renderBoard = new RenderBoard(this.board);
         this.resources = new ResourceStock();
-        this.zombieController = new ZombieController(this.board);
-
-
-        //this.interval = null;
-
+        this.zombieController = new ZombieController(this.board, this.renderBoard);
     }
 
     setCharacterPosition(characterId, position) {
         let c = this.characters[characterId];
         c.position = position;
         this.displayCharactersOnBoard();
-
     }
 
     start() {
-
         this.displayCharactersOnBoard();
 
         this.setCharacterPosition(0, 50);
@@ -66,20 +60,22 @@ class Game {
      *
      *******************************************************************/
     startNight() {
-        this.board.colorPath(0, 0, 18, 7);
-
+        this.renderBoard.startRender();
+        this.renderBoard.dom.show();
+        this.board.dom.hide();
+        //this.renderBoard.colorPath(0, 0, 18, 7);
         this.zombieController.initNight();
-        this.board.initNight(this.zombieController);
-        Game.FUNCTIONS.push(
+        this.renderBoard.initNight(this.zombieController);
+        Game.LOOP_FUNCTION.push(
             this.zombieController.moveZombies.bind(this.zombieController),
-            this.board.activateDefences.bind(this.board)
+            this.renderBoard.activateDefences.bind(this.renderBoard)
         );
     }
 
     startInterval() {
         setInterval(function () {
-                for (let i = 0; i < Game.FUNCTIONS.length; i++) {
-                    Game.FUNCTIONS[i].call();
+                for (let i = 0; i < Game.LOOP_FUNCTION.length; i++) {
+                    Game.LOOP_FUNCTION[i].call();
                 }
             }.bind(this)
             , Game.TICK_PER_SECOND);
@@ -132,8 +128,8 @@ class Game {
     displayCharactersOnBoard() {
         for (let i = 0; i < this.characters.length; i++) {
             // console.log(this.board.board.find("#player_" + this.characters[i].id));
-            this.board.dom.find("#player_" + this.characters[i].id).remove();
-            this.board.dom.append(this.characters[i].getBoardDisplay());
+            this.renderBoard.dom.find("#player_" + this.characters[i].id).remove();
+            this.renderBoard.dom.append(this.characters[i].getBoardDisplay());
         }
     }
 
@@ -205,4 +201,4 @@ class Game {
 }
 
 Game.TICK_PER_SECOND = 1000 / 60;
-Game.FUNCTIONS = [];
+Game.LOOP_FUNCTION = [];

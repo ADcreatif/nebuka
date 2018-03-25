@@ -5,8 +5,8 @@
 }
 
 body{
-    background: wheat;
-    font-family: "Verdana";
+    background: wheat url(../images/texture/grass.png);
+    font-family: Verdana, sans-serif;
 }
 
 ul {
@@ -21,7 +21,6 @@ main {
 
 table {
     border-collapse: collapse;
-    background: url(../images/texture/grass.png);
 }
 
 td {
@@ -29,7 +28,8 @@ td {
     height: 20px;
     border: 0;
     position: relative;
-    box-sizing: border-box;
+    /* box-sizing: border-box; */
+    /* border: 1px solid; */
 }
 
 .flex {
@@ -57,4 +57,8 @@ td {
     position: absolute;
     transform-origin: 0;
     width: 1000px;
+}
+
+.hidden {
+    display: none;
 }

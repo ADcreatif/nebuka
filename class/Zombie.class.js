@@ -9,7 +9,7 @@ class Zombie {
 
          this.dom = null;
 
-        this.tilePerSecond = 4 ;
+         this.tilePerSecond = 3;
 
         this.speed = ( this.tilePerSecond * Board.TILE_SIZE) / Game.TICK_PER_SECOND ;
         this.intervals = Math.floor( Game.TICK_PER_SECOND / this.tilePerSecond)+1;
@@ -34,8 +34,8 @@ class Zombie {
         this.board.dom.append(display);
         this.dom = $("#" + this.getId());
 
-    	this.currentx = this.x * Board.TILE_SIZE + 2;
-    	this.currenty = this.y * Board.TILE_SIZE + 2;
+        this.currentx = this.x * Board.TILE_SIZE;
+        this.currenty = this.y * Board.TILE_SIZE;
 
     	// necessary adjusment for margins
     	if(this.x > 5)
@@ -47,20 +47,17 @@ class Zombie {
         this.dom.css("top", this.currenty + "px");
     }
 
-    removeFromBoard() {
-        this.board.dom.remove('#zombie_' + this.id);
+    showEpicDeadth() {
+        this.dom.addClass('dead').fadeOut(3000, function () {
+            this.remove()
+        })
     }
 
     smoothPosition(){
-        this.currentx = Math.round(this.currentx / Board.TILE_SIZE) * Board.TILE_SIZE;
-        this.currenty = Math.round(this.currenty / Board.TILE_SIZE) * Board.TILE_SIZE;
-
+        this.currentx = Math.round(this.currentx / Board.TILE_SIZE) * Board.TILE_SIZE + 2;
+        this.currenty = Math.round(this.currenty / Board.TILE_SIZE) * Board.TILE_SIZE + 2;
     	this.appendToBoard();
     }
-
-    /*getDisplay(){
-    	return this.display;
-     }*/
 
     getId(){
     	return "zombie_"+this.id;
@@ -107,29 +104,6 @@ class Zombie {
     	this.currentx -= this.speed ;
     	this.updatePosition();
     }
-
-    next_move() {
-        this.func = this.moves.shift();
-    }
-
-    update(delta) {
-
-        if (this.counter === undefined) {
-            this.counter = 0;
-        }
-        if (this.moves.length === 0) {
-            l('remove');
-            gameLoop.removeAction(this);
-        }
-        console.log(this.counter + '/' + this.intervals);
-        if (this.counter >= this.intervals) {
-            this.smoothPosition();
-            this.counter = 0;
-        } else {
-            this.next_move();
-        }
-        this.counter++;
-    };
 
     move(){
 

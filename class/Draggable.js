@@ -6,7 +6,7 @@ class Draggable {
         this.inventory = inventory;
         this.board = board;
         this.draggable = '[draggable]';
-        this.droppable = '#edit-board td,#toolbox';
+        this.droppable = '#edit-board td,#inventory';
         this.hoverCells = [];
 
     }
@@ -41,16 +41,16 @@ class Draggable {
             return false;
         }
 
-        if (target.is('#toolbox')) {
-            // board -> toolbox
+        if (target.is('#inventory')) {
+            // board -> inventory
             this.board.removeBlock(blockID);
             blockDOM.parent().empty();
             this.inventory.addBlock(blockType);
             this.inventory.displayInventory();
             this.setDraggable(this.draggable);
 
-        } else if (blockDOM.parent().is('#toolbox')) {
-            // toolbox -> board
+        } else if (blockDOM.parent().is('#inventory')) {
+            // inventory -> board
             this.board.addBlock(blockType, x, y);
             this.inventory.removeBlock(blockType, 1);
             this.inventory.displayInventory();
