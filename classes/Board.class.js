@@ -13,19 +13,21 @@ class Board {
          * @type {Array}
          */
         this.blocks = [];
-
-        this.init();
     }
 
     init() {
-        this.dom = this.drawBoard('edit-board');
+        this.drawBoard('edit-board');
 
-        /** fill board with tiles at init **/
-        for (let i in inBoard) {
-            if (inBoard.hasOwnProperty(i)) {
-                this.addBlock(inBoard[i].type, inBoard[i].x, inBoard[i].y);
+        // loading saveGAme or default values
+        let datas = GameSave.loadDatas(GameSave.BOARD);
+        let board = datas.length > 0 ? datas : inBoard;
+
+        for (let i in board) {
+            if (board.hasOwnProperty(i) && board[i] !== null) {
+                this.addBlock(board[i].type, board[i].x, board[i].y);
             }
         }
+
     }
 
     static getSize() {
@@ -58,6 +60,7 @@ class Board {
     isOccupied(cellID) {
         return this.getCellDOM(cellID).hasClass('occupied');
     }
+
     /**
      * Create a new block on board (ex, from inventory)
      * @param type String the type of block to create
@@ -75,9 +78,9 @@ class Board {
         this.blocks[block.getCellID()] = block;
         this.setOccupied(block);
 
-        $('#' + block.getCellID()).append(
-            block.constructor.drawBlock(0)
-        );
+        let blockHTML = block.constructor.drawBlock(0);
+
+        $('#' + block.getCellID()).append(blockHTML);
     }
 
     /**
@@ -161,8 +164,6 @@ class Board {
         this.setOccupied(block)
     }
 
-
-
     /** build board and cells at init() */
     drawBoard(selector) {
         let table = $('<table>').attr('id', selector);
@@ -183,12 +184,8 @@ class Board {
             }
             table.append(tr)
         }
-        $('#' + selector).replaceWith(table);
-        return table;
+        this.dom = $('#' + selector).replaceWith(table);
     };
-
-
-
 }
 
 Board.TILE_SIZE = 20;

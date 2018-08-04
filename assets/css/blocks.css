@@ -7,22 +7,22 @@
 }
 
 #inventory .block {
-    margin: 20px;
+    margin: 10px;
 }
 
 #inventory .block span,
 #resources span {
-    font-size: 80%;
+    font-size: 70%;
     display: inline-block;
-    margin-right: -11px;
+    margin-right: -9px;
     float: right;
-    margin-top: -8px;
-    background-color: rgba(0, 0, 255, 0.1);
+    margin-top: -7px;
+    background-color: rgba(0, 0, 255, 0.6);
     color: white;
     border-radius: 12px;
-    line-height: 1.6;
     text-align: center;
-    padding: 0 6px;
+    width: 20px;
+    line-height: 1.8;
 }
 
 #edit-board .wall,

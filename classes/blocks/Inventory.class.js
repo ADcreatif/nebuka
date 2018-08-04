@@ -47,13 +47,6 @@ class Inventory
         this.stocks[type].removeBlock(parseInt(quantity));
     }
 
-    /*
-    initInventory(blockData){
-        for( let i = 0; i < blockData.length; i++) {
-            this.addBlock(blockData[i].type, blockData[i].quantity );
-        }
-    }
-     */
     getBlockDisplay(){
         let contents = $('<div>');
         for (let property in this.stocks) {

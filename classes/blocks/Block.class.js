@@ -1,8 +1,8 @@
+
 class Block {
 
     constructor() {
-        this.type = Block.getType();
-        this.material = 0;
+        this.type = this.constructor.getType();
         this.size = this.numberOfCell();
     }
 
@@ -15,18 +15,9 @@ class Block {
     }
 
     static getType() {
-        return 0;
     }
 
     update() {
-    }
-
-    static getMaterial() {
-        return "";
-    }
-
-    setMaterial(newMaterial) {
-        this.material();
     }
 
     getShape() {
@@ -94,6 +85,7 @@ class Block {
             .attr('draggable', true)
             .data('type', this.getType());
 
+        //console.log(this);
         if (quantity !== undefined) {
             block.append($('<span>').text(quantity))
         }
@@ -101,6 +93,12 @@ class Block {
         return block;
     }
 }
+
+Block.DEFAULT_BLOCK = 0;
+Block.WOOD_WALL = 1;
+Block.STONE_WALL = 2;
+Block.STEEL_WALL = 3;
+Block.WOOD_TOWER = 11;
 
 class Cost {
     constructor(wood, steel, stone) {
@@ -114,82 +112,3 @@ class Cost {
     }
 }
 
-Block.WOOD_WALL = 1;
-Block.STONE_WALL = 2;
-Block.STEEL_WALL = 3;
-Block.WOOD_TOWER = 11;
-
-class Wall extends Block {
-
-    static getType() {
-        return this.type;
-    }
-
-    static getMaterial() {
-        return this.material;
-    }
-
-    static getTypeClass() {
-        return "wall";
-    }
-
-    static getCost() {
-        return new Cost(1, 0, 0);
-    }
-
-    static drawBlock(quantity) {
-        let block = $('<div>')
-            .addClass(this.getClass())
-            .attr('draggable', true)
-            .data('type', this.getType());
-
-
-        if (quantity !== undefined) {
-            block.append($('<span>').text(quantity))
-        }
-
-        return block;
-    }
-}
-
-class WoodWall extends Wall {
-    static getType() {
-        return Block.WOOD_WALL;
-    }
-
-    static getTypeClass() {
-        return "wall wood_wall";
-    }
-
-    static getCost() {
-        return new Cost(0, 1, 0);
-    }
-}
-
-class StoneWall extends Wall {
-    static getType() {
-        return Block.STONE_WALL;
-    }
-
-    static getTypeClass() {
-        return "wall stone_wall";
-    }
-
-    static getCost() {
-        return new Cost(0, 0, 1);
-    }
-}
-
-class SteelWall extends Wall {
-    static getType() {
-        return Block.STEEL_WALL;
-    }
-
-    static getTypeClass() {
-        return "wall steel_wall";
-    }
-
-    static getCost() {
-        return new Cost(1, 0, 0);
-    }
-}

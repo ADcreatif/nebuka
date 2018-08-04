@@ -9,7 +9,10 @@ class Game {
         this.turn = 0;
 
         this.inventory = new Inventory;
+
         this.board = new Board();
+        this.board.init();
+
         this.renderBoard = new RenderBoard(this.board);
         this.resources = new ResourceStock();
         this.zombieController = new ZombieController(this.board, this.renderBoard);
@@ -22,10 +25,13 @@ class Game {
     }
 
     start() {
-        this.displayCharactersOnBoard();
 
+        // players
+        this.displayCharactersOnBoard();
         this.setCharacterPosition(0, 50);
-        this.displayGameActions();
+        $("#next-turn").click(function () {
+            this.nextTurn();
+        }.bind(this));
 
         // todo : removehere
         this.resources.addWood(7);
@@ -45,14 +51,6 @@ class Game {
         this.dataDiv.append($("<p> Research points " + this.researchPoints + "</p>"));
     }
 
-    displayGameActions() {
-        this.actionDiv.empty();
-
-        let nextTurn = $("<button>Next Turn</button>").click(function () {
-            this.nextTurn();
-        }.bind(this));
-        this.actionDiv.append(nextTurn);
-    }
 
     /*******************************************************************
      *
@@ -60,6 +58,8 @@ class Game {
      *
      *******************************************************************/
     startNight() {
+        GameSave.saveGame(this);
+
         this.renderBoard.startRender();
         this.renderBoard.dom.show();
         this.board.dom.hide();
@@ -93,14 +93,9 @@ class Game {
         this.updateDisplay();
     }
 
-    findTarget(board, character, zombies) {
-
-    }
-
     updateDisplay() {
         this.displayGameData();
         this.displayCharactersStats();
-
     }
 
     executeTurnActions() {
@@ -197,7 +192,6 @@ class Game {
             this.resources.addSteel(1);
         }
     }
-
 }
 
 Game.TICK_PER_SECOND = 1000 / 60;

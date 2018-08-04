@@ -6,13 +6,8 @@ class RenderBoard extends Board {
         super();
         this.cellList = [];
         this.board = board;
+        this.dom = $('#render-board').hide();
     }
-
-    init() {
-        this.dom = this.drawBoard('render-board');
-        this.dom.hide();
-    }
-
 
     /****************************************************************************************
      *
@@ -147,7 +142,6 @@ class RenderBoard extends Board {
         return cell_id;
     }
 
-
     /****************************************************************************************
      *
      *                                       RENDERING
@@ -225,9 +219,8 @@ class RenderBoard extends Board {
         let board = $.grep(this.cellList, n => n !== undefined && n !== null);
 
         if (json === true) {
-            board = JSON.stringify(board)
+            board = JSON.stringify(board);
         }
-        console.log(board);
     }
 
     /**

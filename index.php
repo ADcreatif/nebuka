@@ -1,6 +1,7 @@
 <html>
     <head>
-        <link href="asset/css/blocks.less" rel="stylesheet/less"/>
+        <link href="assets/css/blocks.less" rel="stylesheet/less"/>
+
 
         <script>
             less = {
@@ -14,51 +15,36 @@
                 //rootpath: ":/a.com/"
             };
         </script>
-        <script src="asset/js/less.min.js" type="text/javascript"></script>
+        <script src="assets/js/less.min.js" type="text/javascript"></script>
         <script>less.watch();</script>
 
 
-        <link rel="stylesheet" href="asset/css/jquery-ui.min.css">
-        <link rel="stylesheet" href="asset/css/ui.css">
-        <!--link rel="stylesheet" href="asset/css/blocs.css"-->
-        <link rel="stylesheet" href="asset/css/style.css">
+        <link rel="stylesheet" href="assets/css/jquery-ui.min.css">
+        <link rel="stylesheet" href="assets/css/ui.css">
+        <!--link rel="stylesheet" href="assets/css/blocs.css"-->
+        <link rel="stylesheet" href="assets/css/style.css">
 
-        <script src="asset/js/jquery-3.2.1.min.js"></script>
-        <script src="asset/js/jquery-ui.min.js"></script>
+        <script src="assets/js/jquery-3.2.1.min.js"></script>
+        <script src="assets/js/jquery-ui.min.js"></script>
 
         <script src="datas.js"></script>
         <script src="tools.js"></script>
 
-        <script src="class/Zombie.class.js"></script>
-        <script src="class/ZombieController.class.js"></script>
-        <script src="class/Resource.class.js"></script>
-        <script src="class/ResourceStock.class.js"></script>
+        <!-- autoloading js classes -->
+        <?php include 'autoload.php' ?>
 
-        <script src="class/player/SkillTree.class.js"></script>
-        <script src="class/player/Skill.class.js"></script>
-        <script src="class/player/Character.class.js"></script>
-
-        <script src="class/GameLoop.class.js"></script>
-        <script src="class/Game.class.js"></script>
-
-        <script src="class/blocks/Block.class.js"></script>
-        <script src="class/blocks/BlockTower.class.js"></script>
-        <script src="class/blocks/BlockFactory.class.js"></script>
-        <script src="class/blocks/Stock.class.js"></script>
-        <script src="class/blocks/Inventory.class.js"></script>
-
-        <script src="class/Board.class.js"></script>
-        <script src="class/RenderBoard.class.js"></script>
-        <script src="class/Draggable.js"></script>
         <script src="plugin/jquery.collapse.js"></script>
-        <script src="main.js"></script>
     </head>
     <body>
     <main class="flex">
+        <!-- BOARD -->
         <div id="board">
             <table id="edit-board"></table>
             <table id="render-board" class="hidden"></table>
         </div>
+
+
+        <!-- TOOLBAR -->
         <div id="GUI">
             <h3>Inventaire
                 <button class="fright button" id="start-night">START NIGHT(MARE)</button>
@@ -95,7 +81,9 @@
                     </li>
                 </ul>
             </div>
-            <h3>Personnages</h3>
+            <h3>Personnages
+                <button class="fright button" id="next-turn">Next Turn</button>
+            </h3>
             <div id="characters">
                 <div>
                     <p id="data"></p>
@@ -113,5 +101,7 @@
             </div>
         </div>
     </main>
+
+    <script src="main.js"></script>
     </body>
 </html>
