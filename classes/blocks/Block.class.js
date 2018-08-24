@@ -4,14 +4,13 @@ class Block {
     constructor() {
         this.type = this.constructor.getType();
         this.size = this.numberOfCell();
+        this.class = this.constructor.getClass();
+        this.x = 0;
+        this.y = 0;
     }
 
     static getClass() {
-        return 'block ' + this.getTypeClass();
-    }
-
-    static getTypeClass() {
-        return "";
+        return 'block ';
     }
 
     static getType() {
@@ -35,19 +34,15 @@ class Block {
         this.centerY = Math.floor(shape.length / 2 + this.y);
     }
 
+    getCenterInPixel() {
+        return {x: this.centerX * Board.TILE_SIZE, y: this.centerY * Board.TILE_SIZE};
+    }
+
     getOrigin() {
         let shape = this.getShape();
         this.originX = this.x - Math.floor(getBiggestArraySize(shape) / 2);
         this.originY = this.y - Math.floor(shape.length / 2);
         return {x: this.originX, y: this.originY};
-    }
-
-    getCenter() {
-        return {x: this.centerX, y: this.centerY};
-    }
-
-    getCenterInPixel() {
-        return {x: this.centerX * Board.getSize(), y: this.centerY * Board.getSize()};
     }
 
     numberOfCell() {
@@ -79,17 +74,19 @@ class Block {
         return Board.getIdFromCoord(this.x, this.y);
     }
 
+    getCellClass() {
+        return '.cell_' + this.getCellID();
+    }
+
     static drawBlock(quantity) {
         let block = $('<div>')
             .addClass(this.getClass())
             .attr('draggable', true)
             .data('type', this.getType());
 
-        //console.log(this);
         if (quantity !== undefined) {
             block.append($('<span>').text(quantity))
         }
-
         return block;
     }
 }

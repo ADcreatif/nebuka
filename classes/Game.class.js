@@ -10,12 +10,14 @@ class Game {
 
         this.inventory = new Inventory;
 
+        // crée le plateau et positionne les blocs
         this.board = new Board();
         this.board.init();
 
+        // crée le plateau de rendu
         this.renderBoard = new RenderBoard(this.board);
         this.resources = new ResourceStock();
-        this.zombieController = new ZombieController(this.board, this.renderBoard);
+        this.zombieController = new ZombieController(this.renderBoard);
     }
 
     setCharacterPosition(characterId, position) {
@@ -25,7 +27,6 @@ class Game {
     }
 
     start() {
-
         // players
         this.displayCharactersOnBoard();
         this.setCharacterPosition(0, 50);
@@ -61,9 +62,8 @@ class Game {
         GameSave.saveGame(this);
 
         this.renderBoard.startRender();
-        this.renderBoard.dom.show();
-        this.board.dom.hide();
-        this.renderBoard.colorPath(0, 0, 18, 7);
+
+        this.renderBoard.colorPath(0, 0, 5, 3);
         this.zombieController.initNight();
         this.renderBoard.initNight(this.zombieController);
         Game.LOOP_FUNCTION.push(

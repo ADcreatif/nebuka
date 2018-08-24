@@ -18,10 +18,22 @@ $(function () {
     dragBloc = new Draggable(game.inventory, game.board);
     dragBloc.startDrag();
 
-    $('#GUI').accordion({
+
+    /*----------------------------------------
+     TOOLBOX at right of screen display
+     ----------------------------------------*/
+    $('#GUI').find('.accordion').accordion({
         collapsible: true,
         event: "click tap",
-        heightStyle: "content"
+        heightStyle: "fill"
+    });
+    $('#GUI').hover(function () {
+        $('#GUI').removeClass('collapsed');
+    }).mouseleave(function () {
+        $('#GUI').addClass('collapsed');
+    });
+    $('#GUI-TOGGLE').click(function () {
+        $('#GUI').toggleClass('pinned');
     });
 
     // start Night

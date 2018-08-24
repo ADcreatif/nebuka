@@ -12,7 +12,8 @@ class Board {
          * the blocks list by instance
          * @type {Array}
          */
-        this.blocks = [];
+        this.blocks = new Array(Board.TILE_QUANTITY * Board.TILE_QUANTITY);
+        this.blocks.fill(null);
     }
 
     init() {
@@ -27,38 +28,36 @@ class Board {
                 this.addBlock(board[i].type, board[i].x, board[i].y);
             }
         }
-
-    }
-
-    static getSize() {
-        return Board.TILE_SIZE;
     }
 
     static getIdFromCoord(x, y) {
-        return y * Board.getSize() + x;
+        return y * Board.TILE_QUANTITY + x;
     }
 
     static getXFromIndex(cellID) {
-        return cellID % Board.getSize();
+        return cellID % Board.TILE_QUANTITY;
     }
 
     static getYFromIndex(cellID) {
-        return Math.floor(cellID / Board.getSize());
+        return Math.floor(cellID / Board.TILE_QUANTITY);
     }
 
     getCellDOM(cellID) {
-        return this.dom.find("#" + cellID);
+        return this.dom.find(".cell_" + cellID);
     }
 
     isOutOfBound(x, y) {
-        return x >= Board.getSize() ||
-            y >= Board.getSize() ||
+        return x >= Board.TILE_QUANTITY ||
+            y >= Board.TILE_QUANTITY ||
             x < 0 ||
             y < 0
     }
 
     isOccupied(cellID) {
-        return this.getCellDOM(cellID).hasClass('occupied');
+        //console.log(cellID,  this.blocks[cellID] === null)
+        if (this.blocks[cellID] !== null)
+            console.log(this.blocks[cellID]);
+        return this.blocks[cellID] !== null;
     }
 
     /**
@@ -69,18 +68,13 @@ class Board {
      */
     addBlock(type, x, y) {
         let block = BlockFactory.getBlock(type);
-
         if( block === null)
             return;
-
         block.setPosition(x, y);
-
         this.blocks[block.getCellID()] = block;
         this.setOccupied(block);
-
         let blockHTML = block.constructor.drawBlock(0);
-
-        $('#' + block.getCellID()).append(blockHTML);
+        this.dom.find(block.getCellClass()).append(blockHTML);
     }
 
     /**
@@ -89,29 +83,20 @@ class Board {
      * @param   block {Block}
      * **/
     setOccupied(block) {
-        let coordX, coordY, shape, cells, cell, origin, shapeX, shapeY;
-
-        // for one size blocks
-        if (block.numberOfCell() === 1) {
-            this.getCellDOM(block.getCellID()).addClass('occupied');
-            return;
-        }
-
+        let coordX, coordY, cells, shape, origin;
+        cells = [];
         shape = block.getShape();
         origin = block.getOrigin();
-        cells = [];
 
-        // for biggers blocks
-        for (shapeY = 0; shapeY < shape.length; shapeY++) {
-            for (shapeX = 0; shapeX < shape.length; shapeX++) {
+        // for special shapes blocks
+        for (let shapeY = 0; shapeY < shape.length; shapeY++) {
+            for (let shapeX = 0; shapeX < shape.length; shapeX++) {
                 coordX = origin.x + shapeX;
                 coordY = origin.y + shapeY;
-                cell = '#' + Board.getIdFromCoord(coordX, coordY);
-
-                cells.push(cell);
+                cells.push(this.getCellDOM(Board.getIdFromCoord(coordX, coordY)));
             }
         }
-        $(cells.toString()).addClass('occupied')
+        $.each(cells, (i, cell) => $(cell).addClass('occupied'));
     }
 
     /**
@@ -120,27 +105,21 @@ class Board {
      * @param   block {Block}
      * **/
     removeOccupied(block) {
-        let coordX, coordY, shape, cells, origin, shapeX, shapeY;
+        let coordX, coordY, cells, shape, origin;
 
-        // for one size blocks
-        if (block.numberOfCell() === 1) {
-            $('#' + Board.getIdFromCoord(block.x, block.y)).removeClass('occupied');
-            return;
-        }
-
+        cells = [];
         shape = block.getShape();
         origin = block.getOrigin();
-        cells = [];
 
-        // for biggers blocks
-        for (shapeY = 0; shapeY < shape.length; shapeY++) {
-            for (shapeX = 0; shapeX < shape.length; shapeX++) {
+        // for special shapes blocks
+        for (let shapeY = 0; shapeY < shape.length; shapeY++) {
+            for (let shapeX = 0; shapeX < shape.length; shapeX++) {
                 coordX = origin.x + shapeX;
                 coordY = origin.y + shapeY;
-                cells.push('#' + Board.getIdFromCoord(coordX, coordY));
+                cells.push(this.getCellDOM(Board.getIdFromCoord(coordX, coordY)));
             }
         }
-        $(cells.toString()).removeClass('occupied');
+        $.each(cells, (i, cell) => $(cell).removeClass('occupied'));
     }
 
     removeBlock(blockID) {
@@ -154,13 +133,11 @@ class Board {
      * @param newY Int
      */
     moveBlock(blockID, newX, newY) {
-        let block =  this.blocks[blockID];
-
+        let block = this.blocks[blockID];
         this.removeOccupied(block);
         block.setPosition(newX, newY);
         this.blocks[blockID] = null;
         this.blocks[block.getCellID()] = block;
-
         this.setOccupied(block)
     }
 
@@ -172,20 +149,23 @@ class Board {
         let tileX;
         let tr;
 
-        for (tileY = 0; tileY < Board.getSize(); tileY++) {
+        for (tileY = 0; tileY < Board.TILE_QUANTITY; tileY++) {
             tr = $('<tr>');
-            for (tileX = 0; tileX < Board.getSize(); tileX++) {
+            for (tileX = 0; tileX < Board.TILE_QUANTITY; tileX++) {
                 tr.append($('<td>')
                     .data('x', tileX)
                     .data('y', tileY)
-                    .attr('id', cellID)
+                    .data('id', cellID)
+                    .addClass('cell_' + cellID)
                 );
                 cellID++;
             }
             table.append(tr)
         }
-        this.dom = $('#' + selector).replaceWith(table);
+        $('#' + selector).replaceWith(table);
+        this.dom = $('#' + selector);
     };
-}
 
-Board.TILE_SIZE = 20;
+}
+Board.TILE_QUANTITY = 20;
+Board.TILE_SIZE = 40;

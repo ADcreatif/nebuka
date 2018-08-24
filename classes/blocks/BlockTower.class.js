@@ -44,7 +44,7 @@ class WoodTower extends Block {
         closest = null;
         $.each(this.zombieController.zombies, function (index, zombie) {
             distance = this.get_target_distance(zombie.currentx, zombie.currenty);
-            if (closest === null || distance <= this.range * Board.getSize() && distance < this.get_target_distance(closest.currentx, closest.currenty)) {
+            if (closest === null || distance <= this.range * Board.TILE_SIZE && distance < this.get_target_distance(closest.currentx, closest.currenty)) {
                 closest = zombie;
             }
         }.bind(this));
@@ -56,12 +56,12 @@ class WoodTower extends Block {
 
         target = this.aim.target;
         //todo il te manque une case....
-        x = target.currentx + Board.getSize();
-        y = target.currenty + Board.getSize();
+        x = target.currentx + Board.TILE_SIZE;
+        y = target.currenty + Board.TILE_SIZE;
         this.aim.angle = this.get_target_angle(x, y);
         this.aim.distance = this.get_target_distance(x, y);
 
-        if (this.aim.distance > this.range * Board.getSize()) {
+        if (this.aim.distance > this.range * Board.TILE_SIZE) {
             this.aim.line.hide();
             this.aim.target = null;
             return;
@@ -109,7 +109,7 @@ class WoodTower extends Block {
         ];
     }
 
-    static getTypeClass() {
+    static getClass() {
         return "tower wood_tower";
     }
 

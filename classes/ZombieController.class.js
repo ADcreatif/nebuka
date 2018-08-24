@@ -1,6 +1,5 @@
 class ZombieController {
-    constructor(board, renderboard) {
-        //this.board = board;
+    constructor(renderboard) {
         this.renderboard = renderboard;
         this.zombies = [];
         this.destx = 0;
@@ -35,11 +34,12 @@ class ZombieController {
 
     spawnRandomZombie() {
         let zombie = new Zombie(this.renderboard);
-        let cell_id = this.renderboard.getRandomCell(true);
+        let cellID = this.renderboard.getRandomCell(true);
 
-        zombie.setPosition(Board.getXFromIndex(cell_id), Board.getYFromIndex(cell_id));
+        zombie.setPosition(Board.getXFromIndex(cellID), Board.getYFromIndex(cellID));
         this.zombies.push(zombie);
         zombie.appendToBoard();
+        console.log('aa');
     }
 
     setDestination(x, y) {
@@ -49,7 +49,7 @@ class ZombieController {
 
     initNight() {
         this.spawnZombies();
-        this.setDestination(18, 7);
+        this.setDestination(5, 3);
         this.setZombiesDestination();
     }
 

@@ -141,14 +141,14 @@ class Zombie {
             if (currentIndex + 1 === next) {
     			this.moves.push(this.moveRight);
     		}
-            else if (currentIndex + Board.getSize() === next) {
+            else if (currentIndex + Board.TILE_QUANTITY === next) {
     			this.moves.push(this.moveBottom);
     		}
             else if (currentIndex - 1 === next) {
     			console.log("left");
     			this.moves.push(this.moveLeft);
     		}
-            else if (currentIndex - Board.getSize() === next) {
+            else if (currentIndex - Board.TILE_QUANTITY === next) {
     			this.moves.push(this.moveTop);
     		}
 

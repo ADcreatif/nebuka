@@ -1,7 +1,7 @@
 class Wall extends Block {
 
-    static getTypeClass() {
-        return "wall";
+    static getClass() {
+        return "block wall";
     }
 
     static getCost() {
@@ -15,8 +15,8 @@ class WoodWall extends Wall {
         return Block.WOOD_WALL;
     }
 
-    static getTypeClass() {
-        return "wall wood_wall";
+    static getClass() {
+        return "block wall wood_wall";
     }
 
     static getCost() {
@@ -29,8 +29,8 @@ class StoneWall extends Wall {
         return Block.STONE_WALL;
     }
 
-    static getTypeClass() {
-        return "wall stone_wall";
+    static getClass() {
+        return "block wall stone_wall";
     }
 
     static getCost() {
@@ -43,8 +43,8 @@ class SteelWall extends Wall {
         return Block.STEEL_WALL;
     }
 
-    static getTypeClass() {
-        return "wall steel_wall";
+    static getClass() {
+        return "block wall steel_wall";
     }
 
     static getCost() {

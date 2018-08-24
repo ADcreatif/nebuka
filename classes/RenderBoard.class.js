@@ -4,9 +4,9 @@ class RenderBoard extends Board {
 
     constructor(board) {
         super();
-        this.cellList = [];
         this.board = board;
-        this.dom = $('#render-board').hide();
+        this.dom = $('#render-board');
+        this.drawBoard('render-board');
     }
 
     /****************************************************************************************
@@ -33,24 +33,35 @@ class RenderBoard extends Board {
 
     /** path finding algorithm using lee algorithm **/
     getPath(x1, y1, x2, y2) {
-        let board = [];
-        for (let index = 0; index < Board.getSize() * Board.getSize(); index++) {
+        let board = new Array(Board.TILE_QUANTITY * Board.TILE_QUANTITY);
+        board.fill({distance: null, visited: false});
+
+        /*let board = [];
+         for (let index = 0; index < Board.TILE_QUANTITY * Board.TILE_QUANTITY; index++) {
             board[index] = {distance: null, visited: false};
-        }
+         }*/
+
         let source = Board.getIdFromCoord(x1, y1);
         let dest = Board.getIdFromCoord(x2, y2);
         let currentIndex = source;
 
+        console.log(currentIndex, source, x1, y1, x2, y2);
+        if (currentIndex === undefined) {
+            currentIndex = 0;
+            console.log(source, x1, x2);
+            console.log(this.board);
+        }
+
         board[currentIndex].distance = 0;
         let visit = [];
         let test = 0;
-        while (currentIndex !== dest) {
-            let adjacentCells = getAdjacentCells(currentIndex);
+        do {
+            let adjacentCells = this.getAdjacentCells(currentIndex);
 
             for (let i = 0; i < adjacentCells.length; i++) {
                 let cell = board[adjacentCells[i]];
                 if (cell === null || cell === undefined) {
-                    console.log("rofl" + adjacentCells[i]);
+                    console.log("rofl, cell unknown" + adjacentCells[i]);
                     continue;
                 }
                 if (this.board.isOccupied(adjacentCells[i]))
@@ -58,6 +69,87 @@ class RenderBoard extends Board {
 
                 if (!cell.visited) {
                     if (cell.distance === null || cell.distance > board[currentIndex].distance + 1) {
+                        cell.distance = board[currentIndex].distance + 1;
+
+                        visit.push(adjacentCells[i]);
+                    }
+
+                }
+            }
+
+            board[currentIndex].visited = true;
+            currentIndex = visit.shift();
+            test++;
+            if (test > 100000) {
+                console.log("wut cannot find path");
+                break;
+            }
+
+        } while (currentIndex !== dest || visit.length > 0);
+
+        currentIndex = dest;
+        let path = [];
+        path.push(currentIndex);
+        test = 0;
+        while (currentIndex !== source) {
+            let adjacentCells = this.getAdjacentCells(currentIndex);
+
+            let min = 100000;
+            let index = -1;
+            for (let i = 0; i < adjacentCells.length; i++) {
+                if (this.board.isOccupied(adjacentCells[i]))
+                    continue;
+                if (min > board[adjacentCells[i]].distance && board[adjacentCells[i]].distance !== null) {
+                    min = board[adjacentCells[i]].distance;
+                    index = adjacentCells[i];
+                }
+            }
+
+            path.push(index);
+            currentIndex = index;
+            test++;
+            if (test > 100000) {
+                console.log("wat");
+                currentIndex = source
+            }
+        }
+        return path;
+    }
+
+
+    /**
+     getPath(x1, y1, x2, y2) {
+        let board = new Array(Board.TILE_QUANTITY * Board.TILE_QUANTITY);
+        board.fill({distance: null, visited: false});
+
+        let source = Board.getIdFromCoord(x1, y1);
+        let dest = Board.getIdFromCoord(x2, y2);
+        let currentIndex = source;
+
+        console.log(currentIndex, source ,x1, y1, x2, y2  );
+        if(currentIndex === undefined){
+            currentIndex = 0;
+            console.log(source, x1,x2);
+            console.log(this.board);
+        }
+
+        board[currentIndex].distance = 0;
+        let visit = [];
+        let test = 0;
+        while (currentIndex !== dest) {
+            let adjacentCells = this.getAdjacentCells(currentIndex);
+
+            for (let i = 0; i < adjacentCells.length; i++) {
+                let cell = board[adjacentCells[i]];
+                if (cell === null || cell === undefined) {
+                    console.log("rofl, cell unknown" + adjacentCells[i]);
+                    continue;
+                }
+                if (this.board.isOccupied(adjacentCells[i]))
+                    continue;
+
+                if (!cell.visited) {
+                    if (cell.distance === null || cell.distance > board[currentIndex].distance +1 ) {
                         cell.distance = board[currentIndex].distance + 1;
 
                         visit.push(adjacentCells[i]);
@@ -81,7 +173,7 @@ class RenderBoard extends Board {
         path.push(currentIndex);
         test = 0;
         while (currentIndex !== source) {
-            let adjacentCells = getAdjacentCells(currentIndex);
+            let adjacentCells = this.getAdjacentCells(currentIndex);
 
             let min = 100000;
             let index = -1;
@@ -99,27 +191,28 @@ class RenderBoard extends Board {
             test++;
             if (test > 100000) {
                 console.log("wat");
+                currentIndex = source
             }
         }
-
         return path;
+    }
+     */
 
-        function getAdjacentCells(id) {
-            let cells = [];
-            if (id >= Board.getSize())
-                cells.push(id - Board.getSize());
+    getAdjacentCells(id) {
+        let cells = [];
+        if (id >= Board.TILE_QUANTITY)
+            cells.push(id - Board.TILE_QUANTITY);
 
-            if (id % Board.getSize() !== 0)
-                cells.push(id - 1);
+        if (id % Board.TILE_QUANTITY !== 0)
+            cells.push(id - 1);
 
-            if ((id + 1) % Board.getSize() !== 0 && id < Board.getSize() * Board.getSize())
-                cells.push(id + 1);
+        if ((id + 1) % Board.TILE_QUANTITY !== 0 && id < Board.TILE_QUANTITY * Board.TILE_QUANTITY)
+            cells.push(id + 1);
 
-            if (id < Board.getSize() * ( Board.getSize() - 1))
-                cells.push(id + Board.getSize());
+        if (id < Board.TILE_QUANTITY * ( Board.TILE_QUANTITY - 1))
+            cells.push(id + Board.TILE_QUANTITY);
 
-            return cells;
-        }
+        return cells;
     }
 
     colorPath(x1, y1, x2, y2) {
@@ -137,7 +230,8 @@ class RenderBoard extends Board {
     getRandomCell(needEmptyCell) {
         let cell_id;
         do {
-            cell_id = getRandom(0, Board.getSize() * Board.getSize() - 1)
+            cell_id = getRandom(0, Board.TILE_QUANTITY * Board.TILE_QUANTITY - 1);
+            console.log(this.isOccupied(cell_id), cell_id)
         } while (this.isOccupied(cell_id) === true && needEmptyCell);
         return cell_id;
     }
@@ -149,18 +243,24 @@ class RenderBoard extends Board {
      ****************************************************************************************/
 
     startRender() {
-        this.updateBoard();
+        this.dom.show();
+        this.board.dom.hide();
+
         let backgroundClass;
 
-        for (let cell = 0; cell < this.cellList.length; cell++) {
-            let block = this.cellList[cell];
+        for (let index = 0; index < this.board.blocks.length; index++) {
+            let cellDOM = this.getCellDOM(index);
 
-            if (block !== undefined) {
+            if (this.board.blocks.hasOwnProperty(index) && this.board.blocks[index]) {
                 // add visual depending neighbors
+                let block = this.board.blocks[index];
+                if (block.getShape().length > 1) {
+                    // block spécial
+                    // console.log('block spécial')
+                    // todo : display special block
+                }
                 backgroundClass = this.getClass(block.x, block.y, block.type);
-                this.getCellDOM(cell).removeClass().addClass(block.class + ' ' + backgroundClass);
-            } else {
-                this.getCellDOM(cell).removeClass();
+                cellDOM.addClass(block.constructor.getClass() + ' ' + backgroundClass);
             }
         }
     }
@@ -168,59 +268,50 @@ class RenderBoard extends Board {
     /**
      * rebuild the whole blockList
      */
-    updateBoard() {
-        this.cellList = new Array(Math.pow(Board.getSize(), 2));
+    /*updateBoard() {
+     //let shape, origin, cellID, coordX, coordY, shapeX, shapeY, block;
+     //this.blocks =  this.board.blocks;
+     this.blocks = new Array(Board.getSize() * Board.getSize());
+     this.blocks.fill(null);
 
         for (let index in this.board.blocks) {
             if (this.board.blocks.hasOwnProperty(index) && this.board.blocks[index] !== null) {
-                let block = this.board.blocks[index];
+     block = this.board.blocks[index];
+     shape = block.getShape();
+     origin = block.getOrigin();
 
-                if (block.numberOfCell() === 1) {
-                    this.cellList[Board.getIdFromCoord(block.x, block.y)] = {
-                        type: block.constructor.getType(),
-                        class: block.constructor.getTypeClass(),
-                        x: block.x,
-                        y: block.y
-                    };
-                } else {
-                    let shape, origin, cells, coordX, coordY, shapeX, shapeY;
-
-                    shape = block.getShape();
-                    origin = block.getOrigin();
-                    cells = [];
-
-                    // for biggers blocks
-                    for (shapeY = 0; shapeY < shape.length; shapeY++) {
-                        for (shapeX = 0; shapeX < shape.length; shapeX++) {
-
-                            coordX = origin.x + shapeX;
-                            coordY = origin.y + shapeY;
-                            cells.push('#' + Board.getIdFromCoord(coordX, coordY));
-
-                            this.cellList[Board.getIdFromCoord(coordX, coordY)] = {
-                                type: block.constructor.getType(),
-                                class: block.constructor.getTypeClass(),
-                                x: coordX,
-                                y: coordY
-                            };
+     // Also check special blocks shapes
+     for (shapeY = 0; shapeY < shape.length; shapeY++) {
+     for (shapeX = 0; shapeX < shape.length; shapeX++) {
+     coordX = origin.x + shapeX;
+     coordY = origin.y + shapeY;
+     cellID =  Board.getIdFromCoord(coordX,coordY);
+     this.blocks[cellID] = {
+     type: block.constructor.getType(),
+     class: block.constructor.getTypeClass(),
+     x: coordX,
+     y: coordY
                         }
                     }
                 }
             }
         }
-    }
+     console.log('Blocks : ');
+     console.log(this.blocks);
+     }*/
 
     /**
      * display the list of blocks on full board in the console for backup
      * @param json bool will output json or string
      */
     exportBoard(json) {
-        this.updateBoard();
-        let board = $.grep(this.cellList, n => n !== undefined && n !== null);
+        let board = $.grep(this.board.blocks, n => n !== undefined && n !== null);
 
         if (json === true) {
             board = JSON.stringify(board);
         }
+        console.log(board);
+        return board;
     }
 
     /**
@@ -232,10 +323,10 @@ class RenderBoard extends Board {
      * @returns {string}
      */
     getClass(x, y, type) {
-        let topCell = this.cellList[Board.getIdFromCoord(x, y - 1)];
-        let rightCell = this.cellList[Board.getIdFromCoord(x + 1, y)];
-        let bottomCell = this.cellList[Board.getIdFromCoord(x, y + 1)];
-        let leftCell = this.cellList[Board.getIdFromCoord(x - 1, y)];
+        let topCell = this.board.blocks[Board.getIdFromCoord(x, y - 1)];
+        let rightCell = this.board.blocks[Board.getIdFromCoord(x + 1, y)];
+        let bottomCell = this.board.blocks[Board.getIdFromCoord(x, y + 1)];
+        let leftCell = this.board.blocks[Board.getIdFromCoord(x - 1, y)];
 
         let surrounding = [
             topCell && topCell.type === type ? 'top' : '',
@@ -255,5 +346,4 @@ class RenderBoard extends Board {
 
         return backgroundClass;
     }
-
 }

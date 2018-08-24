@@ -1,19 +1,48 @@
-
-
-#GUI {
-    flex-basis: 500px;
+#GUI:not('.pinned') {
+    width: 360px;
+    position: absolute;
+    top: 2rem;
+    right: 0;
+    height: calc(100% - 4rem);
 }
 
-@media screen and (min-width: 420px) {
-    #GUI {
-        flex-basis: 400px;
-    }
+#GUI > div {
+    transition: right .2s;
+    position: absolute;
+    height: calc(100% - 4rem);
+    top: 2rem;
+    width: 360px;
 }
 
-@media screen and (min-width: 820px) and (max-width: 1100px) {
-    #GUI {
-        flex-basis: 360px;
-    }
+#GUI.collapsed > div { right: -360px; }
+
+#GUI > div, #GUI.pinned > div { right: 2rem; }
+
+#GUI-TOGGLE {
+    transition: opacity .2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: blue;
+    position: absolute;
+    content: "<<<";
+    width: 20px;
+    right: 0;
+    top: 0;
+    height: 100%;
+    opacity: .2;
+}
+
+#GUI-TOGGLE p {
+    word-break: break-all;
+    color: white;
+    font-weight: bold;
+    padding: 5px;
+}
+
+#GUI-TOGGLE:hover,
+#GUI.pinned p {
+    opacity: 1;
 }
 
 #GUI ul {

@@ -20,3 +20,5 @@ class GameSave {
 GameSave.BOARD = "nebuka_board_";
 GameSave.INVENTORY = "nebuka_inventory_";
 GameSave.PLAYERS = "nebuka_players_";
+
+// TODO : save inventory

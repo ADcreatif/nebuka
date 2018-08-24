@@ -1,4 +1,4 @@
-@block: 20px;
+@block: 40px;
 
 .block {
 	margin: 0 auto;
@@ -8,11 +8,11 @@
 	display: none;
 }
 
-#inventory .block {
+#inventory > div {
 	margin: 10px;
 }
 
-#inventory .block span, #resources span {
+#inventory > div span, #resources span {
 	font-size: 70%;
 	display: inline-block;
 	margin-right: -9px;
@@ -57,7 +57,7 @@
 
 .zombie {
 	border-radius: 50%;
-	background-color: pink;
+	background-color: lightgreen;
 	box-shadow: 2px 2px 2px #253b53;
 	width: 10px;
 	height: 10px;
@@ -74,7 +74,7 @@
 
 .player {
 	border-radius: 50%;
-	background-color: orange;
+	background-color: pink;
 	box-shadow: 2px 2px 2px #253b53;
 	width: 10px;
 	height: 10px;
@@ -136,21 +136,22 @@
 
 /*****************************    DRAG    *****************************/
 
+/* todo: comment */
 .occupied:before {
-	/*content: ".";
+	content: ".";
 	position: absolute;
 	z-index: 200;
 	line-height: 0;
 	top: 0;
-	left: 0;*/
-}
-
-.hoverBusy {
-	background-color: rgba(256, 0, 0, .6);
+	left: 0;
 }
 
 .hoverFree {
 	background-color: rgba(0, 256, 0, .6);
+}
+
+.hoverBusy {
+	background-color: rgba(256, 0, 0, .6);
 }
 
 /***************************** RENDER-BOARD *****************************/
@@ -165,133 +166,70 @@
 }
 
 #render-board .wall.wood_wall {
-	&.alone {
-		background-position: -0*@block -4*@block
-	}
-	&.top {
-		background-position: -6*@block -6*@block
-	}
-	&.top-right {
-		background-position: -4*@block -2*@block
-	}
-	&.top-right-left {
-		background-position: -1*@block -2*@block
-	}
-	&.top-right-bottom {
-		background-position: -4*@block -5*@block
-	}
-	&.top-right-bottom-left {
-		background-position: -2*@block -4*@block
-	}
-	&.top-bottom {
-		background-position: -1*@block -1*@block
-	}
-	&.top-bottom-left {
-		background-position: -6*@block -5*@block
-	}
-	&.top-left {
-		background-position: -6*@block -2*@block
-	}
-	&.right {
-		background-position: -0*@block -0*@block
-	}
-	&.right-bottom {
-		background-position: -4*@block -0*@block
-	}
-	&.right-bottom-left {
-		background-position: -1*@block -0*@block
-	}
-	&.right-left {
-		background-position: -5*@block -0*@block
-	}
-	&.bottom-left {
-		background-position: -6*@block -0*@block
-	}
-	&.left {
-		background-position: -2*@block -0*@block
-	}
-	&.bottom {
-		background-position: -6*@block -4*@block
-	}
+	&.alone { background-position: -0*@block -4*@block }
+	&.top { background-position: -6*@block -6*@block }
+	&.top-right { background-position: -4*@block -2*@block }
+	&.top-right-left { background-position: -1*@block -2*@block }
+	&.top-right-bottom { background-position: -4*@block -5*@block }
+	&.top-right-bottom-left { background-position: -2*@block -4*@block }
+	&.top-bottom { background-position: -1*@block -1*@block }
+	&.top-bottom-left { background-position: -6*@block -5*@block }
+	&.top-left { background-position: -6*@block -2*@block }
+	&.right { background-position: -0*@block -0*@block }
+	&.right-bottom { background-position: -4*@block -0*@block }
+	&.right-bottom-left { background-position: -1*@block -0*@block }
+	&.right-left { background-position: -5*@block -0*@block }
+	&.bottom-left { background-position: -6*@block -0*@block }
+	&.left { background-position: -2*@block -0*@block }
+	&.bottom { background-position: -6*@block -4*@block }
+}
+
+#render-board .wall.stone_wall {
+	&.alone { background-position: -15*@block -4*@block }
+	&.top { background-position: -21*@block -6*@block }
+	&.top-right { background-position: -19*@block -2*@block }
+	&.top-right-left { background-position: -16*@block -2*@block }
+	&.top-right-bottom { background-position: -19*@block -5*@block }
+	&.top-right-bottom-left { background-position: -17*@block -4*@block }
+	&.top-bottom { background-position: -19*@block -1*@block }
+	&.top-bottom-left { background-position: -21*@block -5*@block }
+	&.top-left { background-position: -21*@block -2*@block }
+	&.right { background-position: -15*@block 0 }
+	&.right-bottom { background-position: -19*@block 0 }
+	&.right-bottom-left { background-position: -16*@block 0 }
+	&.right-left { background-position: -20*@block 0 }
+	&.bottom-left { background-position: -21*@block 0 }
+	&.left { background-position: -17*@block 0 }
+	&.bottom { background-position: -21*@block -4*@block }
 }
 
 #render-board .wall.steel_wall {
-	&.alone {
-		background-position: -7*@block -4*@block
-	}
-	&.top {
-		background-position: -13*@block -6*@block
-	}
-	&.top-right {
-		background-position: -11*@block -2*@block
-	}
-	&.top-right-left {
-		background-position: -8*@block -2*@block
-	}
-	&.top-right-bottom {
-		background-position: -11*@block -5*@block
-	}
-	&.top-right-bottom-left {
-		background-position: -9*@block -4*@block
-	}
-	&.top-bottom {
-		background-position: -11*@block -1*@block
-	}
-	&.top-bottom-left {
-		background-position: -13*@block -5*@block
-	}
-	&.top-left {
-		background-position: -13*@block -2*@block
-	}
-	&.right {
-		background-position: -7*@block 0
-	}
-	&.right-bottom {
-		background-position: -11*@block 0
-	}
-	&.right-bottom-left {
-		background-position: -8*@block 0
-	}
-	&.right-left {
-		background-position: -12*@block 0
-	}
-	&.bottom-left {
-		background-position: -13*@block 0
-	}
-	&.left {
-		background-position: -9*@block 0
-	}
-	&.bottom {
-		background-position: -13*@block -4*@block
-	}
+	&.alone { background-position: -7*@block -4*@block }
+	&.top { background-position: -13*@block -6*@block }
+	&.top-right { background-position: -11*@block -2*@block }
+	&.top-right-left { background-position: -8*@block -2*@block }
+	&.top-right-bottom { background-position: -11*@block -5*@block }
+	&.top-right-bottom-left { background-position: -9*@block -4*@block }
+	&.top-bottom { background-position: -11*@block -1*@block }
+	&.top-bottom-left { background-position: -13*@block -5*@block }
+	&.top-left { background-position: -13*@block -2*@block }
+	&.right { background-position: -7*@block 0 }
+	&.right-bottom { background-position: -11*@block 0 }
+	&.right-bottom-left { background-position: -8*@block 0 }
+	&.right-left { background-position: -12*@block 0 }
+	&.bottom-left { background-position: -13*@block 0 }
+	&.left { background-position: -9*@block 0 }
+	&.bottom { background-position: -13*@block -4*@block }
 }
 
 #render-board .tower.wood_tower {
-	&.right-bottom {
-		background-position: -0*@block -6*@block
-	}
-	&.right-bottom-left {
-		background-position: -1*@block -6*@block
-	}
-	&.bottom-left {
-		background-position: -2*@block -6*@block
-	}
-	&.top-right-bottom {
-		background-position: -0*@block -7*@block
-	}
-	&.top-right-bottom-left {
-		background-position: -1*@block -7*@block
-	}
-	&.top-bottom-left {
-		background-position: -2*@block -7*@block
-	}
-	&.top-right {
-		background-position: -0*@block -8*@block
-	}
-	&.top-right-left {
-		background-position: -1*@block -8*@block
-	}
-	&.top-left {
-		background-position: -2*@block -8*@block
-	}
+	&.right-bottom { background-position: -0*@block -6*@block }
+	&.right-bottom-left { background-position: -1*@block -6*@block }
+	&.bottom-left { background-position: -2*@block -6*@block }
+	&.top-right-bottom { background-position: -0*@block -7*@block }
+	&.top-right-bottom-left { background-position: -1*@block -7*@block }
+	&.top-bottom-left { background-position: -2*@block -7*@block }
+	&.top-right { background-position: -0*@block -8*@block }
+	&.top-right-left { background-position: -1*@block -8*@block }
+	&.top-left { background-position: -2*@block -8*@block }
 }
