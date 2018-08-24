@@ -33,32 +33,34 @@ class RenderBoard extends Board {
 
     /** path finding algorithm using lee algorithm **/
     getPath(x1, y1, x2, y2) {
-        let board = new Array(Board.TILE_QUANTITY * Board.TILE_QUANTITY);
-        board.fill({distance: null, visited: false});
-
-        /*let board = [];
+        //let board = new Array(Board.TILE_QUANTITY * Board.TILE_QUANTITY);
+        //board.fill({distance: null, visited: false});
+        // console.log(board);
+        let board = [];
          for (let index = 0; index < Board.TILE_QUANTITY * Board.TILE_QUANTITY; index++) {
             board[index] = {distance: null, visited: false};
-         }*/
+         }
 
         let source = Board.getIdFromCoord(x1, y1);
         let dest = Board.getIdFromCoord(x2, y2);
         let currentIndex = source;
 
-        console.log(currentIndex, source, x1, y1, x2, y2);
-        if (currentIndex === undefined) {
+        /* if (currentIndex === undefined) {
             currentIndex = 0;
             console.log(source, x1, x2);
             console.log(this.board);
-        }
+         }*/
 
         board[currentIndex].distance = 0;
         let visit = [];
         let test = 0;
-        do {
+        while (currentIndex !== dest && (currentIndex !== undefined)) {
+            console.log(currentIndex)
             let adjacentCells = this.getAdjacentCells(currentIndex);
-
+            console.log(adjacentCells)
             for (let i = 0; i < adjacentCells.length; i++) {
+                console.log(currentIndex)
+                console.log(adjacentCells[i]);
                 let cell = board[adjacentCells[i]];
                 if (cell === null || cell === undefined) {
                     console.log("rofl, cell unknown" + adjacentCells[i]);
@@ -76,8 +78,8 @@ class RenderBoard extends Board {
 
                 }
             }
-
             board[currentIndex].visited = true;
+            console.log(visit);
             currentIndex = visit.shift();
             test++;
             if (test > 100000) {
@@ -85,7 +87,7 @@ class RenderBoard extends Board {
                 break;
             }
 
-        } while (currentIndex !== dest || visit.length > 0);
+        }
 
         currentIndex = dest;
         let path = [];
@@ -200,17 +202,25 @@ class RenderBoard extends Board {
 
     getAdjacentCells(id) {
         let cells = [];
-        if (id >= Board.TILE_QUANTITY)
+        if (id >= Board.TILE_QUANTITY) {
             cells.push(id - Board.TILE_QUANTITY);
+        }
 
-        if (id % Board.TILE_QUANTITY !== 0)
+
+        if (id % Board.TILE_QUANTITY !== 0) {
             cells.push(id - 1);
+        }
 
-        if ((id + 1) % Board.TILE_QUANTITY !== 0 && id < Board.TILE_QUANTITY * Board.TILE_QUANTITY)
+
+        if ((id + 1) % Board.TILE_QUANTITY !== 0 && id < Board.TILE_QUANTITY * Board.TILE_QUANTITY) {
             cells.push(id + 1);
+        }
 
-        if (id < Board.TILE_QUANTITY * ( Board.TILE_QUANTITY - 1))
+
+        if (id < Board.TILE_QUANTITY * ( Board.TILE_QUANTITY - 1)) {
             cells.push(id + Board.TILE_QUANTITY);
+        }
+
 
         return cells;
     }
