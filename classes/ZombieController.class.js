@@ -7,7 +7,7 @@ class ZombieController {
     }
 
     spawnZombies() {
-        this.zombiesCount = 5;
+        this.zombiesCount = 1;
         for (let i = 0; i < this.zombiesCount; i++) {
             this.spawnRandomZombie();
         }
@@ -17,18 +17,20 @@ class ZombieController {
      * @params zombie_id {int}
      * **/
     killZombie(zombie_id) {
-        let zombie_index = this.findZombie(zombie_id);
-        let zombie = this.zombies[zombie_index];
-
-        zombie.showEpicDeadth();
-        this.zombies.splice(zombie_index, 1);
+        let zombie_index;
+        zombie_index = this.findZombie(zombie_id);
+        if (zombie_index > -1) {
+            let zombie = this.zombies[zombie_index];
+            zombie.showEpicDeadth();
+            this.zombies.splice(zombie_index, 1);
+        }
     }
 
     /** @returns {int} the index of zombie in this zombie stack, -1 if not found **/
     findZombie(zombie_id) {
         for (let index = 0; index < this.zombies.length; index++)
             if (zombie_id === this.zombies[index].id)
-                return parseInt(index);
+                return index;
         return -1;
     }
 
@@ -39,7 +41,6 @@ class ZombieController {
         zombie.setPosition(Board.getXFromIndex(cellID), Board.getYFromIndex(cellID));
         this.zombies.push(zombie);
         zombie.appendToBoard();
-        console.log('aa');
     }
 
     setDestination(x, y) {

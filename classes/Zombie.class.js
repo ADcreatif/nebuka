@@ -9,7 +9,7 @@ class Zombie {
 
          this.dom = null;
 
-         this.tilePerSecond = 3;
+         this.tilePerSecond = 1;
 
         this.speed = ( this.tilePerSecond * Board.TILE_SIZE) / Game.TICK_PER_SECOND ;
         this.intervals = Math.floor( Game.TICK_PER_SECOND / this.tilePerSecond)+1;
@@ -54,8 +54,10 @@ class Zombie {
     }
 
     smoothPosition(){
-        this.currentx = Math.round(this.currentx / Board.TILE_SIZE) * Board.TILE_SIZE + 2;
+        /*this.currentx = Math.round(this.currentx / Board.TILE_SIZE) * Board.TILE_SIZE + 2;
         this.currenty = Math.round(this.currenty / Board.TILE_SIZE) * Board.TILE_SIZE + 2;
+         this.currentx = Math.round(this.currentx / Board.TILE_SIZE) * Board.TILE_SIZE + 2;
+         this.currenty = Math.round(this.currenty / Board.TILE_SIZE) * Board.TILE_SIZE + 2;*/
     	this.appendToBoard();
     }
 
@@ -82,27 +84,67 @@ class Zombie {
      ************************************************************************/
 
     moveBottom(){
-        this.dom.css("top", this.currenty + "px");
+        this.dom.css("top", this.currenty + "px")
+            .removeClass().addClass('bottom');
     	this.currenty += this.speed ;
     	this.updatePosition();
     }
 
     moveTop(){
-        this.dom.css("top", this.currenty + "px");
+        this.dom.css("top", this.currenty + "px")
+            .removeClass().addClass('top');
     	this.currenty -= this.speed ;
     	this.updatePosition();
     }
 
     moveRight(){
-        this.dom.css("left", this.currentx + "px");
+        this.dom.css("left", this.currentx + "px")
+            .removeClass().addClass('right');
     	this.currentx += this.speed ;
     	this.updatePosition();
     }
 
     moveLeft(){
-        this.dom.css("left", this.currentx + "px");
+        this.dom.css("left", this.currentx + "px")
+            .removeClass().addClass('left');
     	this.currentx -= this.speed ;
     	this.updatePosition();
+    }
+
+    moveTopLeft() {
+        this.dom.css("left", this.currentx + "px")
+            .css("top", this.currenty + "px")
+            .removeClass().addClass('topleft');
+        this.currentx -= this.speed;
+        this.currenty -= this.speed;
+        this.updatePosition();
+    }
+
+    moveTopRight() {
+        this.dom.css("left", this.currentx + "px")
+            .css("top", this.currenty + "px")
+            .removeClass().addClass('topright');
+        this.currentx += this.speed;
+        this.currenty -= this.speed;
+        this.updatePosition();
+    }
+
+    moveBottomLeft() {
+        this.dom.css("left", this.currentx + "px")
+            .css("top", this.currenty + "px")
+            .removeClass().addClass('bottomleft');
+        this.currentx -= this.speed;
+        this.currenty += this.speed;
+        this.updatePosition();
+    }
+
+    moveBottomRight() {
+        this.dom.css("left", this.currentx + "px")
+            .css("top", this.currenty + "px")
+            .removeClass().addClass('bottomright');
+        this.currentx += this.speed;
+        this.currenty += this.speed;
+        this.updatePosition();
     }
 
     move(){
@@ -129,6 +171,7 @@ class Zombie {
 
     setDestination(board, destx, desty){
         let path = board.getPath(this.x, this.y, destx, desty);
+        board.colorPath(path);
     	this.createMoves(path);
     }
 
@@ -136,24 +179,39 @@ class Zombie {
         let currentIndex = Board.getIdFromCoord(this.x, this.y);
     	for( let i =  path.length-1 ; i >= 0  ; i-- ) {
 
-            let next = path[i];
+            let next = Board.getIdFromCoord(path[i][0], path[i][1]);
 
-            if (currentIndex + 1 === next) {
-    			this.moves.push(this.moveRight);
-    		}
-            else if (currentIndex + Board.TILE_QUANTITY === next) {
-    			this.moves.push(this.moveBottom);
-    		}
-            else if (currentIndex - 1 === next) {
-    			console.log("left");
-    			this.moves.push(this.moveLeft);
-    		}
-            else if (currentIndex - Board.TILE_QUANTITY === next) {
-    			this.moves.push(this.moveTop);
-    		}
+            switch (next) {
+                case currentIndex + 1 :
+                    this.moves.push(this.moveRight);
+                    break;
+                case currentIndex + Board.TILE_QUANTITY  :
+                    this.moves.push(this.moveBottom);
+                    break;
+                case currentIndex - 1 :
+                    this.moves.push(this.moveLeft);
+                    break;
+                case currentIndex - Board.TILE_QUANTITY:
+                    this.moves.push(this.moveTop);
+                    break;
+                case currentIndex - Board.TILE_QUANTITY - 1:
+                    this.moves.push(this.moveTopLeft);
+                    break;
+                case currentIndex - Board.TILE_QUANTITY + 1:
+                    this.moves.push(this.moveTopRight);
+                    break;
+                case currentIndex + Board.TILE_QUANTITY - 1:
+                    this.moves.push(this.moveBottomLeft);
+                    break;
+                case currentIndex + Board.TILE_QUANTITY + 1:
+                    this.moves.push(this.moveBottomRight);
+                    break;
+
+            }
 
     		currentIndex = next;
     	}
+        console.log(this.moves);
     }
 
     updatePosition(){

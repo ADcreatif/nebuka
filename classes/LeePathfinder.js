@@ -1,16 +1,16 @@
-let Lee = (function () {
+var Lee = (function () {
 
-    let pathfinder = function (matrix, x1, y1, x2, y2) {
+    var pathfinder = function (matrix, x1, y1, x2, y2) {
 
-        let toVisit = [[x1, y1]]; // Initialise at the start square
+        var toVisit = [[x1, y1]]; // Initialise at the start square
 
         while (toVisit.length) { // While there are still squares to visit
 
             x = toVisit[0][0];
             y = toVisit[0][1];
 
-            for (let i = x - 1; i < x + 2; i++) {  // -1, 0, 1
-                for (let j = y - 1; j < y + 2; j++) { // -1, 0, 1
+            for (var i = x - 1; i < x + 2; i++) {  // -1, 0, 1
+                for (var j = y - 1; j < y + 2; j++) { // -1, 0, 1
 
                     if (neighbourCheck(matrix, i, j, x1, y1, 0)) {
 
@@ -22,27 +22,27 @@ let Lee = (function () {
                 }
             }
 
-            let shift = toVisit.shift();
+            var shift = toVisit.shift();
 
         }
 
-        let distance = matrix[x2][y2];
+        var distance = matrix[x2][y2];
         return [matrix, distance];
 
     };
 
-    let backtrace = function (matrix, x1, y1, x2, y2) {
+    var backtrace = function (matrix, x1, y1, x2, y2) {
 
-        let previousValue = matrix[x2][y2];
-        let successfulRoute = [];
+        var previousValue = matrix[x2][y2];
+        var successfulRoute = [];
 
-        let x = x2;
-        let y = y2;
+        var x = x2;
+        var y = y2;
 
         while (!(x === x1 && y === y1)) {
 
-            for (let i = x - 1; i < x + 2; i++) {  // -1, 0, 1
-                for (let j = y - 1; j < y + 2; j++) { // -1, 0, 1
+            for (var i = x - 1; i < x + 2; i++) {  // -1, 0, 1
+                for (var j = y - 1; j < y + 2; j++) { // -1, 0, 1
 
                     if (
                         matrix[i] && (matrix[i][j] === previousValue - 1) && // If array x array defined and the matrix value is 0
@@ -69,16 +69,23 @@ let Lee = (function () {
 
     };
 
-    let neighbourCheck = function (matrix, i, j, x1, y1, value) {
+    var neighbourCheck = function (matrix, i, j, x1, y1, value) {
         return matrix[i] && (matrix[i][j] === value) && // If array x array defined and the matrix value is 0
             !(i === x && j === y) && // If it's not the center square
             !(i === x1 && j === y1); // If it's not the first square
     };
 
+    var getPath = function (matrix, x1, y1, x2, y2) {
+        "use strict";
+        matrix = pathfinder(matrix, x1, y1, x2, y2);
+        return backtrace(matrix[0], x1, y1, x2, y2);
+    };
+
     return {
         pathfinder: pathfinder,
         backtrace: backtrace,
-        neighbourCheck: neighbourCheck
+        neighbourCheck: neighbourCheck,
+        getPath: getPath
     };
 
 })();

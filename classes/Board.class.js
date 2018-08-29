@@ -14,7 +14,9 @@ class Board {
          */
         this.blocks = new Array(Board.TILE_QUANTITY * Board.TILE_QUANTITY);
         this.blocks.fill(null);
+        this.matrix = [];
     }
+
 
     init() {
         this.drawBoard('edit-board');
@@ -54,9 +56,6 @@ class Board {
     }
 
     isOccupied(cellID) {
-        //console.log(cellID,  this.blocks[cellID] === null)
-        if (this.blocks[cellID] !== null)
-            console.log(this.blocks[cellID]);
         return this.blocks[cellID] !== null;
     }
 
@@ -165,6 +164,55 @@ class Board {
         $('#' + selector).replaceWith(table);
         this.dom = $('#' + selector);
     };
+
+    /**
+     * prepare path for Lee Pathfinder,
+     */
+    getMatrix() {
+        if (this.matrix.length > 0)
+            return this.matrix;
+
+        this.matrix = new Array(Board.TILE_QUANTITY * Board.TILE_QUANTITY);
+
+        let block, shape, origin, coordX, coordY;
+
+        for (let index = 0; index < this.board.blocks.length; index++) {
+            block = this.board.blocks[index];
+            let x = Board.getXFromIndex(index);
+            let y = Board.getYFromIndex(index);
+
+            if (!block) {
+                // set empty cells;
+                this.matrix[x] = this.matrix[x] || [];
+                this.matrix[x][y] = 0;
+                continue;
+            }
+            origin = block.getOrigin();
+            shape = block.getShape();
+            for (let shapeY = 0; shapeY < shape.length; shapeY++) {
+                for (let shapeX = 0; shapeX < shape.length; shapeX++) {
+                    coordX = origin.x + shapeX;
+                    coordY = origin.y + shapeY;
+
+                    if (!this.matrix[coordX]) this.matrix[coordX] = [];
+
+                    this.matrix[coordX][coordY] = -1
+                }
+            }
+        }
+        return this.matrix;
+    }
+
+    colorPath(path) {
+
+        for (let index = 0; index < path.length; index++) {
+            this.getCellDOM(Board.getIdFromCoord(path[index][0], path[index][1])).addClass("path");
+        }
+    }
+
+    getPath(x1, y1, x2, y2) {
+        return Lee.getPath(this.getMatrix(), x2, y2, x1, y1);
+    }
 
 }
 Board.TILE_QUANTITY = 20;

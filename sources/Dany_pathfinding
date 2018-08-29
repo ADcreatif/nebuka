@@ -1,0 +1,99 @@
+/** path finding algorithm using lee algorithm **/
+
+class pathfinder {
+    getPath(x1, y1, x2, y2) {
+        //let board = new Array(Board.TILE_QUANTITY * Board.TILE_QUANTITY);
+        //board.fill({distance: null, visited: false});
+        // console.log(board);
+        let board = [];
+        for (let index = 0; index < Board.TILE_QUANTITY * Board.TILE_QUANTITY; index++) {
+            board[index] = {distance: null, visited: false};
+        }
+
+        let source = Board.getIdFromCoord(x1, y1);
+        let dest = Board.getIdFromCoord(x2, y2);
+        let currentIndex = source;
+
+        /* if (currentIndex === undefined) {
+         currentIndex = 0;
+         console.log(source, x1, x2);
+         console.log(this.board);
+         }*/
+
+        board[currentIndex].distance = 0;
+        let visit = [];
+        let test = 0;
+        while (currentIndex !== dest && (currentIndex !== undefined)) {
+            let adjacentCells = this.getAdjacentCells(currentIndex);
+            for (let i = 0; i < adjacentCells.length; i++) {
+                let cell = board[adjacentCells[i]];
+                if (cell === null || cell === undefined) {
+                    console.log("rofl, cell unknown" + adjacentCells[i]);
+                    continue;
+                }
+                if (this.board.isOccupied(adjacentCells[i]))
+                    continue;
+
+                if (!cell.visited) {
+                    if (cell.distance === null || cell.distance > board[currentIndex].distance + 1) {
+                        cell.distance = board[currentIndex].distance + 1;
+                        visit.push(adjacentCells[i]);
+                    }
+                }
+            }
+            board[currentIndex].visited = true;
+            currentIndex = visit.shift();
+            test++;
+            if (test > 100000) {
+                console.log("wut cannot find path");
+                break;
+            }
+
+        }
+
+        currentIndex = dest;
+        let path = [];
+        path.push(currentIndex);
+        test = 0;
+        while (currentIndex !== source) {
+            let adjacentCells = this.getAdjacentCells(currentIndex);
+
+            let min = 100000;
+            let index = -1;
+            for (let i = 0; i < adjacentCells.length; i++) {
+                if (this.board.isOccupied(adjacentCells[i]))
+                    continue;
+                if (min > board[adjacentCells[i]].distance && board[adjacentCells[i]].distance !== null) {
+                    min = board[adjacentCells[i]].distance;
+                    index = adjacentCells[i];
+                }
+            }
+
+            path.push(index);
+            currentIndex = index;
+            test++;
+            if (test > 100000) {
+                console.log("wat");
+                currentIndex = source
+            }
+        }
+        return path;
+    }
+
+    getAdjacentCells(id) {
+        let cells = [];
+        if (id >= Board.TILE_QUANTITY)
+            cells.push(id - Board.TILE_QUANTITY);
+
+        if (id % Board.TILE_QUANTITY !== 0)
+            cells.push(id - 1);
+
+        if ((id + 1) % Board.TILE_QUANTITY !== 0 && id < Board.TILE_QUANTITY * Board.TILE_QUANTITY)
+            cells.push(id + 1);
+
+        if (id < Board.TILE_QUANTITY * ( Board.TILE_QUANTITY - 1))
+            cells.push(id + Board.TILE_QUANTITY);
+        return cells;
+    }
+
+}
