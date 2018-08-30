@@ -308,3 +308,36 @@
 #render-board .tower.wood_tower.top-left {
   background-position: -80px -320px;
 }
+.zombie {
+  animation: zombie_walk 0.8s steps(16) infinite;
+  transition: transform .2s;
+}
+.zombie.right {
+  transform: rotate(0deg);
+}
+.zombie.bottomright {
+  transform: rotate(45deg);
+}
+.zombie.bottom {
+  transform: rotate(90deg);
+}
+.zombie.bottomleft {
+  transform: rotate(135deg);
+}
+.zombie.left {
+  transform: rotate(180deg);
+}
+.zombie.topleft {
+  transform: rotate(225deg);
+}
+.zombie.top {
+  transform: rotate(270deg);
+}
+.zombie.topright {
+  transform: rotate(315deg);
+}
+@keyframes zombie_walk {
+  100% {
+    background-position-x: -640px;
+  }
+}

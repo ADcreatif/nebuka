@@ -41,7 +41,7 @@ class RenderBoard extends Board {
         let cell_id;
         do {
             cell_id = getRandom(0, Board.TILE_QUANTITY * Board.TILE_QUANTITY - 1);
-            console.log('random Cell : ', cell_id, this.isOccupied(cell_id))
+            //console.log('random Cell : ', cell_id, this.isOccupied(cell_id))
         } while (this.isOccupied(cell_id) === true && needEmptyCell);
         return cell_id;
     }

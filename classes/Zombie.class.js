@@ -9,7 +9,7 @@ class Zombie {
 
          this.dom = null;
 
-         this.tilePerSecond = 1;
+         this.tilePerSecond = .5;
 
         this.speed = ( this.tilePerSecond * Board.TILE_SIZE) / Game.TICK_PER_SECOND ;
         this.intervals = Math.floor( Game.TICK_PER_SECOND / this.tilePerSecond)+1;
@@ -21,7 +21,6 @@ class Zombie {
 
          this.health = 100;
          this.damages = 20;
-
     }
 
     setPosition(x, y){
@@ -85,28 +84,32 @@ class Zombie {
 
     moveBottom(){
         this.dom.css("top", this.currenty + "px")
-            .removeClass().addClass('bottom');
+            .removeClass("bottomright bottomleft topright topleft top right left bottom")
+            .addClass('bottom');
     	this.currenty += this.speed ;
     	this.updatePosition();
     }
 
     moveTop(){
         this.dom.css("top", this.currenty + "px")
-            .removeClass().addClass('top');
+            .removeClass("bottomright bottomleft topright topleft top right left bottom")
+            .addClass('top');
     	this.currenty -= this.speed ;
     	this.updatePosition();
     }
 
     moveRight(){
         this.dom.css("left", this.currentx + "px")
-            .removeClass().addClass('right');
+            .removeClass("bottomright bottomleft topright topleft top right left bottom")
+            .addClass('right');
     	this.currentx += this.speed ;
     	this.updatePosition();
     }
 
     moveLeft(){
         this.dom.css("left", this.currentx + "px")
-            .removeClass().addClass('left');
+            .removeClass("bottomright bottomleft topright topleft top right left bottom")
+            .addClass('left');
     	this.currentx -= this.speed ;
     	this.updatePosition();
     }
@@ -114,7 +117,8 @@ class Zombie {
     moveTopLeft() {
         this.dom.css("left", this.currentx + "px")
             .css("top", this.currenty + "px")
-            .removeClass().addClass('topleft');
+            .removeClass("bottomright bottomleft topright topleft top right left bottom")
+            .addClass('topleft');
         this.currentx -= this.speed;
         this.currenty -= this.speed;
         this.updatePosition();
@@ -123,7 +127,8 @@ class Zombie {
     moveTopRight() {
         this.dom.css("left", this.currentx + "px")
             .css("top", this.currenty + "px")
-            .removeClass().addClass('topright');
+            .removeClass("bottomright bottomleft topright topleft top right left bottom")
+            .addClass('topright');
         this.currentx += this.speed;
         this.currenty -= this.speed;
         this.updatePosition();
@@ -132,7 +137,8 @@ class Zombie {
     moveBottomLeft() {
         this.dom.css("left", this.currentx + "px")
             .css("top", this.currenty + "px")
-            .removeClass().addClass('bottomleft');
+            .removeClass("bottomright bottomleft topright topleft top right left bottom")
+            .addClass('bottomleft');
         this.currentx -= this.speed;
         this.currenty += this.speed;
         this.updatePosition();
@@ -141,7 +147,8 @@ class Zombie {
     moveBottomRight() {
         this.dom.css("left", this.currentx + "px")
             .css("top", this.currenty + "px")
-            .removeClass().addClass('bottomright');
+            .removeClass("bottomright bottomleft topright topleft top right left bottom")
+            .addClass('bottomright');
         this.currentx += this.speed;
         this.currenty += this.speed;
         this.updatePosition();
@@ -171,7 +178,7 @@ class Zombie {
 
     setDestination(board, destx, desty){
         let path = board.getPath(this.x, this.y, destx, desty);
-        board.colorPath(path);
+        // board.colorPath(path);
     	this.createMoves(path);
     }
 

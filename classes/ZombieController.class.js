@@ -1,13 +1,13 @@
 class ZombieController {
     constructor(renderboard) {
         this.renderboard = renderboard;
+        this.zombiesCount = 5;
         this.zombies = [];
         this.destx = 0;
         this.desty = 0;
     }
 
     spawnZombies() {
-        this.zombiesCount = 1;
         for (let i = 0; i < this.zombiesCount; i++) {
             this.spawnRandomZombie();
         }
