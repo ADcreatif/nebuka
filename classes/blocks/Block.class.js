@@ -85,7 +85,7 @@ class Block {
             .data('type', this.getType());
 
         if (quantity !== undefined) {
-            block.append($('<span>').text(quantity))
+            block.append($('<span>').addClass('quantity').text(quantity))
         }
         return block;
     }

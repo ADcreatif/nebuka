@@ -4,7 +4,7 @@
 	margin: 0 auto;
 }
 
-.block span {
+#board .quantity {
 	display: none;
 }
 
@@ -12,60 +12,45 @@
 	margin: 10px;
 }
 
-#inventory > div span, #resources span {
-	font-size: 70%;
-	display: inline-block;
-	margin-right: -9px;
-	float: right;
-	margin-top: -7px;
+.quantity {
 	background-color: rgba(0, 0, 255, 0.6);
-	color: white;
+	display: inline-block;
 	border-radius: 12px;
-	text-align: center;
+	margin-right: -9px;
+	margin-top: -7px;
+	float: right;
 	width: 20px;
+
+	text-align: center;
 	line-height: 1.8;
+	font-size: 70%;
+	color: white;
 }
 
 #edit-board, #inventory {
 	.wall, .tower {
 		border-radius: 2px;
-		width: -1+@block;
-		height: -1+@block;
+		width: @block;
+		height: @block;
 	}
 	.steel_wall {
 		background-color: steelblue;
 		box-shadow: 2px 2px 2px #633100;
 		opacity: .8;
 	}
-
 	.wood_wall {
 		background-color: darkorange;
 		box-shadow: 2px 2px 2px #253b53;
 	}
-
 	.stone_wall {
 		background-color: grey;
 		box-shadow: 2px 2px 2px #253b53;
 	}
-
 	.wood_tower {
 		border-radius: 50%;
 		background-color: red;
 		box-shadow: 2px 2px 2px #253b53;
 	}
-}
-
-.zombie {
-	width: 40px;
-	height: 40px;
-	position: absolute;
-	background: url(../images/texture/zombie.png);
-}
-
-.dead:before {
-	content: "死";
-	display: inline-block;
-	margin-top: -.5em;
 }
 
 .player {
@@ -79,22 +64,15 @@
 	left: 5px;
 }
 
-.being_hurt {
-	background-color: red;
-}
-
 #edit-board .tower {
 	border-radius: 50%;
-	width: 55px;
-	height: 55px;
+	width: 3*@block;
+	height: 3*@block;
 	background-color: red;
 	box-shadow: 2px 2px 2px #253b53;
-}
-
-#edit-board .tower {
 	position: absolute;
-	margin-top: -28px;
-	margin-left: -20px;
+	margin-top: -1*@block;
+	margin-left: -1*@block;
 }
 
 #resources > div {
@@ -133,14 +111,14 @@
 /*****************************    DRAG    *****************************/
 
 /* todo: comment */
-.occupied:before {
+/*.occupied:before {
 	content: ".";
 	position: absolute;
 	z-index: 200;
 	line-height: 0;
 	top: 0;
 	left: 0;
-}
+}*/
 
 .hoverFree {
 	background-color: rgba(0, 256, 0, .6);
@@ -218,6 +196,7 @@
 	&.bottom { background-position: -13*@block -4*@block }
 }
 
+/*------------------------------- TOWERS ------------------------------------*/
 #render-board .tower.wood_tower {
 	&.right-bottom { background-position: -0*@block -6*@block }
 	&.right-bottom-left { background-position: -1*@block -6*@block }
@@ -230,12 +209,40 @@
 	&.top-left { background-position: -2*@block -8*@block }
 }
 
-.zombie {
-	animation: zombie_walk 0.8s steps(16) infinite;
-	transition: transform .2s;
-}
+/*------------------------------- ZOMBIES ------------------------------------*/
 
 .zombie {
+	width: 40px;
+	height: 40px;
+	position: absolute;
+	transition: transform .2s;
+	background: url(../images/texture/zombie.png);
+}
+
+.being_hurt {
+	background-color: red;
+}
+
+.dead:before {
+	content: "死";
+	display: inline-block;
+	margin-top: -.5em;
+}
+
+
+.zombie {
+	&.move {
+		background-position-y: 0;
+		animation: zombie_move 0.8s steps(16) infinite;
+	}
+	&.idle {
+		background-position-y: -1*@block;
+		animation: zombie_idle 0.8s steps(16) infinite;
+	}
+	&.attk {
+		background-position-y: -2*@block;
+		animation: zombie_attk 0.8s steps(8) infinite;
+	}
 	&.right { transform: rotate(0deg) }
 	&.bottomright { transform: rotate(45deg) }
 	&.bottom { transform: rotate(90deg) }
@@ -246,8 +253,14 @@
 	&.topright { transform: rotate(315deg) }
 }
 
-@keyframes zombie_walk {
-	100% {
-		background-position-x: -16*@block;
-	}
+@keyframes zombie_idle {
+	100% { background-position-x: -16*@block; }
+}
+
+@keyframes zombie_move {
+	100% { background-position-x: -16*@block; }
+}
+
+@keyframes zombie_attk {
+	100% { background-position-x: - 8*@block; }
 }

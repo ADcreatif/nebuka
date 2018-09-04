@@ -21,7 +21,7 @@ class ZombieController {
         zombie_index = this.findZombie(zombie_id);
         if (zombie_index > -1) {
             let zombie = this.zombies[zombie_index];
-            zombie.showEpicDeadth();
+            zombie.showEpicDeath();
             this.zombies.splice(zombie_index, 1);
         }
     }

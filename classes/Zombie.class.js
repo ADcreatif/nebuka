@@ -46,24 +46,36 @@ class Zombie {
         this.dom.css("top", this.currenty + "px");
     }
 
-    showEpicDeadth() {
+    showEpicDeath() {
         this.dom.addClass('dead').fadeOut(3000, function () {
             this.remove()
         })
-    }
-
-    smoothPosition(){
-        /*this.currentx = Math.round(this.currentx / Board.TILE_SIZE) * Board.TILE_SIZE + 2;
-        this.currenty = Math.round(this.currenty / Board.TILE_SIZE) * Board.TILE_SIZE + 2;
-         this.currentx = Math.round(this.currentx / Board.TILE_SIZE) * Board.TILE_SIZE + 2;
-         this.currenty = Math.round(this.currenty / Board.TILE_SIZE) * Board.TILE_SIZE + 2;*/
-    	this.appendToBoard();
     }
 
     getId(){
     	return "zombie_"+this.id;
     }
 
+
+    /**
+     * @param animation {int} Zombie.ACTION_IDLE | Zombie.ACTION_MOVE | Zombie.ACTION_ATTK
+     **/
+    updateAnimation(animation) {
+        let css_class;
+        switch (animation) {
+            case Zombie.ACTION_IDLE :
+                css_class = 'idle';
+                break;
+            case Zombie.ACTION_MOVE :
+                css_class = 'move';
+                break;
+            case Zombie.ACTION_ATTK :
+                css_class = 'idle';
+                break;
+
+        }
+        this.dom.removeClass('attk idle move').addClass(css_class)
+    }
 
     /************************************************************************
      *
@@ -155,22 +167,21 @@ class Zombie {
     }
 
     move(){
-
-        if (this.currentMove === null && this.moves.length === 0)
+        if (this.moves.length === 0) {
+            this.updateAnimation(Zombie.ACTION_IDLE);
             return;
+        }
 
-        if (this.currentMove === null)
+        if (this.currentMove === null) {
+            this.updateAnimation(Zombie.ACTION_MOVE);
             this.currentMove = this.moves.shift();
+        }
 
         // move is finished : reset status
-        if( this.counter >= this.intervals)
-        {
-             this.smoothPosition();
+        if (this.counter >= this.intervals) {
              this.currentMove = null;
              this.counter = 0;
-        }
-        else
-        {
+        } else {
             this.counter ++;
             this.currentMove.call(this);
         }
@@ -213,12 +224,9 @@ class Zombie {
                 case currentIndex + Board.TILE_QUANTITY + 1:
                     this.moves.push(this.moveBottomRight);
                     break;
-
             }
-
     		currentIndex = next;
     	}
-        console.log(this.moves);
     }
 
     updatePosition(){
@@ -228,3 +236,7 @@ class Zombie {
 }
 
 Zombie.COUNT = 0;
+
+Zombie.ACTION_IDLE = 0;
+Zombie.ACTION_MOVE = 1;
+Zombie.ACTION_ATTK = 2;

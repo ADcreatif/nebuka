@@ -74,6 +74,7 @@
 
 #edit-board td {
     border: 1px solid #2dd00047;
+    vertical-align: top;
 }
 
 /*--------------------- RENDERER ---------------------*/

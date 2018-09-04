@@ -166,7 +166,7 @@ class Board {
     };
 
     /**
-     * prepare path for Lee Pathfinder,
+     * Create a map for Lee Pathfinder,
      */
     getMatrix() {
         if (this.matrix.length > 0)
