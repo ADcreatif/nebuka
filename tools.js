@@ -10,12 +10,14 @@ function getBiggestArraySize(array) {
     return Math.max.apply(Math, lengths);
 }
 
-function get_distance(x, y, targetx, targety) {
-    return Math.sqrt(Math.pow(targetx - x, 2) + Math.pow(targety - y, 2));
+/** returns a distance in pixels, between two points **/
+function get_distance(originX, originY, targetX, targetY) {
+    return Math.sqrt(Math.pow(targetX - originX, 2) + Math.pow(targetY - originY, 2));
 }
 
-function get_target_angle(x, y, targetx, targety) {
-    return Math.atan2(targety - y, targetx - x) * 180 / Math.PI;
+/** returns an angle from origin in degree **/
+function get_angle(originX, originY, targetX, targetY) {
+    return Math.atan2(targetY - originY, targetX - originX) * 180 / Math.PI;
 }
 
 function getRoll100() {

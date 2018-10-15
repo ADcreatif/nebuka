@@ -1,3 +1,5 @@
+"use strict";
+
 class Game {
     constructor() {
         this.characters = [new Character("alan"), new Character("dany")];

@@ -112,7 +112,7 @@ class Board {
 
         // for special shapes blocks
         for (let shapeY = 0; shapeY < shape.length; shapeY++) {
-            for (let shapeX = 0; shapeX < shape.length; shapeX++) {
+            for (let shapeX = 0; shapeX < shape[shapeY].length; shapeX++) {
                 coordX = origin.x + shapeX;
                 coordY = origin.y + shapeY;
                 cells.push(this.getCellDOM(Board.getIdFromCoord(coordX, coordY)));

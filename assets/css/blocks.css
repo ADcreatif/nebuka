@@ -292,6 +292,10 @@
 #render-board .tower.wood_tower.top-left {
   background-position: -80px -320px;
 }
+
+#render-board .tower.wood_tower.alone {
+    background-color: yellow;
+}
 /*------------------------------- ZOMBIES ------------------------------------*/
 .zombie {
   width: 40px;

@@ -27,9 +27,16 @@ class RenderBoard extends Board {
     }
 
     activateDefences() {
-        $.each(this.blocks, function (i, block) {
-            if (block) block.update();
-        }.bind(this));
+        let block, index;
+
+        for (index in this.blocks) {
+            if (this.blocks.hasOwnProperty(index)) {
+                block = this.blocks[index];
+                if (block && block.update() === 'function') {
+                    block.update(this);
+                }
+            }
+        }
     }
 
     /**
@@ -55,15 +62,37 @@ class RenderBoard extends Board {
         this.dom.show();
         this.board.dom.hide();
 
-        let backgroundClass;
+        let backgroundClass, shape, block, coordX, coordY, shapeX, shapeY;
 
         for (let index = 0; index < this.blocks.length; index++) {
             let cellDOM = this.getCellDOM(index);
             if (this.blocks.hasOwnProperty(index) && this.blocks[index]) {
-                let block = this.blocks[index];
+                block = this.blocks[index];
+                shape = block.getShape();
+
+                for (shapeY = 0; shapeY < shape.length; shapeY++) {
+                    for (shapeX = 0; shapeX < shape[shapeY].length; shapeX++) {
+                        coordX = block.x + shapeX;
+                        coordY = block.y + shapeY;
+                        this.blocks[Board.getIdFromCoord(coordX, coordY)] = block;
+                        backgroundClass = this.getClass(block.x, block.y, block.type);
+                        this.getCellDOM(Board.getIdFromCoord(coordX, coordY)).addClass(block.constructor.getClass() + ' ' + backgroundClass);
+                    }
+                }
+                for (shapeY = 0; shapeY < shape.length; shapeY++) {
+                    for (shapeX = 0; shapeX < shape[shapeY].length; shapeX++) {
+                        coordX = block.x + shapeX;
+                        coordY = block.y + shapeY;
+
+
+                    }
+                }
+
+
                 if (block.getShape().length > 1) {
                     // todo : display special block
                 }
+
                 backgroundClass = this.getClass(block.x, block.y, block.type);
                 cellDOM.addClass(block.constructor.getClass() + ' ' + backgroundClass);
             }

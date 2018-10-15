@@ -1,10 +1,5 @@
 "use strict";
 let board;
-let gameLoop;
-let l = s => {
-    s = s || 'test';
-    console.log(s)
-};
 
 $(function () {
 

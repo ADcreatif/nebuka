@@ -2,95 +2,76 @@
 
 class WoodTower extends Block {
 
-    constructor(board) {
+    constructor() {
         super();
 
         this.damages = 5;
         this.health = 130;
         this.range = 6;
-
-        this.aim = {};
+        this.aim = new Aim(500);
     }
 
     get_target_distance(x, y) {
-        let center = this.getCenterInPixel();
-        return get_distance(center.x, center.y, x, y);
+        return get_distance(this.centerX * Board.TILE_SIZE, this.centerY * Board.TILE_SIZE, x, y);
     }
 
     get_target_angle(x, y) {
-        let center = this.getCenterInPixel();
-        return get_target_angle(center.x, center.y, x, y)
-    }
-
-    draw_line() {
-        // todo: récupérer le vrai millieu de la pièce
-        let line = $('<div>').addClass('line').css({
-            'top': '30px',
-            'left': '30px'
-        });
-        $('#' + this.getCellID()).children('div').append(line);
-        return line;
-    }
-
-    update_line() {
-        this.aim.line.css({
-            'width': this.aim.distance + 'px',
-            'transform': 'rotate(' + this.aim.angle + 'deg)'
-        });
+        return get_angle(this.centerX * Board.TILE_SIZE, this.centerY * Board.TILE_SIZE, x, y)
     }
 
     find_enemy() {
-        let distance, closest;
+        let distance, closest, zombie;
         closest = null;
-        $.each(this.zombieController.zombies, function (index, zombie) {
+        for (let i = 0; i < this.zombieController.zombies.length; i++) {
+            zombie = this.zombieController.zombies[i];
             distance = this.get_target_distance(zombie.currentx, zombie.currenty);
-            if (closest === null || distance <= this.range * Board.TILE_SIZE && distance < this.get_target_distance(closest.currentx, closest.currenty)) {
+            if (closest === null || (
+                distance <= this.range * Board.TILE_SIZE &&
+                distance < this.get_target_distance(closest.currentx, closest.currenty))) {
                 closest = zombie;
             }
-        }.bind(this));
+        }
         this.aim.target = closest;
     }
 
     target_enemy() {
-        let target, x, y;
-
-        target = this.aim.target;
         //todo il te manque une case....
-        x = target.currentx + Board.TILE_SIZE;
-        y = target.currenty + Board.TILE_SIZE;
+        let x = this.aim.target.currentx + Board.TILE_SIZE;
+        let y = this.aim.target.currenty + Board.TILE_SIZE;
         this.aim.angle = this.get_target_angle(x, y);
         this.aim.distance = this.get_target_distance(x, y);
 
-        if (this.aim.distance > this.range * Board.TILE_SIZE) {
+        if (this.aim.target.health <= 0 || this.aim.distance > this.range * Board.TILE_SIZE) {
             this.aim.line.hide();
             this.aim.target = null;
             return;
         }
-        if (target.health <= 0) {
-            this.zombieController.killZombie(target.id);
-             this.aim.line.hide();
-             this.aim.target = null;
-            return
-        }
 
         this.aim.target.get_damage(this.damages);
-        this.update_line();
+        this.aim.update_line();
     }
 
     startNight(zombieController) {
         this.zombieController = zombieController;
-        this.aim.line = this.draw_line();
-        this.aim.target = null;
+
+        let x = this.centerX * Board.TILE_SIZE - Board.TILE_SIZE / 2;
+        let y = this.centerY * Board.TILE_SIZE - Board.TILE_SIZE / 2;
+        this.aim.draw_line(x, y);
     }
 
     update() {
-        if (!this.aim.target) {
+        if (this.aim.target === null) {
             this.find_enemy();
-            return;
         }
-
-        this.aim.line.show();
-        this.target_enemy();
+        // move is finished : reset status
+        if (this.aim.counter >= this.aim.rateIOfFire * Game.TICK_PER_SECOND / 1000) {
+            if (typeof this.aim.target === "object") {
+                this.target_enemy();
+            }
+            this.aim.counter = 0;
+        } else {
+            this.aim.counter++;
+        }
     }
 
     /**************************************

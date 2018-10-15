@@ -4,9 +4,6 @@ class BlockFactory {
         let block;
 
         switch (type) {
-            /*case Block.DEFAULT_BLOCK :
-             block = new Block();
-             break;*/
             case Block.WOOD_WALL :
                 block = new WoodWall();
                 break;
@@ -23,8 +20,6 @@ class BlockFactory {
                 console.log(type + ' is not a block type')
         }
 
-        /*if (display === true)
-         return Block.drawBlock(quantity);*/
         return block;
     }
 

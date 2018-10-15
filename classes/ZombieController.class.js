@@ -14,20 +14,15 @@ class ZombieController {
     }
 
     /** removes the zombie from board, from zombies stack, addclass dead
-     * @params zombie_id {int}
-     * **/
-    killZombie(zombie_id) {
-        let zombie_index;
-        zombie_index = this.findZombie(zombie_id);
-        if (zombie_index > -1) {
-            let zombie = this.zombies[zombie_index];
-            zombie.showEpicDeath();
-            this.zombies.splice(zombie_index, 1);
-        }
+     * @params {Zombie} zombie_id {int}
+     **/
+    killZombie(zombie) {
+        zombie.showEpicDeath();
+        this.zombies.splice(zombie.id, 1);
     }
 
     /** @returns {int} the index of zombie in this zombie stack, -1 if not found **/
-    findZombie(zombie_id) {
+    getZombieByID(zombie_id) {
         for (let index = 0; index < this.zombies.length; index++)
             if (zombie_id === this.zombies[index].id)
                 return index;
@@ -60,9 +55,16 @@ class ZombieController {
         }
     }
 
+    /** Called in the Game loop **/
     moveZombies() {
+        let zombie;
         for (let i = 0; i < this.zombies.length; i++) {
-            this.zombies[i].move();
+            zombie = this.zombies[i];
+            if (zombie.health <= 0) {
+                this.killZombie(zombie);
+                continue;
+            }
+            zombie.move();
         }
     }
 

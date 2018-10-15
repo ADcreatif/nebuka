@@ -37,10 +37,10 @@ class Zombie {
         this.currenty = this.y * Board.TILE_SIZE;
 
     	// necessary adjusment for margins
-    	if(this.x > 5)
+        /*if(this.x > 5)
     		this.currentx ++;
     	if(this.y > 5)
-    		this.currenty ++;
+         this.currenty ++;*/
 
         this.dom.css("left", this.currentx + "px");
         this.dom.css("top", this.currenty + "px");
